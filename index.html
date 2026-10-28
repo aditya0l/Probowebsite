@@ -3,8 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Probodyline</title>
-<meta name="description" content="India's biggest gym equipment showroom. 45,000 sq ft in Sitapura, Jaipur.">
+<title>Probodyline | Gym equipment showroom in Jaipur, delivered across India</title>
+<meta name="description" content="India's biggest gym equipment showroom: 45,000 sq ft in Sitapura, Jaipur, with 3,500+ machines on display. Plan your gym in 3D, get a quote and book a visit.">
+<link rel="canonical" href="https://www.probodyline.com/">
+<meta name="theme-color" content="#0b0c0d">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Probodyline">
+<meta property="og:title" content="Probodyline | India's biggest gym equipment showroom">
+<meta property="og:description" content="45,000 sq ft in Sitapura, Jaipur. 3,500+ machines on display, 18,000+ gyms installed.">
+<meta property="og:url" content="https://www.probodyline.com/">
+<meta property="og:image" content="https://www.probodyline.com/assets/og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="assets/tex/earth-blue-marble.jpg" as="image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SportingGoodsStore","name":"Probodyline","alternateName":"Pro Bodyline Fitness","url":"https://www.probodyline.com/","image":"https://www.probodyline.com/assets/og.jpg","slogan":"If it's unique, it's Probodyline","parentOrganization":{"@type":"Organization","name":"Creative Enterprises"},
+"address":{"@type":"PostalAddress","streetAddress":"F-1293, Phase-3, RIICO Industrial Area, Sitapura","addressLocality":"Jaipur","addressRegion":"Rajasthan","postalCode":"302022","addressCountry":"IN"},
+"telephone":"+91-78917-12345","areaServed":"IN",
+"contactPoint":[{"@type":"ContactPoint","contactType":"sales","telephone":"+91-94038-93899","areaServed":["Delhi NCR","Gujarat","Punjab","Haryana","Tamil Nadu"]},{"@type":"ContactPoint","contactType":"sales","telephone":"+91-94038-93399","areaServed":["Maharashtra","Uttar Pradesh","Karnataka"]},{"@type":"ContactPoint","contactType":"sales","telephone":"+91-78917-12345","areaServed":"IN"}],
+"sameAs":["https://www.instagram.com/probodyline","https://www.youtube.com/@probodyline","https://www.facebook.com/probodylinefitness/"]}
+</script>
+<script src="site.config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -351,6 +373,24 @@
   .bigmark{font-stretch:62%;font-weight:900;font-size:18.4vw;line-height:.78;letter-spacing:-.01em;text-align:center;margin-top:72px;white-space:nowrap;color:transparent;-webkit-text-stroke:1px rgba(236,235,231,.16);background:linear-gradient(90deg,var(--ink) 0 var(--fill,0%),transparent var(--fill,0%));-webkit-background-clip:text;background-clip:text;user-select:none;overflow:hidden}
   @media (prefers-reduced-motion:reduce){.grain{animation:none}.mq-track{transform:none!important}}
 
+  /* live site */
+  .skip{position:absolute;left:16px;top:-60px;z-index:100;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:var(--radius);font-weight:600}
+  .skip:focus{top:12px}
+  .nojs{position:fixed;inset:auto 0 0;z-index:120;background:var(--ink);color:var(--bg);padding:16px 24px;font-size:15px}
+  .dims{display:none}
+  .real-view{position:absolute;inset:0;z-index:3;background:radial-gradient(90% 80% at 50% 45%,#ffffff 60%,#eceeef 100%);cursor:grab;touch-action:pan-y}
+  .real-view[hidden]{display:none}
+  .real-view.drag{cursor:grabbing}
+  .real-view canvas#spin{position:absolute;inset:0;width:100%;height:100%;display:block;mix-blend-mode:multiply}
+  .loupe{position:absolute;left:0;top:0;width:220px;height:220px;border-radius:50%;overflow:hidden;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(.8);transition:opacity .2s,transform .3s cubic-bezier(.16,1,.3,1);box-shadow:0 0 0 2px #111,0 18px 40px rgba(0,0,0,.3);background:#fff}
+  .loupe.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .loupe canvas{width:100%;height:100%;display:block}
+  .spin-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;font-size:13px;color:#4a4c50;background:rgba(255,255,255,.85);padding:8px 12px;border-radius:var(--radius);pointer-events:none;transition:opacity .5s}
+  .spin-hint i{font-size:18px}
+  .spin-load{position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--accent);transform-origin:0 50%;transform:scaleX(0);transition:transform .3s,opacity .6s}
+  .pc-img.real{background:radial-gradient(80% 80% at 50% 50%,#fff 60%,#e9ebec 100%)}
+  .mini img.real{background:#fff;border-radius:4px}
+
   /* machine */
   #machine{padding:120px 0 0}
   .m-head{display:grid;gap:14px;max-width:760px}
@@ -478,6 +518,8 @@
 </head>
 <body>
 
+<a class="skip" href="#machine">Skip to the machines</a>
+<noscript><div class="nojs">Probodyline needs JavaScript for the 3D showroom. Call <a href="tel:+917891712345">+91 78917 12345</a> or visit us at F-1293, Phase-3, RIICO Industrial Area, Sitapura, Jaipur 302022.</div></noscript>
 <div id="loader" aria-hidden="true"><div style="text-align:center"><div class="mark">PROBODYLINE</div><div class="track"><i id="loadbar"></i></div></div></div>
 
 <div class="grain" aria-hidden="true"></div>
@@ -521,7 +563,7 @@
     <div class="alt" id="alt" aria-hidden="true">ALT <b id="altv">0</b> km<br><span id="llv">0.00 N 0.00 E</span></div>
 
     <div class="lens" id="lens">
-      <video id="drone" src="assets/vid-b.mp4" muted playsinline loop preload="auto"></video>
+      <video id="drone" src="assets/drone.mp4" poster="assets/drone-poster.jpg" muted playsinline loop preload="auto"></video>
     </div>
     <div class="showroom" id="showroom">
       <h2 class="display">The showroom.</h2>
@@ -566,6 +608,12 @@
   <div class="studio">
     <div class="stage" id="stage">
       <canvas id="rig" aria-label="Interactive 3D model of the iso-lateral plate-loaded press"></canvas>
+      <div class="real-view" id="realView" aria-label="Filmed footage of the iso-lateral press. Drag to turn it.">
+        <canvas id="spin"></canvas>
+        <div class="loupe" id="loupe"><canvas id="loupeCv" width="440" height="440"></canvas></div>
+        <p class="spin-hint" id="spinHint"><i class="ph ph-hand-swipe-left"></i>Drag to turn the real machine</p>
+        <i class="spin-load" id="spinLoad"></i>
+      </div>
       <div class="labels" id="labels"></div>
       <div class="readout" data-for="press">
         <div><b id="repL">0</b>Left reps</div>
@@ -588,6 +636,7 @@
       <p class="dims" id="dims"></p>
 
       <div class="pane on" data-pane="inspect">
+        <div data-for="press" style="display:grid;gap:10px"><span class="lab" style="margin:0">View</span><div class="rail" id="viewSwitch"><button data-v="real" aria-selected="true"><i class="ph ph-video-camera"></i> Real footage</button><button data-v="3d" aria-selected="false"><i class="ph ph-cube"></i> 3D model</button><button data-v="loupe" aria-selected="false" id="loupeBtn"><i class="ph ph-magnifying-glass-plus"></i> Detail lens</button></div></div>
         <div class="field" data-for="press"><label for="seat">Seat height <b id="seatV">Position 4</b></label><input type="range" id="seat" min="1" max="8" value="4"></div>
         <div class="row"><button class="chip" id="resetView"><i class="ph ph-arrow-counter-clockwise"></i>Reset view</button><button class="chip" id="spin" aria-pressed="true"><i class="ph ph-arrows-clockwise"></i>Turntable</button></div>
       </div>
@@ -622,7 +671,7 @@
       </div>
 
       <div class="real">
-        <video src="assets/vid-a.mp4" muted playsinline loop autoplay></video>
+        <video src="assets/press-loop.mp4" muted playsinline loop autoplay preload="metadata"></video>
         <p><b>The real machine</b>The flagship press, filmed in the studio.</p>
       </div>
     </aside>
@@ -682,13 +731,12 @@
   <div class="wrap">
     <span class="eyebrow">Proof</span>
     <h2 class="display" style="margin-top:14px">18,000+ gyms, across India.</h2>
-    <p class="sub">Each pillar is a city with Probodyline gyms. Its height is the number of installs. Tap one.</p>
+    <p class="sub">One showroom in Jaipur and three regional sales desks. Tap a region to see who to call.</p>
   </div>
   <div class="map-wrap" id="mapWrap">
     <canvas id="map" aria-label="Map of India with a pillar for each city with Probodyline installs"></canvas>
     <div class="city-card" id="cityCard" aria-live="polite"></div>
     <ol class="city-list" id="cityList"></ol>
-    <p class="sample-note">City figures are sample data for this prototype</p>
   </div>
   <div class="wrap ba-head" id="ba-sec">
     <h3 class="display">From empty shell to opening day.</h3>
@@ -700,7 +748,7 @@
       <div class="ba-handle" id="baHandle"><i class="ph ph-arrows-left-right"></i></div>
       <input type="range" min="0" max="100" value="50" id="baRange" aria-label="Compare before and after">
     </div>
-    <p class="note">Rendered example. The live site uses photos of real Probodyline installs.</p>
+    <p class="note">Illustration of a typical commercial fit-out.</p>
   </div>
 </section>
 
@@ -708,7 +756,7 @@
 <section id="plan" class="sec" style="background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
   <div class="wrap">
     <h2 class="display">Plan your gym floor.</h2>
-    <p class="sub">Set your space and goal. We lay out the floor in 3D, price it, and send it to the sales desk for your state.</p>
+    <p class="sub">Set your space and goal. We lay out the floor in 3D and send it to the sales desk for your state, who come back with prices.</p>
     <div class="planner">
       <div class="ctrl">
         <div><span class="lab">Floor area</span><div class="sqft"><span id="sqftV">2,500</span> <small>sq ft</small></div><input type="range" id="sqft" min="300" max="12000" step="100" value="2500" aria-label="Floor area in square feet"></div>
@@ -720,7 +768,7 @@
         <canvas id="planView" aria-label="3D layout of your planned gym floor"></canvas>
         <div class="plan-stats"><div><b id="total">0</b>machines</div><div><b id="area">0</b>m² floor</div></div>
         <p class="plan-warn" id="planWarn" hidden></p>
-        <div class="plan-bar"><div class="legend" id="legend"></div><div class="row"><button class="btn btn-ghost" id="planAR"><i class="ph ph-cube-focus"></i>AR</button><button class="btn btn-ghost" id="proformaBtn"><i class="ph ph-file-text"></i>Proforma</button><a class="btn btn-primary" id="wa" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i>Get a quote</a></div></div>
+        <div class="plan-bar"><div class="legend" id="legend"></div><div class="row"><button class="btn btn-ghost" id="planAR"><i class="ph ph-cube-focus"></i>AR</button><button class="btn btn-ghost" id="proformaBtn"><i class="ph ph-file-text"></i>Quote request</button><a class="btn btn-primary" id="wa" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i>Get a quote</a></div></div>
       </div>
     </div>
   </div>
@@ -731,14 +779,14 @@
 <section id="roi" class="sec">
   <div class="wrap">
     <h2 class="display">When does it pay back?</h2>
-    <p class="sub">It starts from the gym you just planned. Change the fee, members and costs to see your payback month.</p>
+    <p class="sub">Enter your budget, fee and costs. Members and running costs start from the gym you planned.</p>
     <div class="roi">
       <div class="roi-ctrl">
-        <div class="field"><label for="roiInv">Equipment investment <b id="roiInvV"></b></label><input type="range" id="roiInv" min="200000" max="20000000" step="50000" value="3000000"></div>
+        <div class="field"><label for="roiInv">Your equipment budget <b id="roiInvV"></b></label><input type="range" id="roiInv" min="200000" max="20000000" step="50000" value="3000000"></div>
         <div class="field"><label for="roiFee">Monthly membership fee <b id="roiFeeV"></b></label><input type="range" id="roiFee" min="500" max="6000" step="100" value="1800"></div>
         <div class="field"><label for="roiMem">Active members <b id="roiMemV"></b></label><input type="range" id="roiMem" min="20" max="1500" step="10" value="220"></div>
         <div class="field"><label for="roiCost">Monthly running costs (rent, staff, power) <b id="roiCostV"></b></label><input type="range" id="roiCost" min="20000" max="2000000" step="10000" value="220000"></div>
-        <button class="chip" id="roiSync" style="justify-self:start"><i class="ph ph-arrows-clockwise"></i>Use my planned gym</button>
+        <button class="chip" id="roiSync" style="justify-self:start"><i class="ph ph-arrows-clockwise"></i>Match my planned gym</button>
       </div>
       <div class="roi-out">
         <div class="roi-kpi"><div><b id="roiPay">-</b>Payback</div><div><b id="roiProfit">-</b>Profit a month</div><div><b id="roiY3">-</b>Cash after 3 years</div></div>
@@ -756,7 +804,7 @@
     <p class="sub">Pick a day and a time. The sales desk for your state confirms it on WhatsApp.</p>
     <div class="book">
       <div class="card">
-        <div class="cal-head"><b id="calMonth"></b><span class="muted" style="font-size:13px">Open every day, 10:00 to 19:00</span></div>
+        <div class="cal-head"><b id="calMonth"></b><span class="muted" style="font-size:13px">The desk confirms your slot with you</span></div>
         <div class="cal" id="cal"></div>
         <div><span class="lab">Time</span><div class="slots" id="slots"></div></div>
         <div><span class="lab">What do you want to see?</span><div class="row" id="interest"></div></div>
@@ -779,7 +827,7 @@
 <section id="owners" class="sec" style="background:var(--surface);border-top:1px solid var(--line)">
   <div class="wrap">
     <h2 class="display">Already own a Probodyline machine?</h2>
-    <p class="sub">Register the warranty, book a service or order spares. Every machine carries a QR plate that opens this form with its details filled in.</p>
+    <p class="sub">Register the warranty, book a service or order spares. The serial number is on the plate fitted to your machine.</p>
     <div class="own">
       <form class="card" id="ownForm" novalidate>
         <div class="tabs own-tabs" role="tablist" aria-label="What do you need?"><button type="button" role="tab" aria-selected="true" data-o="warranty"><i class="ph ph-shield-check"></i>Warranty</button><button type="button" role="tab" aria-selected="false" data-o="service"><i class="ph ph-wrench"></i>Service</button><button type="button" role="tab" aria-selected="false" data-o="spares"><i class="ph ph-gear-six"></i>Spares</button></div>
@@ -791,9 +839,9 @@
         <button class="btn btn-primary" type="submit" style="justify-self:start" id="oSubmit"><i class="ph ph-whatsapp-logo"></i>Register warranty</button>
       </form>
       <div style="display:grid;gap:20px;align-content:start">
-        <div class="plate" id="plate"><div><div class="wm">PROBODYLINE</div><dl><dt>Model</dt><dd id="plModel">ISO-LATERAL PRESS</dd><dt>Serial</dt><dd>PBL-24-01873</dd><dt>Made</dt><dd>2024, Jaipur</dd><dt>Max load</dt><dd>See manual</dd></dl></div><div class="qr" id="plQr"></div></div>
-        <button class="btn btn-ghost" id="scanSim" style="justify-self:start"><i class="ph ph-qr-code"></i>Simulate scanning this plate</button>
-        <p class="note">In the live site, scanning the plate with any phone camera opens this form with the model and serial already filled in.</p>
+        <div class="plate" id="plate"><div><div class="wm">PROBODYLINE</div><dl><dt>Model</dt><dd id="plModel">ISO-LATERAL PRESS</dd><dt>Serial</dt><dd>PBL-24-01873</dd><dt>Made in</dt><dd>India</dd></dl></div><div class="qr" id="plQr"></div></div>
+        <button class="btn btn-ghost" id="scanSim" style="justify-self:start"><i class="ph ph-arrow-bend-up-left"></i>Fill in with this example</button>
+        <p class="note">Example plate. Look for the same plate on the frame of your machine.</p>
       </div>
     </div>
   </div>
@@ -807,7 +855,7 @@
   <div class="chead"><div class="av"><i class="ph ph-barbell"></i></div><div><b>Probodyline consultant</b><span>Four questions to a full plan</span></div><button id="cclose" aria-label="Close"><i class="ph ph-x"></i></button></div>
   <div class="clog" id="clog" aria-live="polite"></div>
   <div class="cchips" id="cchips"></div>
-  <div class="cfoot">Scripted for this prototype. The live site can run an AI consultant here.</div>
+  <div class="cfoot">Your plan goes to the sales desk for your state on WhatsApp.</div>
 </div>
 </main>
 
@@ -837,7 +885,7 @@
         <ul><li><a href="https://instagram.com/probodyline" target="_blank" rel="noopener">Instagram</a></li><li style="margin-top:6px"><a href="https://youtube.com/@probodyline" target="_blank" rel="noopener">YouTube</a></li></ul>
       </div>
     </div>
-    <div class="foot"><span>Probodyline, a Creative Enterprises brand</span><span>Concept prototype for review</span></div>
+    <div class="foot"><span>Probodyline, a Creative Enterprises brand</span><span>&copy; <span id="yr">2026</span> Creative Enterprises. All rights reserved.</span></div>
   </div>
   <div class="bigmark" id="bigmark" aria-hidden="true">PROBODYLINE</div>
 </footer>
@@ -1408,15 +1456,16 @@ function machineFrame(){
 
 /* ================= STUDIO: every machine ================= */
 const MAKERS={treadmill:mkTreadmill,bike:mkBike,elliptical:mkElliptical,station:mkStation,rack:mkRack,dumbbells:mkDumbbells,bench:mkBench};
+const PRICE=(window.SITE&&SITE.prices)||{};
 const PRODUCTS={
-  press:{name:'Iso-lateral plate-loaded press',short:'Iso-lateral press',cat:'Plate-loaded strength',g:'Strength',muscles:['chest','shoulders','arms'],price:135000,blurb:'Spin it, load it, take it apart. Each arm moves on its own, exactly like the one on the showroom floor.'},
-  treadmill:{name:'Commercial treadmill',short:'Treadmill',cat:'Cardio',g:'Cardio',muscles:['legs','glutes','cardio'],price:185000,blurb:'Set the belt speed and watch it run. Built for floors that never close.'},
-  bike:{name:'Studio spin bike',short:'Spin bike',cat:'Cardio',g:'Cardio',muscles:['legs','glutes','cardio'],price:48000,blurb:'Set the cadence. The flywheel and cranks follow, the way they do in a class.'},
-  elliptical:{name:'Cross-trainer',short:'Cross-trainer',cat:'Cardio',g:'Cardio',muscles:['legs','glutes','arms','cardio'],price:120000,blurb:'Low impact, full body. A cardio floor favourite for every age.'},
-  station:{name:'Selectorised station',short:'Selectorised station',cat:'Selectorised strength',g:'Strength',muscles:['back','chest','arms'],price:95000,blurb:'Pin-loaded weight stack with guided arms. Easy for beginners, solid for regulars.'},
-  rack:{name:'Power rack with bench',short:'Power rack',cat:'Racks and rigs',g:'Strength',muscles:['legs','glutes','back','chest','core'],price:110000,blurb:'Squat, bench and pull in one footprint. Comes loaded with a bar and plates.'},
-  dumbbells:{name:'Dumbbell rack, nine pairs',short:'Dumbbell rack',cat:'Free weights',g:'Free weights',muscles:['arms','shoulders','chest','back'],price:65000,blurb:'Two tiers, nine pairs, hex heads that stay where you put them.'},
-  bench:{name:'Flat bench',short:'Flat bench',cat:'Free weights',g:'Free weights',muscles:['chest','arms'],price:18000,blurb:'The simplest thing in the gym, and the one everyone queues for.'},
+  press:{price:PRICE.press??null,name:'Iso-lateral plate-loaded press',short:'Iso-lateral press',cat:'Plate-loaded strength',g:'Strength',muscles:['chest','shoulders','arms'],blurb:'Spin it, load it, take it apart. Each arm moves on its own, exactly like the one on the showroom floor.'},
+  treadmill:{price:PRICE.treadmill??null,name:'Commercial treadmills',short:'Treadmills',cat:'Cardio',g:'Cardio',muscles:['legs','glutes','cardio'],blurb:'Set the belt speed and watch it run. Built for floors that never close.'},
+  bike:{price:PRICE.bike??null,name:'Spin bikes',short:'Spin bikes',cat:'Cardio',g:'Cardio',muscles:['legs','glutes','cardio'],blurb:'Set the cadence. The flywheel and cranks follow, the way they do in a class.'},
+  elliptical:{price:PRICE.elliptical??null,name:'Cross-trainers',short:'Cross-trainers',cat:'Cardio',g:'Cardio',muscles:['legs','glutes','arms','cardio'],blurb:'Low impact, full body. A cardio floor favourite for every age.'},
+  station:{price:PRICE.station??null,name:'Selectorised stations',short:'Stations',cat:'Selectorised strength',g:'Strength',muscles:['back','chest','arms'],blurb:'Pin-loaded weight stack with guided arms. Easy for beginners, solid for regulars.'},
+  rack:{price:PRICE.rack??null,name:'Power racks',short:'Power racks',cat:'Racks and rigs',g:'Strength',muscles:['legs','glutes','back','chest','core'],blurb:'Squat, bench and pull in one footprint, with a bar, plates and a bench.'},
+  dumbbells:{price:PRICE.dumbbells??null,name:'Dumbbells and racks',short:'Dumbbells',cat:'Free weights',g:'Free weights',muscles:['arms','shoulders','chest','back'],blurb:'Hex dumbbells on two-tier racks, from light pairs to the heaviest ones on the floor.'},
+  bench:{price:PRICE.bench??null,name:'Benches',short:'Benches',cat:'Free weights',g:'Free weights',muscles:['chest','arms'],blurb:'The simplest thing in the gym, and the one everyone queues for.'},
 };
 const ALT={}; let cur='press';
 const TRAIN_OK={press:1,treadmill:1,bike:1}, LOAD_OK={press:1};
@@ -1479,6 +1528,8 @@ addEventListener('resize',resize); resize();
 <script type="module" src="js/features.js"></script>
 <script type="module" src="js/sound.js"></script>
 <script type="module" src="js/more.js"></script>
+<script type="module" src="js/spin.js"></script>
 <script type="module" src="js/polish.js"></script>
+<script>document.getElementById("yr").textContent=new Date().getFullYear()</script>
 </body>
 </html>

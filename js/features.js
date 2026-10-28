@@ -1,4 +1,4 @@
-// Probodyline prototype: every concept from the client menu, built on the shared 3D kit in index.html.
+// Probodyline site features, built on the shared 3D kit in index.html.
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
@@ -11,6 +11,7 @@ const clamp = (v, a, b) => Math.min(b, Math.max(a, v)), lerp = (a, b, t) => a + 
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
 const ORDER = ['press', 'treadmill', 'bike', 'elliptical', 'station', 'rack', 'dumbbells', 'bench'];
 const inr = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const GST = (window.SITE && SITE.gstRate) ?? .18;
 
 /* ---------------------------------------------------------------- shared 3D helpers */
 const envCache = new WeakMap();
@@ -96,11 +97,14 @@ const THUMB = {};
   r.dispose(); r.forceContextLoss();
 }
 
+THUMB.press = 'assets/spin/press/f006.webp';
+const REAL = { press: true };
+
 /* ---------------------------------------------------------------- catalogue */
 {
   const grid = $('#catGrid');
   grid.innerHTML = ORDER.map((k, i) => `<article class="pc${i === 0 ? ' big' : ''}" data-g="${PRODUCTS[k].g}">
-    <div class="pc-img"><img src="${THUMB[k]}" alt="${PRODUCTS[k].name}, 3D render" loading="lazy"></div>
+    <div class="pc-img${REAL[k] ? ' real' : ''}"><img src="${THUMB[k]}" alt="${PRODUCTS[k].name}${REAL[k] ? ', filmed in the studio' : ', 3D preview'}" loading="lazy"></div>
     <div class="pc-body"><span class="pc-cat">${PRODUCTS[k].cat}</span><h3>${PRODUCTS[k].name}</h3>
     <div class="row"><button class="chip" data-3d="${k}"><i class="ph ph-cube"></i>Open in 3D</button><button class="chip" data-fit="${k}"><i class="ph ph-ruler"></i>Will it fit?</button><button class="chip cmp" data-cmp="${k}" aria-pressed="false"><i class="ph ph-columns"></i>Compare</button></div></div></article>`).join('');
   grid.addEventListener('click', e => {
@@ -282,7 +286,8 @@ let setFit;
 
 /* ---------------------------------------------------------------- india install map */
 {
-  const CITY = [['Delhi NCR', 28.61, 77.21, 2140], ['Mumbai', 19.08, 72.88, 1980], ['Jaipur', 26.91, 75.79, 1850], ['Bengaluru', 12.97, 77.59, 1620], ['Ahmedabad', 23.02, 72.57, 1210], ['Hyderabad', 17.39, 78.49, 1100], ['Pune', 18.52, 73.86, 980], ['Chennai', 13.08, 80.27, 890], ['Kolkata', 22.57, 88.36, 760], ['Chandigarh', 30.73, 76.78, 720], ['Lucknow', 26.85, 80.95, 640], ['Indore', 22.72, 75.86, 540], ['Nagpur', 21.15, 79.09, 410], ['Coimbatore', 11.02, 76.96, 380], ['Kochi', 9.93, 76.27, 330], ['Udaipur', 24.58, 73.71, 310], ['Varanasi', 25.32, 82.97, 290], ['Bhubaneswar', 20.3, 85.82, 270], ['Guwahati', 26.14, 91.74, 260], ['Goa', 15.5, 73.83, 230], ['Jammu', 32.73, 74.86, 180]];
+  // [name, lat, lon, weight, desk key, label]
+  const CITY = [['Jaipur showroom', 26.84, 75.82, 1, 'a', 'Showroom and head office'], ['Delhi NCR', 28.61, 77.21, .72, 'n', 'North desk'], ['Chandigarh', 30.73, 76.78, .5, 'n', 'Punjab and Haryana'], ['Ahmedabad', 23.02, 72.57, .6, 'n', 'Gujarat'], ['Chennai', 13.08, 80.27, .55, 'n', 'Tamil Nadu'], ['Mumbai', 19.08, 72.88, .72, 's', 'Maharashtra desk'], ['Pune', 18.52, 73.86, .45, 's', 'Maharashtra'], ['Lucknow', 26.85, 80.95, .55, 's', 'Uttar Pradesh'], ['Bengaluru', 12.97, 77.59, .62, 's', 'Bangalore'], ['Kolkata', 22.57, 88.36, .45, 'a', 'East'], ['Hyderabad', 17.39, 78.49, .5, 'a', 'Telangana and Andhra'], ['Indore', 22.72, 75.86, .4, 'a', 'Madhya Pradesh'], ['Guwahati', 26.14, 91.74, .35, 'a', 'North east'], ['Kochi', 9.93, 76.27, .4, 'a', 'Kerala']];
   const LON0 = 64, LON1 = 100, LAT0 = 4, LAT1 = 38, K = .28;
   const xy = (la, lo) => V((lo - (LON0 + LON1) / 2) * K, 0, -(la - (LAT0 + LAT1) / 2) * K);
   const canvas = $('#map'), r = renderer(canvas, { shadows: false });
@@ -310,29 +315,30 @@ let setFit;
   const pillarGeo = new THREE.CylinderGeometry(.045, .045, 1, 16).translate(0, .5, 0);
   const pillarMat = new THREE.MeshBasicMaterial({ color: 0x5b7cff }), hotMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
   const hitGeo = new THREE.CylinderGeometry(.18, .18, 1, 8).translate(0, .5, 0), hitMat = new THREE.MeshBasicMaterial({ visible: false });
-  const max = Math.max(...CITY.map(c => c[3]));
-  const jp = xy(26.91, 75.79);
+  const max = 1;
+  const jp = xy(26.84, 75.82);
   const pillars = CITY.map(([n, la, lo, c], i) => {
     const g = new THREE.Group(); g.position.copy(xy(la, lo)); scene.add(g);
-    const h = .2 + c / max * 1.7; const p = new THREE.Mesh(pillarGeo, n === 'Jaipur' ? hotMat : pillarMat); p.scale.y = h; g.add(p);
+    const h = .25 + c / max * 1.6; const p = new THREE.Mesh(pillarGeo, i === 0 ? hotMat : pillarMat); p.scale.y = h; g.add(p);
     const cap = new THREE.Mesh(new THREE.SphereGeometry(.06, 16, 12), hotMat); cap.position.y = h; g.add(cap);
     const glow = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: glowTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })); glow.rotation.x = -Math.PI / 2; glow.scale.set(.9, .9, 1); glow.position.y = .015; g.add(glow);
     const hit = new THREE.Mesh(hitGeo, hitMat); hit.scale.y = h; hit.userData.i = i; g.add(hit);
     g.scale.y = .001; g.userData = { h, cap, hit, glow };
-    if (n !== 'Jaipur') {
+    if (i !== 0) {
       const b = g.position, m = jp.clone().lerp(b, .5); m.y = .6 + jp.distanceTo(b) * .18;
       const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(new THREE.QuadraticBezierCurve3(jp.clone().setY(.02), m, b.clone().setY(.02)).getPoints(48)), new THREE.LineDashedMaterial({ color: 0x8ea5ff, dashSize: .12, gapSize: .1, transparent: true, opacity: .5 }));
       line.computeLineDistances(); scene.add(line); g.userData.line = line;
     }
     return g;
   });
-  let active = 2;
+  let active = 0;
   const card = $('#cityCard'), list = $('#cityList');
-  list.innerHTML = CITY.map((c, i) => `<li><button data-i="${i}"><span>${c[0]}</span><b>${c[3].toLocaleString('en-IN')}</b></button></li>`).join('');
+  list.innerHTML = CITY.map((c, i) => `<li><button data-i="${i}"><span>${c[0]}</span><b style="font-family:var(--sans);font-size:12px;color:var(--muted)">${c[5]}</b></button></li>`).join('');
   function focus(i, move = true) {
-    active = i; const [n, , , c] = CITY[i];
-    const com = Math.round(c * .56), home = Math.round(c * .33), hot = c - com - home;
-    card.innerHTML = `<h3>${n}</h3><div class="n">${c.toLocaleString('en-IN')}<small>gyms installed</small></div><div class="split"><div><b>${com.toLocaleString('en-IN')}</b>Commercial</div><div><b>${home.toLocaleString('en-IN')}</b>Home gyms</div><div><b>${hot}</b>Hotels and offices</div></div><p class="note" style="margin-top:14px">Sales desk: ${n === 'Jaipur' ? DESKS.a.show : '+91 ' + (/Mumbai|Pune|Lucknow|Bengaluru|Varanasi/.test(n) ? '94038 93399' : /Delhi|Ahmedabad|Chandigarh|Chennai|Coimbatore|Jammu/.test(n) ? '94038 93899' : '78917 12345')}</p>`;
+    active = i; const [n, , , , dk, lab] = CITY[i], d = DESKS[dk];
+    card.innerHTML = i === 0
+      ? `<h3>Jaipur</h3><p class="muted" style="margin-top:6px">Showroom and head office</p><p style="margin-top:14px;font-size:15px">F-1293, Phase-3, RIICO Industrial Area, Sitapura, Jaipur 302022</p><div class="row" style="margin-top:16px"><a class="btn btn-primary" href="#book" style="height:40px">Book a visit</a><a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=F-1293+RIICO+Industrial+Area+Sitapura+Jaipur" target="_blank" rel="noopener" style="height:40px">Directions</a></div>`
+      : `<h3>${n}</h3><p class="muted" style="margin-top:6px">${lab}</p><div class="n" style="font-size:30px">${d.show}</div><p class="note" style="margin-top:10px">Covers ${d.area}.</p><div class="row" style="margin-top:14px"><a class="btn btn-primary" href="tel:+${d.num}" style="height:40px"><i class="ph ph-phone"></i>Call</a><a class="btn btn-ghost" href="https://wa.me/${d.num}" target="_blank" rel="noopener" style="height:40px"><i class="ph ph-whatsapp-logo"></i>WhatsApp</a></div>`;
     $$('#cityList button').forEach(b => b.setAttribute('aria-current', +b.dataset.i === i));
     pillars.forEach((p, k) => { p.userData.cap.scale.setScalar(k === i ? 1.8 : 1); p.userData.glow.scale.setScalar(k === i ? 1.6 : .9); });
     if (move) { const t = pillars[i].position; gsap.to(ctl.target, { x: t.x * .6, z: t.z * .6 + .4, duration: 1.1, ease: 'power3.inOut' }); }
@@ -345,7 +351,7 @@ let setFit;
   canvas.addEventListener('pointermove', e => canvas.style.cursor = pick(e) >= 0 ? 'pointer' : '');
   ScrollTrigger.create({ trigger: '#mapWrap', start: 'top 70%', once: true, onEnter: () => pillars.forEach((p, i) => gsap.to(p.scale, { y: 1, duration: RM ? 0 : 1.2, delay: RM ? 0 : i * .05, ease: 'expo.out' })) });
   addView({ canvas, r, scene, cam, frame(t) { ctl.update(); if (!RM) pillars.forEach(p => { if (p.userData.line) p.userData.line.material.dashOffset -= .004; }); } });
-  focus(2, false);
+  focus(0, false);
 }
 
 /* ---------------------------------------------------------------- before / after (rendered shell vs fitted floor) */
@@ -476,7 +482,7 @@ const PLAN = { sqft: 2500, kind: 'commercial', focus: 'balanced' };
     const warn = $('#planWarn'); warn.hidden = !cut; warn.textContent = `Trimmed by ${cut} machine${cut === 1 ? '' : 's'} to keep safe aisles between every row.`;
     updWa(); document.dispatchEvent(new Event('plan'));
   }
-  function lines() { return ORDER.filter(k => (placed[k] || []).length).map(k => ({ k, q: placed[k].length, rate: PRODUCTS[k].price })); }
+  function lines() { return ORDER.filter(k => (placed[k] || []).length).map(k => ({ k, q: placed[k].length, rate: PRODUCTS[k].price ?? null })); }
   function updWa() {
     const msg = `Hi Probodyline, I'm planning a ${PLAN.kind} gym of ${PLAN.sqft} sq ft in ${region} (${PLAN.focus} focus). Layout: ` + lines().map(l => `${l.q} x ${PRODUCTS[l.k].short}`).join(', ') + '. Please send a quote.';
     $('#wa').href = waLink(msg);
@@ -487,7 +493,7 @@ const PLAN = { sqft: 2500, kind: 'commercial', focus: 'balanced' };
   ['kind', 'focus'].forEach(id => $$('#' + id + ' button').forEach(b => b.addEventListener('click', () => { $$('#' + id + ' button').forEach(x => x.setAttribute('aria-pressed', 'false')); b.setAttribute('aria-pressed', 'true'); PLAN[id] = b.dataset.v; layout(true); })));
   let deb; $('#sqft').addEventListener('input', e => { PLAN.sqft = +e.target.value; $('#sqftV').textContent = PLAN.sqft.toLocaleString('en-IN'); clearTimeout(deb); deb = setTimeout(() => layout(false), 60); });
   P.plan = {
-    state: () => { const L = lines(), sub = L.reduce((a, l) => a + l.q * l.rate, 0); return { ...PLAN, lines: L, sub, total: sub * 1.18, machines: L.reduce((a, l) => a + l.q, 0), area: W * D }; },
+    state: () => { const L = lines(), priced = L.length && L.every(l => l.rate), sub = priced ? L.reduce((a, l) => a + l.q * l.rate, 0) : 0; return { ...PLAN, lines: L, priced, sub, total: sub * (1 + GST), machines: L.reduce((a, l) => a + l.q, 0), area: W * D }; },
     apply(o) { Object.assign(PLAN, o); $('#sqft').value = PLAN.sqft; $('#sqftV').textContent = PLAN.sqft.toLocaleString('en-IN'); ['kind', 'focus'].forEach(id => $$('#' + id + ' button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === PLAN[id]))); layout(true); },
     group() { const g = new THREE.Group(); const f = new THREE.Mesh(new THREE.PlaneGeometry(W, D), new THREE.MeshStandardMaterial({ color: 0x1b1c1f, roughness: .9 })); f.rotation.x = -Math.PI / 2; g.add(f);
       Object.entries(placed).forEach(([k, l]) => l.forEach(([x, z]) => { const m = productMesh(k); m.position.set(x, 0, z); g.add(m); })); return g; },
@@ -499,21 +505,21 @@ const PLAN = { sqft: 2500, kind: 'commercial', focus: 'balanced' };
   // proforma
   const dlg = $('#proforma');
   $('#proformaBtn').addEventListener('click', () => {
-    const L = lines(), sub = L.reduce((a, l) => a + l.q * l.rate, 0), gst = sub * .18, d = new Date();
+    const L = lines(), priced = L.length && L.every(l => l.rate), sub = priced ? L.reduce((a, l) => a + l.q * l.rate, 0) : 0, gst = sub * GST, d = new Date();
     const no = `PBL-${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}-${Math.floor(1000 + Math.random() * 9000)}`;
-    const valid = new Date(d.getTime() + 15 * 864e5);
     const fd = x => x.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+    const rate = l => priced ? inr(l.rate) : 'On request', amt = l => priced ? inr(l.q * l.rate) : '';
     dlg.innerHTML = `<div class="doc">
       <div class="doc-top"><div><div class="wm">PROBODYLINE</div><div style="color:#666;font-size:12px;margin-top:4px">Creative Enterprises<br>F-1293, Phase-3, RIICO Industrial Area, Sitapura, Jaipur 302022</div></div>
-      <div class="t"><b>Proforma invoice</b><span style="font-family:var(--mono)">${no}</span><br><span style="color:#666;font-size:12px">${fd(d)}, valid until ${fd(valid)}</span></div></div>
+      <div class="t"><b>${priced ? 'Proforma invoice' : 'Quotation request'}</b><span style="font-family:var(--mono)">${no}</span><br><span style="color:#666;font-size:12px">${fd(d)}</span></div></div>
       <div class="doc-meta"><div><small>Prepared for</small><input value="" placeholder="Your gym or company name" aria-label="Prepared for"></div><div><small>Project</small><b style="font-size:15px">${PLAN.kind[0].toUpperCase() + PLAN.kind.slice(1)} gym, ${PLAN.sqft.toLocaleString('en-IN')} sq ft, ${region}</b></div></div>
       <table><thead><tr><th>#</th><th>Item</th><th class="r">Qty</th><th class="r">Rate</th><th class="r">Amount</th></tr></thead>
-      <tbody>${L.map((l, i) => `<tr><td>${i + 1}</td><td>${PRODUCTS[l.k].name}<br><small style="color:#777">${PRODUCTS[l.k].cat}</small></td><td class="r">${l.q}</td><td class="r">${inr(l.rate)}</td><td class="r">${inr(l.q * l.rate)}</td></tr>`).join('')}
-      <tr><td>${L.length + 1}</td><td>Delivery, installation and floor layout</td><td class="r">1</td><td class="r">Included</td><td class="r">${inr(0)}</td></tr></tbody>
-      <tfoot><tr><td colspan="4" class="r">Subtotal</td><td class="r">${inr(sub)}</td></tr><tr><td colspan="4" class="r">GST at 18%</td><td class="r">${inr(gst)}</td></tr><tr class="tot"><td colspan="4" class="r">Total</td><td class="r">${inr(sub + gst)}</td></tr></tfoot></table>
-      <p class="fine">Sample prices for this prototype. In the live site every rate comes from the Probodyline product catalogue. Sales desk for ${region}: ${desk().show}.</p>
+      <tbody>${L.map((l, i) => `<tr><td>${i + 1}</td><td>${PRODUCTS[l.k].name}<br><small style="color:#777">${PRODUCTS[l.k].cat}</small></td><td class="r">${l.q}</td><td class="r">${rate(l)}</td><td class="r">${amt(l)}</td></tr>`).join('')}
+      <tr><td>${L.length + 1}</td><td>Delivery, installation and floor layout</td><td class="r">1</td><td class="r">${priced ? 'Included' : 'On request'}</td><td class="r"></td></tr></tbody>
+      ${priced ? `<tfoot><tr><td colspan="4" class="r">Subtotal</td><td class="r">${inr(sub)}</td></tr><tr><td colspan="4" class="r">GST at ${Math.round(GST * 100)}%</td><td class="r">${inr(gst)}</td></tr><tr class="tot"><td colspan="4" class="r">Total</td><td class="r">${inr(sub + gst)}</td></tr></tfoot>` : `<tfoot><tr class="tot"><td colspan="2">Total machines</td><td class="r">${L.reduce((a, l) => a + l.q, 0)}</td><td colspan="2"></td></tr></tfoot>`}</table>
+      <p class="fine">${priced ? `Prices include delivery and installation. GST at ${Math.round(GST * 100)}% applies.` : 'Models, prices and delivery dates are confirmed by the sales desk.'} Sales desk for ${region}: ${desk().show}.</p>
     </div>
-    <div class="doc-actions"><button class="btn btn-ghost" style="color:var(--ink)" data-x="close">Close</button><button class="btn btn-ghost" style="color:var(--ink)" data-x="print"><i class="ph ph-printer"></i>Print or save PDF</button><a class="btn btn-primary" target="_blank" rel="noopener" href="${waLink(`Hi Probodyline, please confirm proforma ${no}: ` + L.map(l => `${l.q} x ${PRODUCTS[l.k].short}`).join(', ') + `, total ${inr(sub + gst)} incl. GST.`)}"><i class="ph ph-whatsapp-logo"></i>Send to sales</a></div>`;
+    <div class="doc-actions"><button class="btn btn-ghost" style="color:var(--ink)" data-x="close">Close</button><button class="btn btn-ghost" style="color:var(--ink)" data-x="print"><i class="ph ph-printer"></i>Print or save PDF</button><a class="btn btn-primary" target="_blank" rel="noopener" href="${waLink(`Hi Probodyline, please quote request ${no}: ` + L.map(l => `${l.q} x ${PRODUCTS[l.k].short}`).join(', ') + ` for a ${PLAN.kind} gym of ${PLAN.sqft} sq ft in ${region}.`)}"><i class="ph ph-whatsapp-logo"></i>Send to sales</a></div>`;
     dlg.showModal();
   });
   dlg.addEventListener('click', e => { const x = e.target.closest('[data-x]'); if (e.target === dlg || (x && x.dataset.x === 'close')) dlg.close(); if (x && x.dataset.x === 'print') print(); });

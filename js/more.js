@@ -123,7 +123,7 @@ const brand = (() => {
   });
   $('#cmpOpen').addEventListener('click', () => {
     const ks = [...pickd], n = ks.length, area = k => DIM[k].x * DIM[k].z;
-    const minA = Math.min(...ks.map(area)), minP = Math.min(...ks.map(k => PRODUCTS[k].price));
+    const minA = Math.min(...ks.map(area)), priced = ks.every(k => PRODUCTS[k].price), minP = priced ? Math.min(...ks.map(k => PRODUCTS[k].price)) : 0;
     const cell = (h, vals) => `<div class="rh">${h}</div>` + vals.join('');
     const rows = [
       `<div></div>` + ks.map(k => `<div><img src="${THUMB[k]}" alt=""><h3>${PRODUCTS[k].name}</h3></div>`).join(''),
@@ -131,7 +131,7 @@ const brand = (() => {
       cell('Footprint', ks.map(k => `<div class="${area(k) === minA ? 'best' : ''}">${DIM[k].x.toFixed(2)} by ${DIM[k].z.toFixed(2)} m${area(k) === minA ? '<br><small>Smallest</small>' : ''}</div>`)),
       cell('Height', ks.map(k => `<div>${DIM[k].y.toFixed(2)} m</div>`)),
       cell('Trains', ks.map(k => `<div>${PRODUCTS[k].muscles.map(m => m === 'cardio' ? 'heart and lungs' : m).join(', ')}</div>`)),
-      cell('Price (sample)', ks.map(k => `<div class="${PRODUCTS[k].price === minP ? 'best' : ''}">${inr(PRODUCTS[k].price)}</div>`)),
+      priced ? cell('Price', ks.map(k => `<div class="${PRODUCTS[k].price === minP ? 'best' : ''}">${inr(PRODUCTS[k].price)}</div>`)) : cell('Price', ks.map(k => `<div><a class="chip" target="_blank" rel="noopener" href="${P.waLink(`Hi Probodyline, please share models and prices for ${PRODUCTS[k].name}.`)}">Ask for prices</a></div>`)),
       cell('', ks.map(k => `<div class="row"><button class="chip" data-go3d="${k}"><i class="ph ph-cube"></i>3D</button><button class="chip" data-gofit="${k}"><i class="ph ph-ruler"></i>Fit</button></div>`)),
     ];
     dlg.innerHTML = `<div class="sheet-head"><h2>Compare</h2><button class="chip" data-x>Close</button></div><div class="cmp-grid" style="grid-template-columns:150px repeat(${n},1fr)">${rows.join('')}</div>`;
@@ -152,8 +152,8 @@ const brand = (() => {
   const money = n => { const a = Math.abs(n), s = n < 0 ? '−' : ''; return s + '₹' + (a >= 1e7 ? (a / 1e7).toFixed(2) + ' Cr' : a >= 1e5 ? (a / 1e5).toFixed(1) + ' L' : Math.round(a).toLocaleString('en-IN')); };
   const ids = { inv: 'roiInv', fee: 'roiFee', mem: 'roiMem', cost: 'roiCost' };
   function fromPlan() {
-    const st = P.plan.state(); if (!st.total) return;
-    R.inv = clamp(Math.round(st.total / 50000) * 50000, 200000, 20000000);
+    const st = P.plan.state(); if (!st.machines) return;
+    if (st.priced) R.inv = clamp(Math.round(st.total / 50000) * 50000, 200000, 20000000);
     R.mem = clamp(Math.round(st.machines * 11 / 10) * 10, 20, 1500);
     R.cost = clamp(Math.round((st.area * 650 + 70000) / 10000) * 10000, 20000, 2000000);
     R.fee = { home: 0, studio: 2500, commercial: 1800, hotel: 0 }[st.kind] || R.fee;
@@ -205,11 +205,11 @@ const brand = (() => {
     P.plan.apply({ kind: A.kind, sqft: A.sqft, focus: A.focus }); P.setRegion(A.state);
     const st = P.plan.state(), top = st.lines.sort((a, b) => b.q - a.q).slice(0, 3).map(l => `${l.q} ${PRODUCTS[l.k].short.toLowerCase()}${l.q > 1 && !/s$/.test(PRODUCTS[l.k].short) ? 's' : ''}`).join(', ');
     await say(`Here is your starting plan: <b>${st.machines} machines</b> on about ${Math.round(st.area)} m², led by ${top}.`);
-    await say(`Equipment comes to about <b>${inr(st.total)}</b> including GST, at sample prices. Your desk is ${P.desk().show}.`);
+    await say(st.priced ? `Equipment comes to about <b>${inr(st.total)}</b> including GST. Your desk is ${P.desk().show}.` : `Your sales desk, ${P.desk().show}, prices it and suggests exact models.`);
     await say('I have laid it out in 3D and set up the payback numbers. Where to next?');
     ask([['Show me the 3D layout', '#plan'], ['When does it pay back?', '#roi'], ['Book a showroom visit', '#book'], ['Start again', 'again']], v => { if (v === 'again') { log.innerHTML = ''; start(); } else { open(false); go(v); } });
   }
-  async function start() { await say('Hi. Tell me about the gym you are planning. I will lay it out, price it and send it to your nearest sales desk.'); step(0); }
+  async function start() { await say('Hi. Tell me about the gym you are planning. I will lay it out and send it to your nearest sales desk for prices.'); step(0); }
   function open(v) { panel.hidden = !v; btn.setAttribute('aria-expanded', v); if (v && !log.children.length) start(); if (v && !RM) gsap.fromTo(panel, { y: 20, opacity: 0, scale: .98 }, { y: 0, opacity: 1, scale: 1, duration: .35, ease: 'power3.out' }); }
   btn.addEventListener('click', () => open(panel.hidden));
   $('#cclose').addEventListener('click', () => open(false));
