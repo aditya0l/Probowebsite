@@ -107,7 +107,7 @@ const brand = (() => {
 }
 
 /* ================================================================ compare */
-{
+if ($('#cmpbar')) {
   const pickd = [], DIM = {};
   ORDER.forEach(k => { DIM[k] = new THREE.Box3().setFromObject(P.productMesh(k)).getSize(new THREE.Vector3()); });
   const bar = $('#cmpbar'), dlg = $('#cmpDlg');
@@ -147,12 +147,12 @@ const brand = (() => {
 }
 
 /* ================================================================ payback */
-{
+if ($('#roiChart')) {
   const R = { inv: 3000000, fee: 1800, mem: 220, cost: 220000, synced: true };
   const money = n => { const a = Math.abs(n), s = n < 0 ? '−' : ''; return s + '₹' + (a >= 1e7 ? (a / 1e7).toFixed(2) + ' Cr' : a >= 1e5 ? (a / 1e5).toFixed(1) + ' L' : Math.round(a).toLocaleString('en-IN')); };
   const ids = { inv: 'roiInv', fee: 'roiFee', mem: 'roiMem', cost: 'roiCost' };
   function fromPlan() {
-    const st = P.plan.state(); if (!st.machines) return;
+    if (!P.plan) return; const st = P.plan.state(); if (!st.machines) return;
     if (st.priced) R.inv = clamp(Math.round(st.total / 50000) * 50000, 200000, 20000000);
     R.mem = clamp(Math.round(st.machines * 11 / 10) * 10, 20, 1500);
     R.cost = clamp(Math.round((st.area * 650 + 70000) / 10000) * 10000, 20000, 2000000);
@@ -185,7 +185,7 @@ const brand = (() => {
 }
 
 /* ================================================================ consultant */
-{
+if ($('#cbtn')) {
   const btn = $('#cbtn'), panel = $('#cpanel'), log = $('#clog'), chips = $('#cchips');
   const A = {};
   const say = (html, who = 'bot') => new Promise(res => {
@@ -202,7 +202,9 @@ const brand = (() => {
   ];
   async function step(i) {
     if (i < STEPS.length) { const [q, o, key] = STEPS[i]; await say(q); ask(o, v => { A[key] = v; step(i + 1); }); return; }
-    P.plan.apply({ kind: A.kind, sqft: A.sqft, focus: A.focus }); P.setRegion(A.state);
+    P.setRegion(A.state);
+    if (!P.plan) { try { sessionStorage.setItem('pbl-plan', JSON.stringify({ kind: A.kind, sqft: A.sqft, focus: A.focus })); } catch (e) { } await say('Opening your plan in the 3D planner...'); setTimeout(() => location.href = 'plan.html#plan', 700); return; }
+    P.plan.apply({ kind: A.kind, sqft: A.sqft, focus: A.focus });
     const st = P.plan.state(), top = st.lines.sort((a, b) => b.q - a.q).slice(0, 3).map(l => `${l.q} ${PRODUCTS[l.k].short.toLowerCase()}${l.q > 1 && !/s$/.test(PRODUCTS[l.k].short) ? 's' : ''}`).join(', ');
     await say(`Here is your starting plan: <b>${st.machines} machines</b> on about ${Math.round(st.area)} m², led by ${top}.`);
     await say(st.priced ? `Equipment comes to about <b>${inr(st.total)}</b> including GST. Your desk is ${P.desk().show}.` : `Your sales desk, ${P.desk().show}, prices it and suggests exact models.`);
@@ -218,7 +220,7 @@ const brand = (() => {
 }
 
 /* ================================================================ owners corner */
-{
+if ($('#ownForm')) {
   let mode = 'warranty';
   const LABEL = { warranty: 'Register warranty', service: 'Book a service', spares: 'Order spares' };
   $('#oModel').innerHTML = ORDER.map(k => `<option value="${k}">${PRODUCTS[k].name}</option>`).join('');

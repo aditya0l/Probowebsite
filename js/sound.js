@@ -141,18 +141,18 @@ document.addEventListener('click', e => {
   if (e.target.closest('#proformaBtn')) return play('paper');
   if (e.target.closest('button, .btn, .chip')) play('click');
 }, true);
-new MutationObserver(() => play('zone')).observe($('#zoneT'), { childList: true, characterData: true, subtree: true });
+$('#zoneT') && new MutationObserver(() => play('zone')).observe($('#zoneT'), { childList: true, characterData: true, subtree: true });
 new MutationObserver(muts => muts.forEach(m => {
   m.addedNodes.forEach(n => { if (n.classList?.contains('me')) play('send'); });
   if (m.type === 'attributes' && m.target.classList.contains('bot') && !m.target.classList.contains('typing')) play('msg');
-})).observe($('#clog'), { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
-ScrollTrigger.create({ trigger: '#mapWrap', start: 'top 70%', once: true, onEnter: () => { for (let i = 0; i < 21; i++) setTimeout(() => play('rise', i), 60 + i * 50); } }); // same trigger and stagger as the pillars
-{ let last = 50; $('#baRange').addEventListener('input', e => { const v = +e.target.value; play('scrub', Math.abs(v - last)); last = v; }); }
-new MutationObserver(() => { if (!$('#bookDone').hidden) play('chime'); }).observe($('#bookDone'), { attributes: true, attributeFilter: ['hidden'] });
+})).observe($('#clog') || document.createElement('i'), { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+$('#mapWrap') && ScrollTrigger.create({ trigger: '#mapWrap', start: 'top 70%', once: true, onEnter: () => { for (let i = 0; i < 21; i++) setTimeout(() => play('rise', i), 60 + i * 50); } }); // same trigger and stagger as the pillars
+if ($('#baRange')) { let last = 50; $('#baRange').addEventListener('input', e => { const v = +e.target.value; play('scrub', Math.abs(v - last)); last = v; }); }
+$('#bookDone') && new MutationObserver(() => { if (!$('#bookDone').hidden) play('chime'); }).observe($('#bookDone'), { attributes: true, attributeFilter: ['hidden'] });
 
 /* ---------------------------------------------------------------- toggle */
 const btn = $('#sound');
-btn.addEventListener('click', () => {
+btn && btn.addEventListener('click', () => {
   init(); on = !on; ctx.resume();
   master.gain.cancelScheduledValues(now()); master.gain.setTargetAtTime(on ? 1 : 0, now(), .12);
   btn.setAttribute('aria-pressed', on); btn.setAttribute('aria-label', on ? 'Turn sound off' : 'Turn sound on');

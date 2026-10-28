@@ -56,7 +56,7 @@ if (!RM) {
 }
 
 /* ---------------------------------------------------------------- hero intro, after the loader */
-if (!RM) {
+if (!RM && $('.hero h1')) {
   const h1 = split($('.hero h1')), rest = ['.hero p', '.hero .ctas .btn'];
   gsap.set(h1, { yPercent: 110 }); gsap.set(rest, { y: 20, opacity: 0 }); gsap.set('#earth', { scale: 1.08, opacity: 0 }); gsap.set('.nav', { y: -20, opacity: 0 });
   const go = () => {
@@ -68,7 +68,7 @@ if (!RM) {
       .to('.nav', { y: 0, opacity: 1, duration: T.reveal }, 1);
   };
   const ld = $('#loader');
-  if (ld.classList.contains('done')) go(); else new MutationObserver((m, o) => { if (ld.classList.contains('done')) { o.disconnect(); go(); } }).observe(ld, { attributes: true });
+  if (!ld || ld.classList.contains('done')) go(); else new MutationObserver((m, o) => { if (ld.classList.contains('done')) { o.disconnect(); go(); } }).observe(ld, { attributes: true });
 }
 
 /* ---------------------------------------------------------------- magnetic CTAs */
@@ -83,7 +83,7 @@ if (fine && !RM) $$('.btn-primary, .cbtn').forEach(el => {
 });
 
 /* ---------------------------------------------------------------- the numbers band (one marquee, reacts to scroll velocity) */
-{
+if ($('#mq')) {
   const track = $('#mq'), set = track.querySelector('.mq-set'); track.append(set.cloneNode(true)); track.lastChild.setAttribute('aria-hidden', 'true');
   if (!RM) {
     let x = 0, boost = 0, dir = -1; const w = () => set.offsetWidth;
@@ -123,7 +123,7 @@ if (fine) {
 }
 
 /* ---------------------------------------------------------------- footer wordmark fills as you arrive */
-gsap.to('#bigmark', { '--fill': '100%', ease: 'none', scrollTrigger: { trigger: '#bigmark', start: 'top bottom', end: 'bottom bottom', scrub: .6 } });
+$('#bigmark') && gsap.to('#bigmark', { '--fill': '100%', ease: 'none', scrollTrigger: { trigger: '#bigmark', start: 'top bottom', end: 'bottom bottom', scrub: .6 } });
 
 /* ---------------------------------------------------------------- micro feedback: tactile press on every chip and button */
 if (!RM) document.addEventListener('pointerdown', e => { const b = e.target.closest('.chip, .rail button, .tabs button, .slots button, .cal button, .sw button'); if (b) gsap.fromTo(b, { scale: .96 }, { scale: 1, duration: .35, ease: 'power3.out' }); });

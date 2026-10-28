@@ -101,7 +101,7 @@ THUMB.press = 'assets/spin/press/f006.webp';
 const REAL = { press: true };
 
 /* ---------------------------------------------------------------- catalogue */
-{
+if ($('#catGrid')) {
   const grid = $('#catGrid');
   grid.innerHTML = ORDER.map((k, i) => `<article class="pc${i === 0 ? ' big' : ''}" data-g="${PRODUCTS[k].g}">
     <div class="pc-img${REAL[k] ? ' real' : ''}"><img src="${THUMB[k]}" alt="${PRODUCTS[k].name}${REAL[k] ? ', filmed in the studio' : ', 3D preview'}" loading="lazy"></div>
@@ -110,7 +110,7 @@ const REAL = { press: true };
   grid.addEventListener('click', e => {
     const a = e.target.closest('[data-3d]'), f = e.target.closest('[data-fit]');
     if (a) P.showProduct(a.dataset['3d']);
-    if (f) { setFit(f.dataset.fit); $('#fit').scrollIntoView({ behavior: RM ? 'auto' : 'smooth' }); }
+    if (f) { if (setFit) { setFit(f.dataset.fit); $('#fit').scrollIntoView({ behavior: RM ? 'auto' : 'smooth' }); } else location.href = `product.html?fit=${f.dataset.fit}#fit`; }
   });
   $('#catFilter').addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
@@ -124,7 +124,7 @@ const REAL = { press: true };
 const FIT = { w: 4.2, l: 5.4, key: 'treadmill', rot: 0, x: 0, z: 0, ft: false };
 const CLEAR = .6;
 let setFit;
-{
+if ($('#fitView')) {
   const canvas = $('#fitView'), stage = $('#fitStage');
   const r = renderer(canvas); const scene = new THREE.Scene(); scene.background = new THREE.Color(0x0e0f11);
   scene.environment = env(r); scene.environmentIntensity = .55; const key = lights(scene, 7, 2.2);
@@ -211,7 +211,7 @@ let setFit;
 }
 
 /* ---------------------------------------------------------------- muscle map finder */
-{
+if ($('#body')) {
   const MUS = {
     chest: ['Chest', 'Pressing muscles. Presses, benches and chest stations build them.'],
     shoulders: ['Shoulders', 'Overhead and incline pressing, plus dumbbell raises.'],
@@ -285,7 +285,7 @@ let setFit;
 }
 
 /* ---------------------------------------------------------------- india install map */
-{
+if ($('#map')) {
   // [name, lat, lon, weight, desk key, label]
   const CITY = [['Jaipur showroom', 26.84, 75.82, 1, 'a', 'Showroom and head office'], ['Delhi NCR', 28.61, 77.21, .72, 'n', 'North desk'], ['Chandigarh', 30.73, 76.78, .5, 'n', 'Punjab and Haryana'], ['Ahmedabad', 23.02, 72.57, .6, 'n', 'Gujarat'], ['Chennai', 13.08, 80.27, .55, 'n', 'Tamil Nadu'], ['Mumbai', 19.08, 72.88, .72, 's', 'Maharashtra desk'], ['Pune', 18.52, 73.86, .45, 's', 'Maharashtra'], ['Lucknow', 26.85, 80.95, .55, 's', 'Uttar Pradesh'], ['Bengaluru', 12.97, 77.59, .62, 's', 'Bangalore'], ['Kolkata', 22.57, 88.36, .45, 'a', 'East'], ['Hyderabad', 17.39, 78.49, .5, 'a', 'Telangana and Andhra'], ['Indore', 22.72, 75.86, .4, 'a', 'Madhya Pradesh'], ['Guwahati', 26.14, 91.74, .35, 'a', 'North east'], ['Kochi', 9.93, 76.27, .4, 'a', 'Kerala']];
   const LON0 = 64, LON1 = 100, LAT0 = 4, LAT1 = 38, K = .28;
@@ -355,7 +355,7 @@ let setFit;
 }
 
 /* ---------------------------------------------------------------- before / after (rendered shell vs fitted floor) */
-{
+if ($('#ba')) {
   const c = document.createElement('canvas'), r = renderer(c, { preserve: true, dpr: 1 }); r.setSize(1600, 900, false);
   const s = new THREE.Scene(); s.environment = env(r);
   const cam = new THREE.PerspectiveCamera(46, 16 / 9, .1, 80); cam.position.set(7.2, 2.3, 5.4); cam.lookAt(-1.5, 1.0, -2.2);
@@ -411,7 +411,7 @@ let setFit;
 
 /* ---------------------------------------------------------------- gym planner: 3D layout, pricing, proforma */
 const PLAN = { sqft: 2500, kind: 'commercial', focus: 'balanced' };
-{
+if ($('#planView')) {
   const MIX = { cardio: { T: .32, B: .2, E: .16, S: .22, F: .1 }, balanced: { T: .2, B: .12, E: .1, S: .38, F: .2 }, strength: { T: .1, B: .06, E: .05, S: .47, F: .32 } };
   const PER = { home: 140, studio: 110, commercial: 105, hotel: 120 };
   const FOOT = { treadmill: [1.15, 2.55], bike: [.95, 1.55], elliptical: [1.0, 2.35], press: [1.85, 2.3], station: [1.55, 2.1], rack: [2.0, 3.3], dumbbells: [3.0, 1.45], bench: [1.0, 1.8] };
@@ -499,6 +499,7 @@ const PLAN = { sqft: 2500, kind: 'commercial', focus: 'balanced' };
       Object.entries(placed).forEach(([k, l]) => l.forEach(([x, z]) => { const m = productMesh(k); m.position.set(x, 0, z); g.add(m); })); return g; },
   };
   $('#planAR').addEventListener('click', () => openAR(P.plan.group(), t => { const n = $('#planWarn'); n.hidden = !t; n.textContent = t; }));
+  try { const h = JSON.parse(sessionStorage.getItem('pbl-plan') || 'null'); if (h) { sessionStorage.removeItem('pbl-plan'); Object.assign(PLAN, h); $('#sqft').value = PLAN.sqft; $('#sqftV').textContent = PLAN.sqft.toLocaleString('en-IN'); ['kind', 'focus'].forEach(id => $$('#' + id + ' button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === PLAN[id]))); } } catch (e) { }
   layout(false);
   ScrollTrigger.create({ trigger: '#plan', start: 'top 60%', once: true, onEnter: () => layout(true) });
 
@@ -526,7 +527,7 @@ const PLAN = { sqft: 2500, kind: 'commercial', focus: 'balanced' };
 }
 
 /* ---------------------------------------------------------------- showroom visit booking */
-{
+if ($('#cal')) {
   const days = [], today = new Date(); today.setHours(0, 0, 0, 0);
   for (let i = 0; i < 21; i++) days.push(new Date(today.getTime() + i * 864e5));
   const B = { day: null, slot: null, interests: new Set(['Strength']), video: false };

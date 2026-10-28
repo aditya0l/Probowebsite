@@ -1,13 +1,14 @@
 // Real-footage viewer for the flagship press: 68 frames from the studio turntable shot.
 // Drag to turn, inertia on release, an idle sweep, and a detail lens that reads the full-resolution frame.
 const P = window.PBL, S = P.studio, { gsap, RM } = P;
+if (!document.getElementById('realView')) throw new Error('no real view on this page');
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
 const N = 68, frames = new Array(N);
 const host = $('#realView'), cv = $('#spin'), g = cv.getContext('2d');
 const loupe = $('#loupe'), lc = $('#loupeCv'), lg = lc.getContext('2d');
-let idx = 6, vel = 0, dragging = false, lastX = 0, lastMove = 0, idleT = 0, loaded = 0, view = 'real', lens = false, ptr = null, started = false, interacted = false;
+let idx = 6, vel = 0, dragging = false, lastX = 0, lastMove = 0, idleT = 0, loaded = 0, view = '3d', lens = false, ptr = null, started = false, interacted = false;
 const src = i => `assets/spin/press/f${String(i + 1).padStart(3, '0')}.webp`;
 
 /* load: the starting frame first, then the rest in order, six at a time */
@@ -61,7 +62,7 @@ $('#viewSwitch').addEventListener('click', e => {
   if (b.dataset.v === 'loupe') { lens = !lens; b.setAttribute('aria-selected', lens); if (lens) setView('real'); return; }
   setView(b.dataset.v);
 });
-function setView(v) { view = v; $$('#viewSwitch [data-v=real], #viewSwitch [data-v="3d"]').forEach(b => b.setAttribute('aria-selected', b.dataset.v === v)); }
+function setView(v) { view = v; if (v === 'real') loadAll(); $$('#viewSwitch [data-v=real], #viewSwitch [data-v="3d"]').forEach(b => b.setAttribute('aria-selected', b.dataset.v === v)); }
 
 /* loop: inertia, idle sweep, and visibility */
 let phase = 0, last = performance.now();
