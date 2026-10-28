@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Probodyline site wireframes</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f4f4f2;--paper:#fff;--ink:#141416;--muted:#6b6d72;--line:#d9d9d5;--box:#ecece8;--box2:#e1e1dc;--accent:#2f5cf2;--r:6px}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font:15px/1.5 Archivo,system-ui,sans-serif}
+  .wrap{width:min(1240px,100% - 32px);margin:0 auto}
+  header.top{position:sticky;top:0;z-index:5;background:rgba(244,244,242,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  header.top .wrap{display:flex;gap:20px;align-items:center;height:56px;overflow-x:auto}
+  header.top b{font-stretch:68%;font-weight:800;font-size:20px;letter-spacing:.03em;white-space:nowrap}
+  header.top a{color:var(--muted);text-decoration:none;font-size:13px;white-space:nowrap}
+  header.top a:hover{color:var(--ink)}
+  h1{font-stretch:68%;font-weight:800;font-size:clamp(44px,6vw,80px);line-height:.92;margin:56px 0 12px}
+  h2{font-stretch:70%;font-weight:800;font-size:40px;line-height:1;margin:0 0 8px}
+  h3{font-size:15px;font-weight:700}
+  .lede{color:var(--muted);font-size:18px;max-width:720px}
+  section.pg{margin:72px 0;padding-top:24px;border-top:2px solid var(--ink)}
+  .pg-head{display:flex;justify-content:space-between;gap:24px;align-items:baseline;flex-wrap:wrap;margin-bottom:20px}
+  .url{font:500 13px "JetBrains Mono",monospace;color:var(--accent)}
+  .goal{color:var(--muted);max-width:760px;margin-bottom:20px}
+  .frame{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:grid;gap:10px}
+  .b{background:var(--box);border-radius:4px;padding:14px 16px;position:relative;min-height:56px}
+  .b.dark{background:#2a2b2f;color:#ecebe7}
+  .b.acc{outline:2px dashed var(--accent);outline-offset:-2px}
+  .b b{display:block;font-size:13px}
+  .b span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+  .b.dark span{color:#a9aaae}
+  .tag{position:absolute;right:10px;top:10px;font:500 10.5px "JetBrains Mono",monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+  .b.dark .tag{color:#8a8b90}
+  .row{display:grid;gap:10px}
+  .c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}.c21{grid-template-columns:2fr 1fr}.c12{grid-template-columns:1fr 2fr}.c31{grid-template-columns:3fr 1fr}
+  .h1{min-height:90px}.h2{min-height:160px}.h3{min-height:260px}.h4{min-height:380px}
+  .notes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+  .notes div{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;font-size:14px}
+  .notes h3{margin-bottom:6px}
+  .notes ul{padding-left:18px;color:#3c3d41}
+  .status{display:inline-block;font:600 11px "JetBrains Mono",monospace;padding:3px 7px;border-radius:4px;background:#e4ecff;color:#1f43c4;margin-left:8px;vertical-align:middle}
+  .status.new{background:#fff1d6;color:#8a5a00}
+  /* sitemap */
+  .tree{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:20px}
+  .node{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+  .node>b{font-stretch:72%;font-weight:800;font-size:22px;display:block}
+  .node .url{display:block;margin:2px 0 8px}
+  .node ul{list-style:none;display:grid;gap:4px;font-size:13.5px;color:#3c3d41}
+  .node li::before{content:"";display:inline-block;width:8px;height:1px;background:var(--muted);margin-right:8px;vertical-align:middle}
+  .flow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 18px}
+  .flow span{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:8px 12px;font-size:13.5px}
+  .flow i{color:var(--muted);font-style:normal}
+  table{width:100%;border-collapse:collapse;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;font-size:14px}
+  th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:12px;color:var(--muted);font-weight:600;background:#fafaf8}
+  .mob{display:grid;grid-template-columns:repeat(4,200px);gap:18px;overflow-x:auto;padding-bottom:6px}
+  .phone{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:12px;display:grid;gap:8px;align-content:start;min-height:420px}
+  @media (max-width:900px){.c3,.c4,.tree,.notes{grid-template-columns:1fr 1fr}.c21,.c12,.c31{grid-template-columns:1fr}}
+  @media (max-width:560px){.c2,.c3,.c4,.tree,.notes{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <b>PROBODYLINE</b>
+  <a href="#map">Sitemap</a><a href="#journeys">Journeys</a><a href="#home">Home</a><a href="#equipment">Equipment</a><a href="#category">Category</a><a href="#product">Product</a><a href="#solutions">Solutions</a><a href="#plan">Plan</a><a href="#showroom">Showroom</a><a href="#projects">Projects</a><a href="#about">About</a><a href="#support">Support</a><a href="#contact">Contact</a><a href="#system">Components</a><a href="#content">Content needed</a><a href="#build">Build plan</a>
+</div></header>
+
+<main class="wrap">
+  <h1>Probodyline website<br>structure and wireframes</h1>
+  <p class="lede">Ten pages and three templates. The cinematic pieces we already have become the signature moments of the right pages, instead of one very long home page. Everything here is low fidelity on purpose: layout, order and purpose first, then the premium finish page by page.</p>
+  <p class="lede" style="margin-top:10px;font-size:14px"><span class="status">Built</span> already exists and moves into this page. <span class="status new">New</span> needs designing and building.</p>
+
+  <!-- ===================================================== sitemap -->
+  <section class="pg" id="map">
+    <div class="pg-head"><h2>Sitemap</h2><span class="url">10 pages, 3 templates</span></div>
+    <p class="goal">Primary navigation: Equipment, Solutions, Plan your gym, Showroom, Projects. Utility bar: region (sales desk), sound, Book a visit. About, Support and Contact live in the footer and the menu overlay.</p>
+    <div class="tree">
+      <div class="node"><b>Home</b><span class="url">/</span><ul><li>Earth to showroom</li><li>Featured machine</li><li>Categories</li><li>Plan your gym teaser</li><li>Proof and visit</li></ul></div>
+      <div class="node"><b>Equipment</b><span class="url">/equipment</span><ul><li>Cardio <span class="url">/equipment/cardio</span></li><li>Strength <span class="url">/equipment/strength</span></li><li>Free weights</li><li>Racks and rigs</li><li>Product template <span class="url">/equipment/[slug]</span></li><li>Compare <span class="url">/equipment/compare</span></li></ul></div>
+      <div class="node"><b>Solutions</b><span class="url">/solutions</span><ul><li>Commercial gyms</li><li>Home gyms</li><li>Hotels and offices</li><li>Studios and boxes</li><li>Solution template <span class="url">/solutions/[slug]</span></li></ul></div>
+      <div class="node"><b>Plan your gym</b><span class="url">/plan</span><ul><li>Consultant (guided)</li><li>3D floor planner</li><li>Payback</li><li>Quote request</li></ul></div>
+      <div class="node"><b>Showroom</b><span class="url">/showroom</span><ul><li>Drone arrival</li><li>Walk the floor</li><li>Book a visit</li><li>Directions and what to expect</li></ul></div>
+      <div class="node"><b>Projects</b><span class="url">/projects</span><ul><li>India map, desks</li><li>Case study grid</li><li>Case study template <span class="url">/projects/[slug]</span></li></ul></div>
+      <div class="node"><b>About</b><span class="url">/about</span><ul><li>25 years, timeline</li><li>Showroom and factory</li><li>Team</li></ul></div>
+      <div class="node"><b>Support</b><span class="url">/support</span><ul><li>Warranty, service, spares</li><li>Manuals and videos</li><li>FAQ</li></ul><b style="margin-top:14px;font-size:18px">Contact</b><span class="url">/contact</span><ul><li>Desks, map, form</li></ul></div>
+    </div>
+  </section>
+
+  <!-- ===================================================== journeys -->
+  <section class="pg" id="journeys">
+    <div class="pg-head"><h2>Key journeys</h2><span class="url">who the site is for</span></div>
+    <h3>Gym owner setting up a commercial floor (main revenue)</h3>
+    <div class="flow"><span>Home, Earth to showroom</span><i>to</i><span>Solutions: Commercial gyms</span><i>to</i><span>Plan your gym (consultant)</span><i>to</i><span>3D layout and payback</span><i>to</i><span>Quote request to regional desk</span><i>to</i><span>Book a showroom visit</span></div>
+    <h3>Home buyer choosing one or two machines</h3>
+    <div class="flow"><span>Home or search</span><i>to</i><span>Equipment: Cardio</span><i>to</i><span>Product page: real footage, 3D, fit in my room</span><i>to</i><span>Compare</span><i>to</i><span>Ask for price on WhatsApp</span></div>
+    <h3>Existing owner needing help</h3>
+    <div class="flow"><span>QR on machine or footer link</span><i>to</i><span>Support</span><i>to</i><span>Warranty, service or spares form</span><i>to</i><span>WhatsApp to desk</span></div>
+    <h3>Visitor planning a trip to Jaipur</h3>
+    <div class="flow"><span>Showroom</span><i>to</i><span>Walk the floor</span><i>to</i><span>Book a slot</span><i>to</i><span>Directions and calendar invite</span></div>
+  </section>
+
+  <!-- ===================================================== home -->
+  <section class="pg" id="home">
+    <div class="pg-head"><h2>Home</h2><span class="url">/</span></div>
+    <p class="goal">Make the scale of Probodyline felt in ten seconds, then route each visitor to their path. Shorter than today: the long tools move to their own pages and the home page carries teasers.</p>
+    <div class="frame">
+      <div class="b dark h1"><span class="tag">Nav</span><b>Wordmark, Equipment, Solutions, Plan your gym, Showroom, Projects</b><span>Region picker, sound, Book a visit. Menu overlay on mobile.</span></div>
+      <div class="b dark h4 acc"><span class="tag">Built</span><b>Hero: Earth flies to Jaipur, opens into the drone shot</b><span>Headline, one line, two CTAs. Stats after the lens opens.</span></div>
+      <div class="b h1"><span class="tag">Built</span><b>Numbers band</b><span>45,000 sq ft, 3,500+ machines, 18,000+ gyms, 25 years</span></div>
+      <div class="row c21"><div class="b h3 acc"><span class="tag">Built</span><b>Featured machine: real footage spin</b><span>The press as filmed, drag to turn. Link to its product page.</span></div><div class="b h3"><span class="tag">New</span><b>Why Probodyline</b><span>Showroom you can visit, regional desks, installation, service. Four short points.</span></div></div>
+      <div class="row c4"><div class="b h2"><span class="tag">Built</span><b>Cardio</b><span>Category tile</span></div><div class="b h2"><b>Strength</b><span>Category tile</span></div><div class="b h2"><b>Free weights</b><span>Category tile</span></div><div class="b h2"><b>Racks and rigs</b><span>Category tile</span></div></div>
+      <div class="row c3"><div class="b h2"><span class="tag">New</span><b>Commercial gyms</b><span>Solution card</span></div><div class="b h2"><b>Home gyms</b><span>Solution card</span></div><div class="b h2"><b>Hotels and offices</b><span>Solution card</span></div></div>
+      <div class="b dark h3 acc"><span class="tag">Built</span><b>Plan your gym teaser</b><span>Live 3D layout preview with the area slider only. CTA to /plan.</span></div>
+      <div class="row c2"><div class="b h3"><span class="tag">Built</span><b>Walk the floor teaser</b><span>Short scroll section of the showroom walk, CTA to /showroom</span></div><div class="b h3"><span class="tag">New</span><b>Projects strip</b><span>Three case studies with photos, CTA to /projects</span></div></div>
+      <div class="b h2"><span class="tag">New</span><b>Testimonials from gym owners</b><span>Short video quotes, three at a time</span></div>
+      <div class="b dark h2"><span class="tag">Built</span><b>Footer: Come lift something</b><span>Showroom address, desks, social, legal, big wordmark</span></div>
+    </div>
+    <div class="notes"><div><h3>Moves out of home</h3><ul><li>Full planner and payback to /plan</li><li>Booking to /showroom</li><li>Owners corner to /support</li><li>Muscle finder to /equipment</li></ul></div><div><h3>Stays on home</h3><ul><li>Earth to showroom hero</li><li>Numbers band</li><li>Real footage featured machine</li><li>Teasers with live previews</li></ul></div><div><h3>Mobile</h3><ul><li>Hero keeps the flight, shorter scroll</li><li>Category tiles scroll sideways</li><li>Sticky bottom bar: Call, WhatsApp, Visit</li></ul></div></div>
+  </section>
+
+  <!-- ===================================================== equipment -->
+  <section class="pg" id="equipment">
+    <div class="pg-head"><h2>Equipment</h2><span class="url">/equipment</span></div>
+    <p class="goal">The catalogue. Filter fast, see real footage or a 3D preview of every product, compare up to three, and get to a price.</p>
+    <div class="frame">
+      <div class="b dark h2"><span class="tag">New</span><b>Header: The catalogue</b><span>One line, search field, category chips</span></div>
+      <div class="row c31">
+        <div class="row c3">
+          <div class="b h3"><span class="tag">Built</span><b>Product card</b><span>Real footage or 3D image, name, category, Open, Fit, Compare</span></div><div class="b h3"><b>Product card</b></div><div class="b h3"><b>Product card</b></div>
+          <div class="b h3"><b>Product card</b></div><div class="b h3"><b>Product card</b></div><div class="b h3"><b>Product card</b></div>
+        </div>
+        <div class="b h4"><span class="tag">New</span><b>Filters</b><span>Category, Home or commercial, Muscle group (finder), Footprint, Brand series. Sticky on desktop, sheet on mobile.</span></div>
+      </div>
+      <div class="b acc h2"><span class="tag">Built</span><b>Muscle finder</b><span>3D body as a visual filter, opens in a drawer</span></div>
+      <div class="b h1"><span class="tag">Built</span><b>Compare tray</b><span>Bottom bar, opens the compare sheet</span></div>
+    </div>
+  </section>
+
+  <!-- ===================================================== category -->
+  <section class="pg" id="category">
+    <div class="pg-head"><h2>Category template</h2><span class="url">/equipment/[category]</span></div>
+    <div class="frame">
+      <div class="b dark h3"><span class="tag">New</span><b>Category hero</b><span>Short drone or showroom clip of that zone, title, two lines</span></div>
+      <div class="row c3"><div class="b h1"><b>Sub-type chips</b><span>e.g. treadmills, bikes, ellipticals</span></div><div class="b h1"><b>Use: home or commercial</b></div><div class="b h1"><b>Sort</b></div></div>
+      <div class="row c4"><div class="b h3"><b>Product card</b></div><div class="b h3"><b>Product card</b></div><div class="b h3"><b>Product card</b></div><div class="b h3"><b>Product card</b></div></div>
+      <div class="row c2"><div class="b h2"><span class="tag">New</span><b>Buying guide</b><span>What to look for in this category, three short answers</span></div><div class="b h2"><b>See this zone in the showroom</b><span>Jumps into the floor walk at the right aisle</span></div></div>
+    </div>
+  </section>
+
+  <!-- ===================================================== product -->
+  <section class="pg" id="product">
+    <div class="pg-head"><h2>Product template</h2><span class="url">/equipment/[slug]</span></div>
+    <p class="goal">The most important template. Every product page opens on the real machine. The 3D studio and the room fit sit right under it.</p>
+    <div class="frame">
+      <div class="b h1"><span class="tag">New</span><b>Breadcrumb: Equipment / Strength / Iso-lateral press</b></div>
+      <div class="row c21"><div class="b dark h4 acc"><span class="tag">Built</span><b>Real footage spin</b><span>Drag to turn, detail lens, thumbnails of key angles. Video loop as fallback.</span></div>
+        <div class="b h4"><span class="tag">New</span><b>Buy box</b><span>Name, series, one-line promise. Key specs (footprint, max load, weight). Colour options. Price or On request. Primary: Get a quote. Secondary: WhatsApp, Book to try it.</span></div></div>
+      <div class="b dark h4 acc"><span class="tag">Built</span><b>3D studio</b><span>Inspect, Train (with lifter), Load, Explode, Brand it. Per product.</span></div>
+      <div class="row c2"><div class="b h3 acc"><span class="tag">Built</span><b>Will it fit your room, plus AR</b></div><div class="b h3"><span class="tag">New</span><b>Specifications</b><span>Grouped: Dimensions, Load, Materials, Warranty. Download spec sheet PDF.</span></div></div>
+      <div class="row c3"><div class="b h2"><b>Muscles trained</b><span>From the muscle finder</span></div><div class="b h2"><b>In these setups</b><span>Links to solutions</span></div><div class="b h2"><b>Owner support</b><span>Manual, warranty</span></div></div>
+      <div class="b h2"><b>Related machines</b><span>Four cards</span></div>
+      <div class="b dark h1"><span class="tag">New</span><b>Sticky enquiry bar</b><span>Name, Get a quote, WhatsApp. Appears after the hero.</span></div>
+    </div>
+  </section>
+
+  <!-- ===================================================== solutions -->
+  <section class="pg" id="solutions">
+    <div class="pg-head"><h2>Solutions and solution template</h2><span class="url">/solutions, /solutions/[slug]</span></div>
+    <p class="goal">Speak to each buyer type in their language: commercial gym owners care about payback and durability, home buyers about space and noise, hotels about looks and low maintenance.</p>
+    <div class="frame">
+      <div class="b dark h3"><span class="tag">New</span><b>Hero: who it is for</b><span>Before and after slider as the hero visual</span></div>
+      <div class="row c4"><div class="b h2"><b>Consult</b><span>Process step</span></div><div class="b h2"><b>Plan in 3D</b></div><div class="b h2"><b>Deliver and install</b></div><div class="b h2"><b>Service</b></div></div>
+      <div class="row c2"><div class="b h3 acc"><span class="tag">Built</span><b>Mini planner preset for this type</b><span>e.g. Commercial, 2,500 sq ft, balanced</span></div><div class="b h3 acc"><span class="tag">Built</span><b>Payback (commercial only)</b></div></div>
+      <div class="b h2"><b>Recommended equipment for this type</b><span>Product cards</span></div>
+      <div class="b h2"><span class="tag">New</span><b>Case studies of this type</b></div>
+      <div class="b h1"><b>FAQ for this buyer</b></div>
+    </div>
+  </section>
+
+  <!-- ===================================================== plan -->
+  <section class="pg" id="plan">
+    <div class="pg-head"><h2>Plan your gym</h2><span class="url">/plan</span></div>
+    <p class="goal">A guided, three-step tool that ends in a quote request. Full-screen, app-like, with progress saved in the browser.</p>
+    <div class="frame">
+      <div class="row c3"><div class="b h1"><b>1. Tell us about it</b><span>Consultant questions</span></div><div class="b h1"><b>2. See it in 3D</b><span>Planner</span></div><div class="b h1"><b>3. Get the quote</b><span>Review and send</span></div></div>
+      <div class="row c12"><div class="b h4 acc"><span class="tag">Built</span><b>Controls</b><span>Area, type, focus, state, then per-category counts you can adjust</span></div><div class="b dark h4 acc"><span class="tag">Built</span><b>3D floor plan</b><span>Drag machines, swap models, zone labels, AR for the whole floor</span></div></div>
+      <div class="row c2"><div class="b h3 acc"><span class="tag">Built</span><b>Payback</b></div><div class="b h3 acc"><span class="tag">Built</span><b>Quote request document</b><span>Print, PDF, send to the regional desk</span></div></div>
+    </div>
+  </section>
+
+  <!-- ===================================================== showroom -->
+  <section class="pg" id="showroom">
+    <div class="pg-head"><h2>Showroom</h2><span class="url">/showroom</span></div>
+    <div class="frame">
+      <div class="b dark h4 acc"><span class="tag">Built</span><b>Drone arrival</b><span>The real building, title, address</span></div>
+      <div class="b dark h4 acc"><span class="tag">Built</span><b>Walk the floor</b><span>Aisle by aisle, hotspots open products</span></div>
+      <div class="row c2"><div class="b h3 acc"><span class="tag">Built</span><b>Book a visit</b><span>Calendar, slots, interests, video tour</span></div><div class="b h3"><span class="tag">New</span><b>Getting here</b><span>Map, directions from Jaipur airport and station, parking, what to bring</span></div></div>
+      <div class="b h2"><span class="tag">New</span><b>Showroom gallery</b><span>Real photos per zone</span></div>
+    </div>
+  </section>
+
+  <!-- ===================================================== projects -->
+  <section class="pg" id="projects">
+    <div class="pg-head"><h2>Projects and case study template</h2><span class="url">/projects, /projects/[slug]</span></div>
+    <div class="frame">
+      <div class="b dark h4 acc"><span class="tag">Built</span><b>India map</b><span>Showroom and regional desks, later real install pins</span></div>
+      <div class="row c3"><div class="b h3"><span class="tag">New</span><b>Case study card</b><span>Photo, gym name, city, size, machines</span></div><div class="b h3"><b>Case study card</b></div><div class="b h3"><b>Case study card</b></div></div>
+      <div class="b h1"><b>Case study page</b><span>Hero photo, the brief, the floor plan, before and after, machines used, owner quote, CTA plan yours</span></div>
+    </div>
+  </section>
+
+  <!-- ===================================================== about / support / contact -->
+  <section class="pg" id="about">
+    <div class="pg-head"><h2>About</h2><span class="url">/about</span></div>
+    <div class="frame">
+      <div class="b dark h3"><span class="tag">New</span><b>25 years of Probodyline</b><span>Founder story, one paragraph</span></div>
+      <div class="b h2"><span class="tag">New</span><b>Timeline</b><span>Horizontal, scroll-driven, real milestones only</span></div>
+      <div class="row c3"><div class="b h2"><b>The showroom</b></div><div class="b h2"><b>Manufacturing and quality</b></div><div class="b h2"><b>Team</b></div></div>
+    </div>
+  </section>
+  <section class="pg" id="support">
+    <div class="pg-head"><h2>Support</h2><span class="url">/support</span></div>
+    <div class="frame">
+      <div class="row c3"><div class="b h3 acc"><span class="tag">Built</span><b>Warranty</b></div><div class="b h3 acc"><span class="tag">Built</span><b>Service</b></div><div class="b h3 acc"><span class="tag">Built</span><b>Spares</b></div></div>
+      <div class="row c2"><div class="b h2"><span class="tag">New</span><b>Manuals and how-to videos</b><span>By product</span></div><div class="b h2"><span class="tag">New</span><b>FAQ</b><span>Delivery, installation, warranty, payment</span></div></div>
+    </div>
+  </section>
+  <section class="pg" id="contact">
+    <div class="pg-head"><h2>Contact</h2><span class="url">/contact</span></div>
+    <div class="frame">
+      <div class="row c3"><div class="b h2 acc"><span class="tag">Built</span><b>North desk</b><span>Call, WhatsApp, states covered</span></div><div class="b h2"><b>West and South desk</b></div><div class="b h2"><b>Rest of India</b></div></div>
+      <div class="row c2"><div class="b h3"><span class="tag">New</span><b>Enquiry form</b><span>Name, phone, city, what you need, to the right desk</span></div><div class="b h3"><b>Showroom map and hours</b></div></div>
+    </div>
+  </section>
+
+  <!-- ===================================================== mobile -->
+  <section class="pg" id="mobile">
+    <div class="pg-head"><h2>Mobile key screens</h2><span class="url">most traffic</span></div>
+    <div class="mob">
+      <div class="phone"><div class="b dark h1"><b>Header</b><span>Wordmark, menu</span></div><div class="b dark h3"><b>Earth flight</b></div><div class="b h1"><b>Two CTAs</b></div><div class="b dark" style="min-height:44px"><b>Call, WhatsApp, Visit</b><span>Sticky bar</span></div></div>
+      <div class="phone"><div class="b h1"><b>Product</b></div><div class="b dark h3"><b>Real footage spin</b><span>Swipe to turn</span></div><div class="b h2"><b>Buy box</b></div><div class="b h1"><b>View in your room (AR)</b></div></div>
+      <div class="phone"><div class="b h1"><b>Plan step 2</b></div><div class="b dark h3"><b>3D floor</b></div><div class="b h2"><b>Controls sheet</b><span>Pull up</span></div></div>
+      <div class="phone"><div class="b h1"><b>Book a visit</b></div><div class="b h2"><b>Calendar</b></div><div class="b h1"><b>Slots</b></div><div class="b h1"><b>Confirm on WhatsApp</b></div></div>
+    </div>
+  </section>
+
+  <!-- ===================================================== components -->
+  <section class="pg" id="system">
+    <div class="pg-head"><h2>Shared components</h2><span class="url">one design system</span></div>
+    <table>
+      <tr><th>Component</th><th>Used on</th><th>Status</th></tr>
+      <tr><td>Nav with region picker, sound, Book a visit, menu overlay</td><td>All</td><td>Built, menu overlay new</td></tr>
+      <tr><td>Sticky mobile action bar (Call, WhatsApp, Visit)</td><td>All, mobile</td><td>New</td></tr>
+      <tr><td>Real footage spin viewer</td><td>Home, product</td><td>Built</td></tr>
+      <tr><td>3D studio (modes per product)</td><td>Product</td><td>Built</td></tr>
+      <tr><td>Product card, compare tray and sheet</td><td>Equipment, category, solutions, product</td><td>Built</td></tr>
+      <tr><td>Room fit and AR</td><td>Product</td><td>Built</td></tr>
+      <tr><td>3D floor planner, payback, quote document</td><td>Plan, solutions, home teaser</td><td>Built</td></tr>
+      <tr><td>Consultant chat</td><td>All (corner), Plan step 1</td><td>Built</td></tr>
+      <tr><td>Booking calendar</td><td>Showroom</td><td>Built</td></tr>
+      <tr><td>India map</td><td>Projects, contact</td><td>Built</td></tr>
+      <tr><td>Before and after</td><td>Solutions, case studies</td><td>Built</td></tr>
+      <tr><td>Case study card and page, testimonial, timeline, FAQ, gallery, breadcrumb, spec table</td><td>Various</td><td>New</td></tr>
+      <tr><td>Page transition between pages</td><td>All</td><td>New</td></tr>
+    </table>
+  </section>
+
+  <!-- ===================================================== content -->
+  <section class="pg" id="content">
+    <div class="pg-head"><h2>Content we need from Probodyline</h2><span class="url">blocks the real site</span></div>
+    <table>
+      <tr><th>What</th><th>Why</th><th>Format</th></tr>
+      <tr><td>Product list with real names, series, specs, colours</td><td>Every product page and card</td><td>Spreadsheet, or export from the PRo-Bodyline admin panel</td></tr>
+      <tr><td>Turntable footage for each hero product, like the press clip but a full 360°</td><td>Real footage spin on every product page; also enables a true 3D scan</td><td>Phone or camera on a slow turntable, white backdrop, 20 to 30 seconds</td></tr>
+      <tr><td>Price policy: show prices, show ranges, or quote only</td><td>Buy box, planner totals, proforma</td><td>Decision, then prices per product</td></tr>
+      <tr><td>Showroom photos per zone, team photos</td><td>Showroom, about</td><td>Photos</td></tr>
+      <tr><td>Five to ten case studies with photos and an owner quote</td><td>Projects, solutions, home</td><td>Photos plus a short brief each</td></tr>
+      <tr><td>Showroom hours, directions, parking</td><td>Showroom, contact</td><td>Text</td></tr>
+      <tr><td>Founding year and real milestones</td><td>About timeline</td><td>Text</td></tr>
+      <tr><td>Warranty terms, delivery and installation terms, manuals</td><td>Support, product pages</td><td>PDF or text</td></tr>
+      <tr><td>Logo files and brand colours</td><td>Everywhere</td><td>SVG</td></tr>
+    </table>
+  </section>
+
+  <!-- ===================================================== build plan -->
+  <section class="pg" id="build">
+    <div class="pg-head"><h2>Build plan</h2><span class="url">how we get there</span></div>
+    <div class="notes">
+      <div><h3>1. Foundation</h3><ul><li>Move to Astro: real pages and URLs, shared layout, 3D as islands that load only where used</li><li>Products, case studies and solutions as content files the team can edit</li><li>Page transitions, menu overlay, mobile action bar</li></ul></div>
+      <div><h3>2. Core pages</h3><ul><li>Home (trimmed), Equipment, Category, Product template with the press as the first real page</li><li>Plan your gym as a three-step tool</li><li>Showroom</li></ul></div>
+      <div><h3>3. Trust and support</h3><ul><li>Projects and case study template</li><li>Solutions</li><li>About, Support, Contact</li><li>Premium pass on every page, then a full QA on phones</li></ul></div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
