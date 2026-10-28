@@ -1,0 +1,78 @@
+<section id="machine">
+  <div class="wrap m-head">
+    <span class="eyebrow">The 3D studio</span>
+    <h2 class="display" id="mName">Iso-lateral plate-loaded press.</h2>
+    <p id="mDesc">Spin it, load it, take it apart. Each arm moves on its own, exactly like the one on the showroom floor.</p>
+  </div>
+  <div class="studio">
+    <div class="stage" id="stage">
+      <canvas id="rig" aria-label="Interactive 3D model of the iso-lateral plate-loaded press"></canvas>
+      <div class="real-view" id="realView" aria-label="Filmed footage of the iso-lateral press. Drag to turn it.">
+        <canvas id="spin"></canvas>
+        <div class="loupe" id="loupe"><canvas id="loupeCv" width="440" height="440"></canvas></div>
+        <p class="spin-hint" id="spinHint"><i class="ph ph-hand-swipe-left"></i>Drag to turn the real machine</p>
+        <i class="spin-load" id="spinLoad"></i>
+      </div>
+      <div class="labels" id="labels"></div>
+      <div class="readout" data-for="press">
+        <div><b id="repL">0</b>Left reps</div>
+        <div><b id="repR">0</b>Right reps</div>
+        <div><b id="kgSide">0</b>kg per arm</div>
+      </div>
+      <div class="readout" data-for="treadmill" hidden><div><b id="roSpeed">0.0</b>km/h</div><div><b id="roDist">0.00</b>km run</div></div>
+      <div class="readout" data-for="bike" hidden><div><b id="roRpm">0</b>rpm</div><div><b id="roWatt">0</b>watts, est.</div></div>
+    </div>
+    <aside class="panel">
+      <div class="rail" id="prodRail" role="tablist" aria-label="Choose a machine"></div>
+      <div class="tabs" role="tablist" aria-label="Machine mode">
+        <button role="tab" aria-selected="true" data-mode="inspect"><i class="ph ph-cube"></i>Inspect</button>
+        <button role="tab" aria-selected="false" data-mode="train"><i class="ph ph-hand-grabbing"></i>Train</button>
+        <button role="tab" aria-selected="false" data-mode="load"><i class="ph ph-stack"></i>Load</button>
+        <button role="tab" aria-selected="false" data-mode="explode"><i class="ph ph-arrows-out"></i>Explode</button>
+        <button role="tab" aria-selected="false" data-mode="customise"><i class="ph ph-palette"></i>Brand it</button>
+      </div>
+      <p class="hint" id="hint">Drag to turn the machine. Set the seat to your height.</p>
+      <p class="dims" id="dims"></p>
+
+      <div class="pane on" data-pane="inspect">
+        <div data-for="press" style="display:grid;gap:10px"><span class="lab" style="margin:0">View</span><div class="rail" id="viewSwitch"><button data-v="real" aria-selected="false"><i class="ph ph-video-camera"></i> Real footage</button><button data-v="3d" aria-selected="true"><i class="ph ph-cube"></i> 3D model</button><button data-v="loupe" aria-selected="false" id="loupeBtn"><i class="ph ph-magnifying-glass-plus"></i> Detail lens</button></div></div>
+        <div class="field" data-for="press"><label for="seat">Seat height <b id="seatV">Position 4</b></label><input type="range" id="seat" min="1" max="8" value="4"></div>
+        <div class="row"><button class="chip" id="resetView"><i class="ph ph-arrow-counter-clockwise"></i>Reset view</button><button class="chip" id="spin" aria-pressed="true"><i class="ph ph-arrows-clockwise"></i>Turntable</button></div>
+      </div>
+
+      <div class="pane" data-pane="train">
+        <div data-for="press" style="display:grid;gap:14px">
+        <div class="row"><button class="chip" id="auto" aria-pressed="false"><i class="ph ph-play"></i>Auto reps</button><button class="chip" id="zeroReps"><i class="ph ph-arrow-counter-clockwise"></i>Reset count</button><button class="chip" id="lifter" aria-pressed="false"><i class="ph ph-person-simple"></i>Show the lifter</button></div>
+        <p class="muted" style="font-size:14px">Load changes the feel. Add plates and the arms get heavier to drag.</p>
+        </div>
+        <div class="field" data-for="treadmill" hidden><label for="speed">Belt speed <b id="speedV">8.0 km/h</b></label><input type="range" id="speed" min="0" max="18" step=".5" value="8"></div>
+        <div class="field" data-for="bike" hidden><label for="rpm">Cadence <b id="rpmV">80 rpm</b></label><input type="range" id="rpm" min="0" max="130" value="80"></div>
+      </div>
+
+      <div class="pane" data-pane="load">
+        <div class="load-total"><span class="muted">Total loaded</span><b><span id="kgTotal">0</span> kg</b></div>
+        <div class="plates" id="plateBtns">
+          <button data-w="2.5">2.5</button><button data-w="5">5</button><button data-w="10">10</button><button data-w="15">15</button><button data-w="20">20</button>
+        </div>
+        <div class="row"><button class="chip" id="clearPlates"><i class="ph ph-trash"></i>Strip the plates</button></div>
+      </div>
+
+      <div class="pane" data-pane="customise">
+        <div><span class="lab">Frame <b class="swn" id="swn-frame"></b></span><div class="sw" data-k="frame"></div></div>
+        <div><span class="lab">Arms and accents <b class="swn" id="swn-accent"></b></span><div class="sw" data-k="accent"></div></div>
+        <div><span class="lab">Upholstery <b class="swn" id="swn-pad"></b></span><div class="sw" data-k="pad"></div></div>
+        <div><span class="lab">Your logo</span><div class="row"><label class="chip" for="logoFile" style="cursor:pointer"><i class="ph ph-upload-simple"></i>Upload</label><input type="file" id="logoFile" accept="image/png,image/jpeg,image/svg+xml,image/webp" hidden><button class="chip" id="logoSample">Try a sample</button><button class="chip" id="logoClear">Remove</button></div><p class="note">Your logo stays in this browser. Nothing is uploaded.</p></div>
+        <a class="btn btn-primary" id="orderBuild" target="_blank" rel="noopener" style="justify-self:start"><i class="ph ph-whatsapp-logo"></i>Order this build</a>
+      </div>
+
+      <div class="pane" data-pane="explode">
+        <ul class="parts" id="partList"></ul>
+      </div>
+
+      <div class="real">
+        <video src="assets/press-loop.mp4" muted playsinline loop autoplay preload="metadata"></video>
+        <p><b>The real machine</b>The flagship press, filmed in the studio.</p>
+      </div>
+    </aside>
+  </div>
+</section>

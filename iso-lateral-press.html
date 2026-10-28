@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iso-lateral plate-loaded press | Probodyline</title>
+<meta name="description" content="The Probodyline iso-lateral plate-loaded press. See it as filmed, turn it in 3D, check it fits your room.">
+<meta name="theme-color" content="#0b0c0d">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<link rel="stylesheet" href="css/site.css?v=20261029001456">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script src="site.config.js"></script>
+</head>
+<body data-page="equipment">
+<a class="skip" href="#main">Skip to content</a>
+<script src="js/chrome.js?v=20261029001456"></script>
+<main id="main">
+<section style="padding-top:96px"><div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><i class="ph ph-caret-right"></i><a href="equipment.html">Equipment</a><i class="ph ph-caret-right"></i><a href="strength.html">Strength</a><i class="ph ph-caret-right"></i><span>Iso-lateral press</span></nav></div><div class="pdp">
+  <div class="pdp-media">
+    <div class="real-view" aria-label="Filmed footage of the iso-lateral press. Drag to turn it."><canvas></canvas><div class="loupe"><canvas width="440" height="440"></canvas></div><p class="spin-hint"><i class="ph ph-hand-swipe-left"></i>Drag to turn the real machine</p><i class="spin-load"></i></div>
+    <div class="pdp-thumbs" role="group" aria-label="Key angles"><button data-angle="0" aria-pressed="true"><img src="assets/spin/press/f001.webp" alt="Three-quarter view"></button><button data-angle="34" aria-pressed="false"><img src="assets/spin/press/f035.webp" alt="Angled view"></button><button data-angle="67" aria-pressed="false"><img src="assets/spin/press/f068.webp" alt="Front view"></button></div>
+  </div>
+  <aside class="pdp-buy">
+    <span class="series">Plate-loaded strength</span>
+    <h1 class="display">Iso-lateral plate-loaded press.</h1>
+    <p class="promise">Two arms that move on their own, so a stronger side never carries a weaker one. Built in steel for floors that run all day.</p>
+    <div class="keyspecs"><div>Footprint<b class="tbc">To confirm</b></div><div>Max plate load<b class="tbc">To confirm</b></div><div>Machine weight<b class="tbc">To confirm</b></div><div>Warranty<b class="tbc">To confirm</b></div></div>
+    <div><span class="lab">Frame and arm colours</span><div class="sw" style="pointer-events:none"><button style="background:#1d4ad6" aria-pressed="true"></button><button style="background:#b8231c"></button><button style="background:#dc5f17"></button><button style="background:#1e6a3b"></button><button style="background:#b08d3c"></button></div><a class="note" href="#machine" style="display:inline-block;margin-top:10px;text-decoration:underline">Design your own in the 3D studio</a></div>
+    <div class="price"><span class="muted">Price</span><b>On request</b></div>
+    <div class="row"><a class="btn btn-primary" id="pdpQuote" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i>Get a quote</a><a class="btn btn-ghost" href="showroom.html#book">Try it in Jaipur</a></div>
+    <a class="chip" href="#fit" style="justify-self:start"><i class="ph ph-ruler"></i>Will it fit my room?</a>
+  </aside>
+</div></section><section id="machine">
+  <div class="wrap m-head">
+    <span class="eyebrow">Interactive 3D</span>
+    <h2 class="display" id="mName">Try it in 3D.</h2>
+    <p id="mDesc">Drag the arms, load plates, take it apart and put your logo on it.</p>
+  </div>
+  <div class="studio">
+    <div class="stage" id="stage">
+      <canvas id="rig" aria-label="Interactive 3D model of the iso-lateral plate-loaded press"></canvas>
+      <div class="real-view" id="realView" aria-label="Filmed footage of the iso-lateral press. Drag to turn it.">
+        <canvas id="spin"></canvas>
+        <div class="loupe" id="loupe"><canvas id="loupeCv" width="440" height="440"></canvas></div>
+        <p class="spin-hint" id="spinHint"><i class="ph ph-hand-swipe-left"></i>Drag to turn the real machine</p>
+        <i class="spin-load" id="spinLoad"></i>
+      </div>
+      <div class="labels" id="labels"></div>
+      <div class="readout" data-for="press">
+        <div><b id="repL">0</b>Left reps</div>
+        <div><b id="repR">0</b>Right reps</div>
+        <div><b id="kgSide">0</b>kg per arm</div>
+      </div>
+      <div class="readout" data-for="treadmill" hidden><div><b id="roSpeed">0.0</b>km/h</div><div><b id="roDist">0.00</b>km run</div></div>
+      <div class="readout" data-for="bike" hidden><div><b id="roRpm">0</b>rpm</div><div><b id="roWatt">0</b>watts, est.</div></div>
+    </div>
+    <aside class="panel">
+      <div class="rail" id="prodRail" hidden role="tablist" aria-label="Choose a machine"></div>
+      <div class="tabs" role="tablist" aria-label="Machine mode">
+        <button role="tab" aria-selected="true" data-mode="inspect"><i class="ph ph-cube"></i>Inspect</button>
+        <button role="tab" aria-selected="false" data-mode="train"><i class="ph ph-hand-grabbing"></i>Train</button>
+        <button role="tab" aria-selected="false" data-mode="load"><i class="ph ph-stack"></i>Load</button>
+        <button role="tab" aria-selected="false" data-mode="explode"><i class="ph ph-arrows-out"></i>Explode</button>
+        <button role="tab" aria-selected="false" data-mode="customise"><i class="ph ph-palette"></i>Brand it</button>
+      </div>
+      <p class="hint" id="hint">Drag to turn the machine. Set the seat to your height.</p>
+      <p class="dims" id="dims"></p>
+
+      <div class="pane on" data-pane="inspect">
+        <div data-for="press" style="display:grid;gap:10px"><span class="lab" style="margin:0">View</span><div class="rail" id="viewSwitch"><button data-v="real" aria-selected="false"><i class="ph ph-video-camera"></i> Real footage</button><button data-v="3d" aria-selected="true"><i class="ph ph-cube"></i> 3D model</button><button data-v="loupe" aria-selected="false" id="loupeBtn"><i class="ph ph-magnifying-glass-plus"></i> Detail lens</button></div></div>
+        <div class="field" data-for="press"><label for="seat">Seat height <b id="seatV">Position 4</b></label><input type="range" id="seat" min="1" max="8" value="4"></div>
+        <div class="row"><button class="chip" id="resetView"><i class="ph ph-arrow-counter-clockwise"></i>Reset view</button><button class="chip" id="spin" aria-pressed="true"><i class="ph ph-arrows-clockwise"></i>Turntable</button></div>
+      </div>
+
+      <div class="pane" data-pane="train">
+        <div data-for="press" style="display:grid;gap:14px">
+        <div class="row"><button class="chip" id="auto" aria-pressed="false"><i class="ph ph-play"></i>Auto reps</button><button class="chip" id="zeroReps"><i class="ph ph-arrow-counter-clockwise"></i>Reset count</button><button class="chip" id="lifter" aria-pressed="false"><i class="ph ph-person-simple"></i>Show the lifter</button></div>
+        <p class="muted" style="font-size:14px">Load changes the feel. Add plates and the arms get heavier to drag.</p>
+        </div>
+        <div class="field" data-for="treadmill" hidden><label for="speed">Belt speed <b id="speedV">8.0 km/h</b></label><input type="range" id="speed" min="0" max="18" step=".5" value="8"></div>
+        <div class="field" data-for="bike" hidden><label for="rpm">Cadence <b id="rpmV">80 rpm</b></label><input type="range" id="rpm" min="0" max="130" value="80"></div>
+      </div>
+
+      <div class="pane" data-pane="load">
+        <div class="load-total"><span class="muted">Total loaded</span><b><span id="kgTotal">0</span> kg</b></div>
+        <div class="plates" id="plateBtns">
+          <button data-w="2.5">2.5</button><button data-w="5">5</button><button data-w="10">10</button><button data-w="15">15</button><button data-w="20">20</button>
+        </div>
+        <div class="row"><button class="chip" id="clearPlates"><i class="ph ph-trash"></i>Strip the plates</button></div>
+      </div>
+
+      <div class="pane" data-pane="customise">
+        <div><span class="lab">Frame <b class="swn" id="swn-frame"></b></span><div class="sw" data-k="frame"></div></div>
+        <div><span class="lab">Arms and accents <b class="swn" id="swn-accent"></b></span><div class="sw" data-k="accent"></div></div>
+        <div><span class="lab">Upholstery <b class="swn" id="swn-pad"></b></span><div class="sw" data-k="pad"></div></div>
+        <div><span class="lab">Your logo</span><div class="row"><label class="chip" for="logoFile" style="cursor:pointer"><i class="ph ph-upload-simple"></i>Upload</label><input type="file" id="logoFile" accept="image/png,image/jpeg,image/svg+xml,image/webp" hidden><button class="chip" id="logoSample">Try a sample</button><button class="chip" id="logoClear">Remove</button></div><p class="note">Your logo stays in this browser. Nothing is uploaded.</p></div>
+        <a class="btn btn-primary" id="orderBuild" target="_blank" rel="noopener" style="justify-self:start"><i class="ph ph-whatsapp-logo"></i>Order this build</a>
+      </div>
+
+      <div class="pane" data-pane="explode">
+        <ul class="parts" id="partList"></ul>
+      </div>
+
+      <div class="real">
+        <video src="assets/press-loop.mp4" muted playsinline loop autoplay preload="metadata"></video>
+        <p><b>The real machine</b>The flagship press, filmed in the studio.</p>
+      </div>
+    </aside>
+  </div>
+</section>
+<section id="fit" class="sec" data-default="press">
+  <div class="wrap">
+    <h2 class="display">Will it fit your room?</h2>
+    <p class="sub">Enter your room size. We place the machine at real scale, with the space it needs around it.</p>
+    <div class="fit">
+      <div class="fit-ctrl">
+        <div><span class="lab">Machine</span><div class="rail" id="fitProd" style="flex-wrap:wrap"></div></div>
+        <div class="field"><label for="roomW">Room width <b id="roomWV"></b></label><input type="range" id="roomW" min="2" max="12" step=".1" value="4.2"></div>
+        <div class="field"><label for="roomL">Room length <b id="roomLV"></b></label><input type="range" id="roomL" min="2" max="15" step=".1" value="5.4"></div>
+        <div class="row"><button class="chip" id="fitRotate"><i class="ph ph-arrows-clockwise"></i>Rotate 90°</button><button class="chip" id="fitUnits" aria-pressed="false">Show in feet</button></div>
+        <div class="fit-status" id="fitStatus" role="status"><i class="ph ph-check-circle"></i><div><b></b><span></span></div></div>
+        <div><button class="btn btn-primary" id="arBtn"><i class="ph ph-cube-focus"></i>View in your room with AR</button><p class="note" id="arNote" hidden></p></div>
+      </div>
+      <div class="fit-stage" id="fitStage"><canvas id="fitView" aria-label="Your room with the machine placed at real size. Drag the machine to move it."></canvas><p class="stage-hint">Drag the machine to move it. Drag the room to turn it.</p></div>
+    </div>
+  </div>
+  <model-viewer id="mv" ar ar-modes="webxr scene-viewer quick-look" ar-scale="fixed" style="position:fixed;left:-9999px;width:2px;height:2px"></model-viewer>
+</section>
+<section class="s tone"><div class="wrap"><div class="s-head"><h2 class="display">Specifications.</h2><p>Full figures from the factory sheet. The download includes dimensions for your architect.</p></div><div class="specs"><section><h3>Dimensions</h3><dl><dt>Length</dt><dd class=tbc>To confirm</dd><dt>Width</dt><dd class=tbc>To confirm</dd><dt>Height</dt><dd class=tbc>To confirm</dd><dt>Training space</dt><dd class=tbc>To confirm</dd></dl></section><section><h3>Load</h3><dl><dt>Max plate load per arm</dt><dd class=tbc>To confirm</dd><dt>Plate horn size</dt><dd class=tbc>To confirm</dd><dt>User weight</dt><dd class=tbc>To confirm</dd></dl></section><section><h3>Build</h3><dl><dt>Frame</dt><dd class=tbc>To confirm</dd><dt>Finish</dt><dd class=tbc>To confirm</dd><dt>Upholstery</dt><dd class=tbc>To confirm</dd><dt>Pivots</dt><dd class=tbc>To confirm</dd></dl></section><section><h3>Ownership</h3><dl><dt>Warranty, frame</dt><dd class=tbc>To confirm</dd><dt>Warranty, parts</dt><dd class=tbc>To confirm</dd><dt>Installation</dt><dd class=tbc>To confirm</dd><dt>Service</dt><dd class=tbc>To confirm</dd></dl></section></div><div class="row" style="margin-top:24px"><a class="btn btn-ghost" aria-disabled="true"><i class="ph ph-file-pdf"></i>Spec sheet, PDF</a></div></div></section><section class="s"><div class="wrap"><div class="s-head"><h2 class="display">Works well with.</h2></div><div class="tiles"><a class="tile" href="strength.html"><div class="ti"><img data-thumb="station" alt="Stations"></div><div class="tb"><div><h3>Stations</h3><p>Selectorised strength</p></div><i class="ph ph-arrow-up-right"></i></div></a><a class="tile" href="strength.html"><div class="ti"><img data-thumb="rack" alt="Power racks"></div><div class="tb"><div><h3>Power racks</h3><p>Racks and rigs</p></div><i class="ph ph-arrow-up-right"></i></div></a><a class="tile" href="equipment.html#free-weights"><div class="ti"><img data-thumb="bench" alt="Benches"></div><div class="tb"><div><h3>Benches</h3><p>Free weights</p></div><i class="ph ph-arrow-up-right"></i></div></a><a class="tile" href="equipment.html#free-weights"><div class="ti"><img data-thumb="dumbbells" alt="Dumbbells"></div><div class="tb"><div><h3>Dumbbells</h3><p>Free weights</p></div><i class="ph ph-arrow-up-right"></i></div></a></div></div></section><div class="stickybuy" id="stickybuy"><b>Iso-lateral press</b><span class="muted">On request</span><a class="btn btn-primary" id="stickyQuote" target="_blank" rel="noopener">Get a quote</a></div>
+</main>
+<script src="js/chrome.js?v=20261029001456" data-part="footer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script type="module" src="js/core.js?v=20261029001456"></script>
+<script type="module" src="js/features.js?v=20261029001456"></script>
+<script type="module" src="js/sound.js?v=20261029001456"></script>
+<script type="module" src="js/more.js?v=20261029001456"></script>
+<script type="module" src="js/spin.js?v=20261029001456"></script>
+<script type="module" src="js/polish.js?v=20261029001456"></script>
+<script type="module">
+const P = window.PBL; const q = () => P.waLink('Hi Probodyline, please share the price and availability of the iso-lateral plate-loaded press.');
+const set = () => ['pdpQuote', 'stickyQuote'].forEach(id => document.getElementById(id).href = q()); set(); P.onRegion(set);
+P.ScrollTrigger.create({ trigger: '.pdp', start: 'bottom 80px', onEnter: () => stickybuy.classList.add('show'), onLeaveBack: () => stickybuy.classList.remove('show') });
+</script>
+</body>
+</html>

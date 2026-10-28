@@ -1,0 +1,22 @@
+<section id="owners" class="sec" style="background:var(--surface);border-top:1px solid var(--line)">
+  <div class="wrap">
+    <h2 class="display">Already own a Probodyline machine?</h2>
+    <p class="sub">Register the warranty, book a service or order spares. The serial number is on the plate fitted to your machine.</p>
+    <div class="own">
+      <form class="card" id="ownForm" novalidate>
+        <div class="tabs own-tabs" role="tablist" aria-label="What do you need?"><button type="button" role="tab" aria-selected="true" data-o="warranty"><i class="ph ph-shield-check"></i>Warranty</button><button type="button" role="tab" aria-selected="false" data-o="service"><i class="ph ph-wrench"></i>Service</button><button type="button" role="tab" aria-selected="false" data-o="spares"><i class="ph ph-gear-six"></i>Spares</button></div>
+        <div class="fld"><label for="oModel">Machine</label><select id="oModel"></select></div>
+        <div class="fld"><label for="oSerial">Serial number</label><input id="oSerial" placeholder="Printed on the plate, e.g. PBL-24-01873" autocomplete="off"><small class="err" id="oSerialErr"></small></div>
+        <div class="fld" data-o-for="service" hidden><label>What is wrong?</label><div class="row" id="oIssue"></div></div>
+        <div class="fld" data-o-for="spares" hidden><label for="oPart">Part</label><select id="oPart"><option>Seat or back pad</option><option>Cable or pulley</option><option>Grip set</option><option>Belt or deck</option><option>Console</option><option>Something else</option></select></div>
+        <div class="fld"><label for="oName">Your name or gym</label><input id="oName" autocomplete="organization"><small class="err" id="oNameErr"></small></div>
+        <button class="btn btn-primary" type="submit" style="justify-self:start" id="oSubmit"><i class="ph ph-whatsapp-logo"></i>Register warranty</button>
+      </form>
+      <div style="display:grid;gap:20px;align-content:start">
+        <div class="plate" id="plate"><div><div class="wm">PROBODYLINE</div><dl><dt>Model</dt><dd id="plModel">ISO-LATERAL PRESS</dd><dt>Serial</dt><dd>PBL-24-01873</dd><dt>Made in</dt><dd>India</dd></dl></div><div class="qr" id="plQr"></div></div>
+        <button class="btn btn-ghost" id="scanSim" style="justify-self:start"><i class="ph ph-arrow-bend-up-left"></i>Fill in with this example</button>
+        <p class="note">Example plate. Look for the same plate on the frame of your machine.</p>
+      </div>
+    </div>
+  </div>
+</section>

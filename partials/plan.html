@@ -1,0 +1,20 @@
+<section id="plan" class="sec" style="background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <h2 class="display">Plan your gym floor.</h2>
+    <p class="sub">Set your space and goal. We lay out the floor in 3D and send it to the sales desk for your state, who come back with prices.</p>
+    <div class="planner">
+      <div class="ctrl">
+        <div><span class="lab">Floor area</span><div class="sqft"><span id="sqftV">2,500</span> <small>sq ft</small></div><input type="range" id="sqft" min="300" max="12000" step="100" value="2500" aria-label="Floor area in square feet"></div>
+        <div><span class="lab">What are you building?</span><div class="row" id="kind"><button class="chip" data-v="home" aria-pressed="false">Home gym</button><button class="chip" data-v="studio" aria-pressed="false">Studio</button><button class="chip" data-v="commercial" aria-pressed="true">Commercial</button><button class="chip" data-v="hotel" aria-pressed="false">Hotel or office</button></div></div>
+        <div><span class="lab">Training focus</span><div class="row" id="focus"><button class="chip" data-v="cardio" aria-pressed="false">Cardio-heavy</button><button class="chip" data-v="balanced" aria-pressed="true">Balanced</button><button class="chip" data-v="strength" aria-pressed="false">Strength-heavy</button></div></div>
+        <div><label class="lab" for="planState">Your state</label><select id="planState" data-region></select></div>
+      </div>
+      <div class="plan-view">
+        <canvas id="planView" aria-label="3D layout of your planned gym floor"></canvas>
+        <div class="plan-stats"><div><b id="total">0</b>machines</div><div><b id="area">0</b>m² floor</div></div>
+        <p class="plan-warn" id="planWarn" hidden></p>
+        <div class="plan-bar"><div class="legend" id="legend"></div><div class="row"><button class="btn btn-ghost" id="planAR"><i class="ph ph-cube-focus"></i>AR</button><button class="btn btn-ghost" id="proformaBtn"><i class="ph ph-file-text"></i>Quote request</button><a class="btn btn-primary" id="wa" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i>Get a quote</a></div></div>
+      </div>
+    </div>
+  </div>
+</section>

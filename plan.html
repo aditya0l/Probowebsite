@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan your gym | Probodyline</title>
+<meta name="description" content="Lay out your gym in 3D, see the payback and send a quote request to your sales desk.">
+<meta name="theme-color" content="#0b0c0d">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<link rel="stylesheet" href="css/site.css?v=20261029001456">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script src="site.config.js"></script>
+</head>
+<body data-page="plan">
+<a class="skip" href="#main">Skip to content</a>
+<script src="js/chrome.js?v=20261029001456"></script>
+<main id="main">
+<section class="page-hero"><div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><i class="ph ph-caret-right"></i><span>Plan your gym</span></nav><h1 class="display">Plan your gym.</h1><p class="sub">Tell us about the space. We lay it out in 3D, show you the payback and send the plan to your sales desk.</p><div class="ctas"><a class="btn btn-primary" href="#consult"><i class="ph ph-chats-circle"></i>Start with four questions</a><a class="btn btn-ghost" href="#plan">Go straight to the planner</a></div><div class="steps" style="margin-top:56px"><div><h3>Tell us about it</h3><p>Type, size, focus and state.</p></div><div><h3>See it in 3D</h3><p>Every machine placed with safe aisles.</p></div><div><h3>Check the payback</h3><p>Fee, members and costs.</p></div><div><h3>Send the quote request</h3><p>To the desk for your state.</p></div></div></div></section><section id="plan" class="sec" style="background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <h2 class="display">Plan your gym floor.</h2>
+    <p class="sub">Set your space and goal. We lay out the floor in 3D and send it to the sales desk for your state, who come back with prices.</p>
+    <div class="planner">
+      <div class="ctrl">
+        <div><span class="lab">Floor area</span><div class="sqft"><span id="sqftV">2,500</span> <small>sq ft</small></div><input type="range" id="sqft" min="300" max="12000" step="100" value="2500" aria-label="Floor area in square feet"></div>
+        <div><span class="lab">What are you building?</span><div class="row" id="kind"><button class="chip" data-v="home" aria-pressed="false">Home gym</button><button class="chip" data-v="studio" aria-pressed="false">Studio</button><button class="chip" data-v="commercial" aria-pressed="true">Commercial</button><button class="chip" data-v="hotel" aria-pressed="false">Hotel or office</button></div></div>
+        <div><span class="lab">Training focus</span><div class="row" id="focus"><button class="chip" data-v="cardio" aria-pressed="false">Cardio-heavy</button><button class="chip" data-v="balanced" aria-pressed="true">Balanced</button><button class="chip" data-v="strength" aria-pressed="false">Strength-heavy</button></div></div>
+        <div><label class="lab" for="planState">Your state</label><select id="planState" data-region></select></div>
+      </div>
+      <div class="plan-view">
+        <canvas id="planView" aria-label="3D layout of your planned gym floor"></canvas>
+        <div class="plan-stats"><div><b id="total">0</b>machines</div><div><b id="area">0</b>m² floor</div></div>
+        <p class="plan-warn" id="planWarn" hidden></p>
+        <div class="plan-bar"><div class="legend" id="legend"></div><div class="row"><button class="btn btn-ghost" id="planAR"><i class="ph ph-cube-focus"></i>AR</button><button class="btn btn-ghost" id="proformaBtn"><i class="ph ph-file-text"></i>Quote request</button><a class="btn btn-primary" id="wa" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i>Get a quote</a></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="roi" class="sec">
+  <div class="wrap">
+    <h2 class="display">When does it pay back?</h2>
+    <p class="sub">Enter your budget, fee and costs. Members and running costs start from the gym you planned.</p>
+    <div class="roi">
+      <div class="roi-ctrl">
+        <div class="field"><label for="roiInv">Your equipment budget <b id="roiInvV"></b></label><input type="range" id="roiInv" min="200000" max="20000000" step="50000" value="3000000"></div>
+        <div class="field"><label for="roiFee">Monthly membership fee <b id="roiFeeV"></b></label><input type="range" id="roiFee" min="500" max="6000" step="100" value="1800"></div>
+        <div class="field"><label for="roiMem">Active members <b id="roiMemV"></b></label><input type="range" id="roiMem" min="20" max="1500" step="10" value="220"></div>
+        <div class="field"><label for="roiCost">Monthly running costs (rent, staff, power) <b id="roiCostV"></b></label><input type="range" id="roiCost" min="20000" max="2000000" step="10000" value="220000"></div>
+        <button class="chip" id="roiSync" style="justify-self:start"><i class="ph ph-arrows-clockwise"></i>Match my planned gym</button>
+      </div>
+      <div class="roi-out">
+        <div class="roi-kpi"><div><b id="roiPay">-</b>Payback</div><div><b id="roiProfit">-</b>Profit a month</div><div><b id="roiY3">-</b>Cash after 3 years</div></div>
+        <svg id="roiChart" viewBox="0 0 800 300" role="img" aria-label="Cumulative cash over 36 months"></svg>
+        <p class="note">An estimate for comparing scenarios, not financial advice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<dialog id="proforma" aria-label="Proforma invoice"></dialog>
+
+</main>
+<script src="js/chrome.js?v=20261029001456" data-part="footer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script type="module" src="js/core.js?v=20261029001456"></script>
+<script type="module" src="js/features.js?v=20261029001456"></script>
+<script type="module" src="js/sound.js?v=20261029001456"></script>
+<script type="module" src="js/more.js?v=20261029001456"></script>
+<script type="module" src="js/spin.js?v=20261029001456"></script>
+<script type="module" src="js/polish.js?v=20261029001456"></script>
+</body>
+</html>

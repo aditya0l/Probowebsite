@@ -82,6 +82,7 @@ function setRegion(r) {
   $$('select[data-region]').forEach(s => s.value = r);
   $$('[data-desk]').forEach(el => el.textContent = `${desk().show} (${desk().area})`);
   $$('[data-desk-link]').forEach(a => a.href = 'tel:+' + desk().num);
+  $$('#abWa').forEach(a => a.href = waLink('Hi Probodyline, I have a question.'));
   listeners.forEach(f => f());
 }
 $$('select[data-region]').forEach(s => { STATES.forEach(([n]) => s.add(new Option(n, n))); s.addEventListener('change', () => setRegion(s.value)); });
@@ -97,7 +98,7 @@ const THUMB = {};
   r.dispose(); r.forceContextLoss();
 }
 
-THUMB.press = 'assets/spin/press/f006.webp';
+THUMB.press3d = THUMB.press; THUMB.press = 'assets/spin/press/f006.webp';
 const REAL = { press: true };
 
 /* ---------------------------------------------------------------- catalogue */
@@ -119,6 +120,11 @@ if ($('#catGrid')) {
     if (!RM) gsap.fromTo('#catGrid .pc:not([hidden])', { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: .5, stagger: .04, ease: 'power3.out' });
   });
 }
+
+// product images anywhere on the page: <img data-thumb="treadmill">
+$$('img[data-thumb]').forEach(i => { i.src = THUMB[i.dataset.thumb]; if (REAL[i.dataset.thumb]) i.classList.add('real'); });
+// catalogue starts filtered when the page or the link asks for it
+{ const want = $('#catGrid')?.dataset.preset || ({ '#cardio': 'Cardio', '#strength': 'Strength', '#free-weights': 'Free weights' })[location.hash]; if (want) $(`#catFilter [data-g="${want}"]`)?.click(); }
 
 /* ---------------------------------------------------------------- will it fit + AR */
 const FIT = { w: 4.2, l: 5.4, key: 'treadmill', rot: 0, x: 0, z: 0, ft: false };
@@ -203,7 +209,7 @@ if ($('#fitView')) {
     const W = canvas.clientWidth, H = canvas.clientHeight;
     [[V(0, 0, FIT.l / 2 + .25), `${fmt(FIT.w)} wide`], [V(FIT.w / 2 + .25, 0, 0), `${fmt(FIT.l)} long`]].forEach(([p3, t], i) => { pv.copy(p3).project(cam); lbls[i].textContent = t; lbls[i].style.transform = `translate(${(pv.x + 1) / 2 * W}px,${(1 - pv.y) / 2 * H}px) translate(-50%,-50%)`; });
   } });
-  setFit('treadmill'); layout(true);
+  setFit(new URLSearchParams(location.search).get('fit') || $('#fit').dataset.default || 'treadmill'); layout(true);
 
   // AR: export the same model to GLB and hand it to model-viewer on phones
   const note = t => { const n = $('#arNote'); n.textContent = t; n.hidden = false; };

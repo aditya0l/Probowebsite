@@ -33,7 +33,7 @@ const brand = (() => {
     const d = PRODUCTS[S.cur];
     $('#orderBuild').href = P.waLink(`Hi Probodyline, I'd like a quote for a custom ${d.name}: ${SW.frame[pick.frame][0]} frame, ${SW.accent[pick.accent][0]} arms, ${SW.pad[pick.pad][0]} upholstery${logo ? ', with our gym logo' : ''}.`);
   }
-  $$('.sw').forEach(row => {
+  $$('.sw[data-k]').forEach(row => {
     const k = row.dataset.k;
     row.innerHTML = SW[k].map(([n, c], i) => `<button type="button" style="background:#${c.toString(16).padStart(6, '0')}" aria-pressed="${i === 0}" aria-label="${n}" title="${n}" data-i="${i}"></button>`).join('');
     row.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; pick[k] = +b.dataset.i; row.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); touched = true; own(S.machine); own(S.obj); paint(); });

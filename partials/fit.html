@@ -1,0 +1,18 @@
+<section id="fit" class="sec">
+  <div class="wrap">
+    <h2 class="display">Will it fit your room?</h2>
+    <p class="sub">Enter your room size. We place the machine at real scale, with the space it needs around it.</p>
+    <div class="fit">
+      <div class="fit-ctrl">
+        <div><span class="lab">Machine</span><div class="rail" id="fitProd" style="flex-wrap:wrap"></div></div>
+        <div class="field"><label for="roomW">Room width <b id="roomWV"></b></label><input type="range" id="roomW" min="2" max="12" step=".1" value="4.2"></div>
+        <div class="field"><label for="roomL">Room length <b id="roomLV"></b></label><input type="range" id="roomL" min="2" max="15" step=".1" value="5.4"></div>
+        <div class="row"><button class="chip" id="fitRotate"><i class="ph ph-arrows-clockwise"></i>Rotate 90°</button><button class="chip" id="fitUnits" aria-pressed="false">Show in feet</button></div>
+        <div class="fit-status" id="fitStatus" role="status"><i class="ph ph-check-circle"></i><div><b></b><span></span></div></div>
+        <div><button class="btn btn-primary" id="arBtn"><i class="ph ph-cube-focus"></i>View in your room with AR</button><p class="note" id="arNote" hidden></p></div>
+      </div>
+      <div class="fit-stage" id="fitStage"><canvas id="fitView" aria-label="Your room with the machine placed at real size. Drag the machine to move it."></canvas><p class="stage-hint">Drag the machine to move it. Drag the room to turn it.</p></div>
+    </div>
+  </div>
+  <model-viewer id="mv" ar ar-modes="webxr scene-viewer quick-look" ar-scale="fixed" style="position:fixed;left:-9999px;width:2px;height:2px"></model-viewer>
+</section>

@@ -29,9 +29,9 @@
 <script src="site.config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
-<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/site.css?v=20261029001456">
 <script type="importmap">
 { "imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -39,23 +39,13 @@
 } }
 </script>
 </head>
-<body>
+<body data-page="home">
 
 <a class="skip" href="#machine">Skip to the machines</a>
 <noscript><div class="nojs">Probodyline needs JavaScript for the 3D showroom. Call <a href="tel:+917891712345">+91 78917 12345</a> or visit us at F-1293, Phase-3, RIICO Industrial Area, Sitapura, Jaipur 302022.</div></noscript>
 <div id="loader" aria-hidden="true"><div style="text-align:center"><div class="mark">PROBODYLINE</div><div class="track"><i id="loadbar"></i></div></div></div>
 
-<div class="grain" aria-hidden="true"></div>
-<header class="nav" id="nav">
-  <i class="progress-bar" id="progress" aria-hidden="true"></i>
-  <a href="#" class="wordmark">PROBODYLINE</a>
-  <ul><li><a href="#flight">Showroom</a></li><li><a href="#walk">The floor</a></li><li><a href="#machine">Machines</a></li><li><a href="#plan">Plan a gym</a></li><li><a href="#proof">Installs</a></li></ul>
-  <div class="nav-r">
-    <label class="region" title="Your state. Every call and WhatsApp button goes to the sales desk that covers it."><i class="ph ph-map-pin"></i><select data-region aria-label="Your state"></select></label>
-    <button class="sound" id="sound" aria-pressed="false" aria-label="Turn sound on" title="Sound"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
-    <a class="btn btn-primary" href="#book">Book a visit</a>
-  </div>
-</header>
+<script src="js/chrome.js?v=20261029001456"></script>
 
 <main>
 <!-- Earth to showroom -->
@@ -67,7 +57,7 @@
       <h1 class="display">India's biggest gym equipment showroom.</h1>
       <p>Twenty-five years of building gyms across the country, all from one address in Jaipur.</p>
       <div class="ctas">
-        <a class="btn btn-primary" href="#book">Book a visit <i class="ph ph-arrow-right"></i></a>
+        <a class="btn btn-primary" href="showroom.html#book">Book a visit <i class="ph ph-arrow-right"></i></a>
         <a class="btn btn-ghost" href="#machine">Try a machine in 3D</a>
       </div>
     </div>
@@ -107,7 +97,7 @@
     <div class="zone" id="zoneBox">
       <h2 class="display" id="zoneT">Walk the floor</h2>
       <p id="zoneP">45,000 sq ft, aisle by aisle. This is what is waiting for you in Jaipur.</p>
-      <a class="btn btn-primary" id="floorCta" href="#book" style="display:none">Book a visit <i class="ph ph-arrow-right"></i></a>
+      <a class="btn btn-primary" id="floorCta" href="showroom.html#book" style="display:none">Book a visit <i class="ph ph-arrow-right"></i></a>
     </div>
     <ol id="zoneNav" aria-label="Showroom zones">
       <li><button>Entrance</button></li><li><button>Cardio</button></li><li><button>Strength</button></li><li><button>Free weights</button></li><li><button>Brand wall</button></li>
@@ -200,228 +190,84 @@
     </aside>
   </div>
 </section>
+<!-- Why Probodyline -->
+<section class="s"><div class="wrap">
+  <div class="s-head"><h2 class="display">Why gyms choose Probodyline.</h2></div>
+  <div class="why"><div><i class="ph ph-buildings"></i><h3>A showroom you can visit</h3><p>45,000 sq ft in Jaipur. Train on the machines before you buy them.</p></div><div><i class="ph ph-map-trifold"></i><h3>Desks across India</h3><p>Three regional sales desks that know your city.</p></div><div><i class="ph ph-cube-focus"></i><h3>Planned in 3D</h3><p>Every floor is laid out before anything is ordered.</p></div><div><i class="ph ph-wrench"></i><h3>Installed and serviced</h3><p>Delivery, assembly, warranty and spares from one team.</p></div></div>
+</div></section>
+
+<!-- Categories -->
+<section class="s tone"><div class="wrap">
+  <div class="s-head"><h2 class="display">Everything a gym floor needs.</h2><p>From one treadmill to a full commercial floor.</p></div>
+  <div class="tiles"><a class="tile" href="equipment.html#cardio"><div class="ti"><img data-thumb="treadmill" alt="Cardio"></div><div class="tb"><div><h3>Cardio</h3><p>Treadmills, bikes, cross-trainers</p></div><i class="ph ph-arrow-up-right"></i></div></a><a class="tile" href="strength.html"><div class="ti"><img data-thumb="press3d" alt="Strength"></div><div class="tb"><div><h3>Strength</h3><p>Plate-loaded and selectorised</p></div><i class="ph ph-arrow-up-right"></i></div></a><a class="tile" href="equipment.html#free-weights"><div class="ti"><img data-thumb="dumbbells" alt="Free weights"></div><div class="tb"><div><h3>Free weights</h3><p>Dumbbells, plates, benches</p></div><i class="ph ph-arrow-up-right"></i></div></a><a class="tile" href="strength.html"><div class="ti"><img data-thumb="rack" alt="Racks and rigs"></div><div class="tb"><div><h3>Racks and rigs</h3><p>Power racks and functional rigs</p></div><i class="ph ph-arrow-up-right"></i></div></a></div>
+  <div class="row" style="margin-top:28px"><a class="btn btn-ghost" href="equipment.html">See all equipment <i class="ph ph-arrow-right"></i></a></div>
+</div></section>
+
+<!-- Solutions -->
+<section class="s"><div class="wrap">
+  <div class="s-head"><h2 class="display">Built for how you train.</h2></div>
+  <div class="sol"><a href="commercial-gyms.html"><div class="phm "><div class="phm-cap"><i class="ph ph-camera"></i><span><b>Photo:</b> a busy commercial gym floor</span></div></div><div class="sb"><h3>Commercial gyms</h3><p>Floors that run all day, planned in 3D and installed by our team.</p></div></a><a href="solutions.html#home"><div class="phm "><div class="phm-cap"><i class="ph ph-camera"></i><span><b>Photo:</b> a finished home gym</span></div></div><div class="sb"><h3>Home gyms</h3><p>One room, the right three machines, a footprint that fits.</p></div></a><a href="solutions.html#hotels"><div class="phm "><div class="phm-cap"><i class="ph ph-camera"></i><span><b>Photo:</b> a hotel fitness room</span></div></div><div class="sb"><h3>Hotels and offices</h3><p>Equipment guests use and staff never have to fix.</p></div></a></div>
+</div></section>
+
+<!-- Plan teaser -->
+<section class="s tone"><div class="wrap split2">
+  <div class="s-head" style="margin:0"><h2 class="display">Plan your gym in 3D.</h2><p>Tell us the space and the members. We lay out every machine with safe aisles, show you the payback, and send it to your sales desk.</p>
+    <div class="steps" style="grid-template-columns:1fr 1fr;margin-top:12px"><div><h3>Four questions</h3><p>Type, size, focus, state.</p></div><div><h3>A floor plan</h3><p>Every machine placed in 3D.</p></div></div>
+    <div class="row" style="margin-top:16px"><a class="btn btn-primary" href="plan.html">Plan your gym</a><a class="btn btn-ghost" href="#consult">Ask the consultant</a></div></div>
+  <div class="phm wide"><div class="phm-cap"><i class="ph ph-squares-four"></i><span><b>Preview:</b> the 3D floor planner with a 2,500 sq ft commercial layout</span></div></div>
+</div></section>
+
+<!-- Projects -->
+<section class="s"><div class="wrap">
+  <div class="s-head"><h2 class="display">18,000+ gyms across India.</h2><p>A few of them, in the owners' words.</p></div>
+  <p class="note" style="margin-top:-36px;margin-bottom:36px"><i class="ph ph-info"></i> Example content to show the layout. Replaced with Probodyline material before launch.</p>
+  <div class="quotes"><figure class="quote"><div class="phm "><div class="phm-cap"><i class="ph ph-video-camera"></i><span><b>Video:</b> video testimonial</span></div></div><blockquote>“The showroom visit settled it. We trained on every machine before we signed.”</blockquote><cite><b>Gym owner</b>Commercial gym, Rajasthan</cite></figure><figure class="quote"><div class="phm "><div class="phm-cap"><i class="ph ph-video-camera"></i><span><b>Video:</b> video testimonial</span></div></div><blockquote>“They laid out the floor in 3D before anything was ordered.”</blockquote><cite><b>Club manager</b>Fitness club, Maharashtra</cite></figure><figure class="quote"><div class="phm "><div class="phm-cap"><i class="ph ph-video-camera"></i><span><b>Video:</b> video testimonial</span></div></div><blockquote>“Installation took the team two days, and the service desk still picks up.”</blockquote><cite><b>Facilities head</b>Hotel, Delhi NCR</cite></figure></div>
+  <div class="row" style="margin-top:28px"><a class="btn btn-ghost" href="projects.html">See projects <i class="ph ph-arrow-right"></i></a></div>
+</div></section>
+
 
 
 <!-- Will it fit -->
-<section id="fit" class="sec">
-  <div class="wrap">
-    <h2 class="display">Will it fit your room?</h2>
-    <p class="sub">Enter your room size. We place the machine at real scale, with the space it needs around it.</p>
-    <div class="fit">
-      <div class="fit-ctrl">
-        <div><span class="lab">Machine</span><div class="rail" id="fitProd" style="flex-wrap:wrap"></div></div>
-        <div class="field"><label for="roomW">Room width <b id="roomWV"></b></label><input type="range" id="roomW" min="2" max="12" step=".1" value="4.2"></div>
-        <div class="field"><label for="roomL">Room length <b id="roomLV"></b></label><input type="range" id="roomL" min="2" max="15" step=".1" value="5.4"></div>
-        <div class="row"><button class="chip" id="fitRotate"><i class="ph ph-arrows-clockwise"></i>Rotate 90°</button><button class="chip" id="fitUnits" aria-pressed="false">Show in feet</button></div>
-        <div class="fit-status" id="fitStatus" role="status"><i class="ph ph-check-circle"></i><div><b></b><span></span></div></div>
-        <div><button class="btn btn-primary" id="arBtn"><i class="ph ph-cube-focus"></i>View in your room with AR</button><p class="note" id="arNote" hidden></p></div>
-      </div>
-      <div class="fit-stage" id="fitStage"><canvas id="fitView" aria-label="Your room with the machine placed at real size. Drag the machine to move it."></canvas><p class="stage-hint">Drag the machine to move it. Drag the room to turn it.</p></div>
-    </div>
-  </div>
-  <model-viewer id="mv" ar ar-modes="webxr scene-viewer quick-look" ar-scale="fixed" style="position:fixed;left:-9999px;width:2px;height:2px"></model-viewer>
-</section>
+
 
 <!-- Muscle finder -->
-<section id="muscles" class="sec" style="padding-top:40px">
-  <div class="wrap">
-    <h2 class="display">Pick a muscle. Get the machine.</h2>
-    <p class="sub">Tap the body or a muscle group. We show every machine on this site that trains it.</p>
-    <div class="mus">
-      <div class="mus-stage"><canvas id="body" aria-label="3D body. Tap a muscle group to see the machines that train it."></canvas><p class="stage-hint">Drag to turn. Tap a muscle.</p></div>
-      <div class="mus-side">
-        <div class="rail" id="musChips" style="flex-wrap:wrap"></div>
-        <h3 class="display" id="musTitle">Chest</h3>
-        <p class="muted" id="musDesc"></p>
-        <div class="mus-list" id="musList"></div>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <!-- Equipment -->
-<section id="equipment" class="sec">
-  <div class="wrap">
-    <h2 class="display">The catalogue.</h2>
-    <p class="sub">Every machine here is rendered from the same 3D models you can open, turn and drop into your room.</p>
-    <div class="rail" id="catFilter" style="margin-top:32px"><button aria-selected="true" data-g="all">All</button><button aria-selected="false" data-g="Cardio">Cardio</button><button aria-selected="false" data-g="Strength">Strength</button><button aria-selected="false" data-g="Free weights">Free weights</button></div>
-    <div class="cat-grid" id="catGrid"></div>
-  </div>
-</section>
+
 
 <!-- Proof: install map + before/after -->
-<section id="proof" class="sec">
-  <div class="wrap">
-    <span class="eyebrow">Proof</span>
-    <h2 class="display" style="margin-top:14px">18,000+ gyms, across India.</h2>
-    <p class="sub">One showroom in Jaipur and three regional sales desks. Tap a region to see who to call.</p>
-  </div>
-  <div class="map-wrap" id="mapWrap">
-    <canvas id="map" aria-label="Map of India with a pillar for each city with Probodyline installs"></canvas>
-    <div class="city-card" id="cityCard" aria-live="polite"></div>
-    <ol class="city-list" id="cityList"></ol>
-  </div>
-  <div class="wrap ba-head" id="ba-sec">
-    <h3 class="display">From empty shell to opening day.</h3>
-    <p class="sub">Drag across the image.</p>
-    <div class="ba" id="ba">
-      <img id="baAfter" alt="A finished commercial gym floor fitted with Probodyline equipment">
-      <div class="ba-before" id="baBeforeWrap"><img id="baBefore" alt="The same space before installation, an empty concrete shell"></div>
-      <span class="ba-tag" style="left:16px">Before</span><span class="ba-tag" style="right:16px">After</span>
-      <div class="ba-handle" id="baHandle"><i class="ph ph-arrows-left-right"></i></div>
-      <input type="range" min="0" max="100" value="50" id="baRange" aria-label="Compare before and after">
-    </div>
-    <p class="note">Illustration of a typical commercial fit-out.</p>
-  </div>
-</section>
+
 
 <!-- Planner -->
-<section id="plan" class="sec" style="background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
-  <div class="wrap">
-    <h2 class="display">Plan your gym floor.</h2>
-    <p class="sub">Set your space and goal. We lay out the floor in 3D and send it to the sales desk for your state, who come back with prices.</p>
-    <div class="planner">
-      <div class="ctrl">
-        <div><span class="lab">Floor area</span><div class="sqft"><span id="sqftV">2,500</span> <small>sq ft</small></div><input type="range" id="sqft" min="300" max="12000" step="100" value="2500" aria-label="Floor area in square feet"></div>
-        <div><span class="lab">What are you building?</span><div class="row" id="kind"><button class="chip" data-v="home" aria-pressed="false">Home gym</button><button class="chip" data-v="studio" aria-pressed="false">Studio</button><button class="chip" data-v="commercial" aria-pressed="true">Commercial</button><button class="chip" data-v="hotel" aria-pressed="false">Hotel or office</button></div></div>
-        <div><span class="lab">Training focus</span><div class="row" id="focus"><button class="chip" data-v="cardio" aria-pressed="false">Cardio-heavy</button><button class="chip" data-v="balanced" aria-pressed="true">Balanced</button><button class="chip" data-v="strength" aria-pressed="false">Strength-heavy</button></div></div>
-        <div><label class="lab" for="planState">Your state</label><select id="planState" data-region></select></div>
-      </div>
-      <div class="plan-view">
-        <canvas id="planView" aria-label="3D layout of your planned gym floor"></canvas>
-        <div class="plan-stats"><div><b id="total">0</b>machines</div><div><b id="area">0</b>m² floor</div></div>
-        <p class="plan-warn" id="planWarn" hidden></p>
-        <div class="plan-bar"><div class="legend" id="legend"></div><div class="row"><button class="btn btn-ghost" id="planAR"><i class="ph ph-cube-focus"></i>AR</button><button class="btn btn-ghost" id="proformaBtn"><i class="ph ph-file-text"></i>Quote request</button><a class="btn btn-primary" id="wa" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i>Get a quote</a></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-<dialog id="proforma" aria-label="Proforma invoice"></dialog>
+
+
 
 <!-- Payback -->
-<section id="roi" class="sec">
-  <div class="wrap">
-    <h2 class="display">When does it pay back?</h2>
-    <p class="sub">Enter your budget, fee and costs. Members and running costs start from the gym you planned.</p>
-    <div class="roi">
-      <div class="roi-ctrl">
-        <div class="field"><label for="roiInv">Your equipment budget <b id="roiInvV"></b></label><input type="range" id="roiInv" min="200000" max="20000000" step="50000" value="3000000"></div>
-        <div class="field"><label for="roiFee">Monthly membership fee <b id="roiFeeV"></b></label><input type="range" id="roiFee" min="500" max="6000" step="100" value="1800"></div>
-        <div class="field"><label for="roiMem">Active members <b id="roiMemV"></b></label><input type="range" id="roiMem" min="20" max="1500" step="10" value="220"></div>
-        <div class="field"><label for="roiCost">Monthly running costs (rent, staff, power) <b id="roiCostV"></b></label><input type="range" id="roiCost" min="20000" max="2000000" step="10000" value="220000"></div>
-        <button class="chip" id="roiSync" style="justify-self:start"><i class="ph ph-arrows-clockwise"></i>Match my planned gym</button>
-      </div>
-      <div class="roi-out">
-        <div class="roi-kpi"><div><b id="roiPay">-</b>Payback</div><div><b id="roiProfit">-</b>Profit a month</div><div><b id="roiY3">-</b>Cash after 3 years</div></div>
-        <svg id="roiChart" viewBox="0 0 800 300" role="img" aria-label="Cumulative cash over 36 months"></svg>
-        <p class="note">An estimate for comparing scenarios, not financial advice.</p>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <!-- Booking -->
-<section id="book" class="sec">
-  <div class="wrap">
-    <h2 class="display">Book your showroom visit.</h2>
-    <p class="sub">Pick a day and a time. The sales desk for your state confirms it on WhatsApp.</p>
-    <div class="book">
-      <div class="card">
-        <div class="cal-head"><b id="calMonth"></b><span class="muted" style="font-size:13px">The desk confirms your slot with you</span></div>
-        <div class="cal" id="cal"></div>
-        <div><span class="lab">Time</span><div class="slots" id="slots"></div></div>
-        <div><span class="lab">What do you want to see?</span><div class="row" id="interest"></div></div>
-        <label class="toggle"><input type="checkbox" id="videoTour">Can't travel to Jaipur? Make it a live video tour.</label>
-      </div>
-      <form class="card" id="bookForm" novalidate>
-        <div class="fld"><label for="bName">Your name</label><input id="bName" autocomplete="name"><small class="err" id="bNameErr"></small></div>
-        <div class="fld"><label for="bPhone">Mobile number</label><input id="bPhone" inputmode="numeric" autocomplete="tel" maxlength="14"><small class="err" id="bPhoneErr"></small></div>
-        <div class="fld"><label for="bState">Your state</label><select id="bState" data-region></select></div>
-        <div class="summary" id="bSummary"></div>
-        <button class="btn btn-primary" type="submit" style="justify-self:start"><i class="ph ph-whatsapp-logo"></i>Book a visit</button>
-        <small class="muted">This opens WhatsApp with your request filled in. Nothing is sent until you press send.</small>
-      </form>
-      <div class="card" id="bookDone" hidden></div>
-    </div>
-  </div>
-</section>
+
 
 <!-- Owners -->
-<section id="owners" class="sec" style="background:var(--surface);border-top:1px solid var(--line)">
-  <div class="wrap">
-    <h2 class="display">Already own a Probodyline machine?</h2>
-    <p class="sub">Register the warranty, book a service or order spares. The serial number is on the plate fitted to your machine.</p>
-    <div class="own">
-      <form class="card" id="ownForm" novalidate>
-        <div class="tabs own-tabs" role="tablist" aria-label="What do you need?"><button type="button" role="tab" aria-selected="true" data-o="warranty"><i class="ph ph-shield-check"></i>Warranty</button><button type="button" role="tab" aria-selected="false" data-o="service"><i class="ph ph-wrench"></i>Service</button><button type="button" role="tab" aria-selected="false" data-o="spares"><i class="ph ph-gear-six"></i>Spares</button></div>
-        <div class="fld"><label for="oModel">Machine</label><select id="oModel"></select></div>
-        <div class="fld"><label for="oSerial">Serial number</label><input id="oSerial" placeholder="Printed on the plate, e.g. PBL-24-01873" autocomplete="off"><small class="err" id="oSerialErr"></small></div>
-        <div class="fld" data-o-for="service" hidden><label>What is wrong?</label><div class="row" id="oIssue"></div></div>
-        <div class="fld" data-o-for="spares" hidden><label for="oPart">Part</label><select id="oPart"><option>Seat or back pad</option><option>Cable or pulley</option><option>Grip set</option><option>Belt or deck</option><option>Console</option><option>Something else</option></select></div>
-        <div class="fld"><label for="oName">Your name or gym</label><input id="oName" autocomplete="organization"><small class="err" id="oNameErr"></small></div>
-        <button class="btn btn-primary" type="submit" style="justify-self:start" id="oSubmit"><i class="ph ph-whatsapp-logo"></i>Register warranty</button>
-      </form>
-      <div style="display:grid;gap:20px;align-content:start">
-        <div class="plate" id="plate"><div><div class="wm">PROBODYLINE</div><dl><dt>Model</dt><dd id="plModel">ISO-LATERAL PRESS</dd><dt>Serial</dt><dd>PBL-24-01873</dd><dt>Made in</dt><dd>India</dd></dl></div><div class="qr" id="plQr"></div></div>
-        <button class="btn btn-ghost" id="scanSim" style="justify-self:start"><i class="ph ph-arrow-bend-up-left"></i>Fill in with this example</button>
-        <p class="note">Example plate. Look for the same plate on the frame of your machine.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 
-<div class="cmpbar" id="cmpbar"><span id="cmpTxt"></span><button class="btn btn-primary" id="cmpOpen">Compare</button></div>
-<dialog class="sheet" id="cmpDlg" aria-label="Compare machines"></dialog>
-<button class="cbtn" id="cbtn" aria-expanded="false" aria-controls="cpanel"><i class="ph ph-chats-circle"></i><span>Plan with a consultant</span></button>
-<div class="cpanel" id="cpanel" hidden role="dialog" aria-label="Gym consultant">
-  <div class="chead"><div class="av"><i class="ph ph-barbell"></i></div><div><b>Probodyline consultant</b><span>Four questions to a full plan</span></div><button id="cclose" aria-label="Close"><i class="ph ph-x"></i></button></div>
-  <div class="clog" id="clog" aria-live="polite"></div>
-  <div class="cchips" id="cchips"></div>
-  <div class="cfoot">Your plan goes to the sales desk for your state on WhatsApp.</div>
-</div>
+
+
+
 </main>
 
-<footer id="visit">
-  <div class="wrap">
-    <h2 class="display">Come lift something.</h2>
-    <div class="vgrid">
-      <div>
-        <h3>Showroom</h3>
-        <p>F-1293, Phase-3, RIICO Industrial Area<br>Sitapura, Jaipur, Rajasthan 302022</p>
-        <div class="row" style="margin-top:20px">
-          <a class="btn btn-primary" href="#book">Book a visit</a>
-          <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=F-1293+RIICO+Industrial+Area+Sitapura+Jaipur" target="_blank" rel="noopener">Open in Maps</a>
-        </div>
-      </div>
-      <div>
-        <h3>Sales desks</h3>
-        <p style="margin-bottom:14px">Your desk: <a data-desk-link><span data-desk></span></a></p>
-        <ul>
-          <li><a href="tel:+919403893899">+91 94038 93899</a><small>Delhi NCR, Gujarat, Punjab, Haryana, Tamil Nadu</small></li>
-          <li style="margin-top:10px"><a href="tel:+919403893399">+91 94038 93399</a><small>Maharashtra, Uttar Pradesh, Bangalore</small></li>
-          <li style="margin-top:10px"><a href="tel:+917891712345">+91 78917 12345</a><small>Rest of India</small></li>
-        </ul>
-      </div>
-      <div>
-        <h3>Follow</h3>
-        <ul><li><a href="https://instagram.com/probodyline" target="_blank" rel="noopener">Instagram</a></li><li style="margin-top:6px"><a href="https://youtube.com/@probodyline" target="_blank" rel="noopener">YouTube</a></li></ul>
-      </div>
-    </div>
-    <div class="foot"><span>Probodyline, a Creative Enterprises brand</span><span>&copy; <span id="yr">2026</span> Creative Enterprises. All rights reserved.</span></div>
-  </div>
-  <div class="bigmark" id="bigmark" aria-hidden="true">PROBODYLINE</div>
-</footer>
+<script src="js/chrome.js?v=20261029001456" data-part="footer"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script type="module" src="js/core.js"></script>
+<script type="module" src="js/core.js?v=20261029001456"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-<script type="module" src="js/features.js"></script>
-<script type="module" src="js/sound.js"></script>
-<script type="module" src="js/more.js"></script>
-<script type="module" src="js/spin.js"></script>
-<script type="module" src="js/polish.js"></script>
+<script type="module" src="js/features.js?v=20261029001456"></script>
+<script type="module" src="js/sound.js?v=20261029001456"></script>
+<script type="module" src="js/more.js?v=20261029001456"></script>
+<script type="module" src="js/spin.js?v=20261029001456"></script>
+<script type="module" src="js/polish.js?v=20261029001456"></script>
 <script>document.getElementById("yr").textContent=new Date().getFullYear()</script>
 </body>
 </html>

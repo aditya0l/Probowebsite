@@ -1,0 +1,24 @@
+<section id="book" class="sec">
+  <div class="wrap">
+    <h2 class="display">Book your showroom visit.</h2>
+    <p class="sub">Pick a day and a time. The sales desk for your state confirms it on WhatsApp.</p>
+    <div class="book">
+      <div class="card">
+        <div class="cal-head"><b id="calMonth"></b><span class="muted" style="font-size:13px">The desk confirms your slot with you</span></div>
+        <div class="cal" id="cal"></div>
+        <div><span class="lab">Time</span><div class="slots" id="slots"></div></div>
+        <div><span class="lab">What do you want to see?</span><div class="row" id="interest"></div></div>
+        <label class="toggle"><input type="checkbox" id="videoTour">Can't travel to Jaipur? Make it a live video tour.</label>
+      </div>
+      <form class="card" id="bookForm" novalidate>
+        <div class="fld"><label for="bName">Your name</label><input id="bName" autocomplete="name"><small class="err" id="bNameErr"></small></div>
+        <div class="fld"><label for="bPhone">Mobile number</label><input id="bPhone" inputmode="numeric" autocomplete="tel" maxlength="14"><small class="err" id="bPhoneErr"></small></div>
+        <div class="fld"><label for="bState">Your state</label><select id="bState" data-region></select></div>
+        <div class="summary" id="bSummary"></div>
+        <button class="btn btn-primary" type="submit" style="justify-self:start"><i class="ph ph-whatsapp-logo"></i>Book a visit</button>
+        <small class="muted">This opens WhatsApp with your request filled in. Nothing is sent until you press send.</small>
+      </form>
+      <div class="card" id="bookDone" hidden></div>
+    </div>
+  </div>
+</section>
