@@ -817,3 +817,9 @@ p{text-wrap:pretty}
 .phm.shot img{z-index:0;transition:transform 1.2s var(--ease),filter .6s}
 .phm.shot::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(2,7,10,0) 55%,rgba(2,7,10,.55))}
 .sol a:hover .phm.shot img{transform:scale(1.04)}
+
+/* planner preview loop on the home page */
+.plan-reel{display:block;border-radius:16px;border:1px solid var(--line)}
+.plan-reel video{object-fit:cover}
+.plan-open{position:absolute;top:16px;right:16px;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:rgba(2,7,10,.6);backdrop-filter:blur(8px);border:1px solid var(--line-2);font-size:14px;color:var(--ink);transition:background .3s,border-color .3s}
+.plan-reel:hover .plan-open{background:var(--accent);border-color:var(--accent)}
