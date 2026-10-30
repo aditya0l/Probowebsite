@@ -21,9 +21,24 @@ const $=s=>document.querySelector(s);
 
 /* ================= loader ================= */
 const manager=new THREE.LoadingManager();
-let loaded=false;
-const finish=()=>{ if(loaded) return; loaded=true; const lb=$('#loadbar'); if(lb) lb.style.width='100%'; setTimeout(()=>$('#loader')?.classList.add('done'),250); };
-manager.onProgress=(u,i,n)=>{const lb=$('#loadbar'); if(lb) lb.style.width=(i/n*100)+'%';};
+let loaded=false, target=0, shown=0;
+const t0=performance.now(), kgEl=$('#loadkg'), ldBar=$('#ldBar');
+// the loader loads a barbell: one plate per tenth of progress, alternating sides, the counter is the weight on the bar
+const plates=ldBar?[...ldBar.querySelectorAll('.pl')].sort((a,b)=>a.dataset.o-b.dataset.o):[];
+const finish=()=>{ loaded=true; };
+manager.onProgress=(u,i,n)=>{ target=Math.max(target,i/n*100); };
+if($('#loader')) (function tick(){
+  // creep forward while waiting so the bar never stalls, then run to 100 once everything is in
+  const now=performance.now(), goal=loaded?100:Math.min(92,Math.max(target,(now-t0)/45));
+  shown+=(goal-shown)*(loaded?.14:.06);
+  const n=Math.min(plates.length,Math.floor(shown/100*plates.length+.001));
+  let kg=20; plates.forEach((p,i)=>{ const on=i<n; p.classList.toggle('on',on); if(on) kg+=+p.dataset.kg; });
+  if(kgEl) kgEl.textContent=kg;
+  if(loaded&&shown>99.4&&now-t0>(RM?200:1400)){
+    plates.forEach(p=>p.classList.add('on')); if(kgEl) kgEl.textContent=plates.reduce((a,p)=>a+ +p.dataset.kg,20);
+    ldBar?.classList.add('lift'); setTimeout(()=>$('#loader').classList.add('done'),RM?0:620); return; }
+  requestAnimationFrame(tick);
+})();
 manager.onLoad=finish; setTimeout(finish,document.getElementById('earth')?9000:400);
 
 if($('#flight')) ScrollTrigger.create({trigger:'#flight',start:'bottom 68px',onEnter:()=>$('#nav')?.classList.add('solid'),onLeaveBack:()=>$('#nav')?.classList.remove('solid')}); else $('#nav')?.classList.add('solid');
@@ -45,7 +60,7 @@ const tex=(f,srgb)=>{const t=TL.load('assets/tex/'+f);if(srgb)t.colorSpace=THREE
 const sunDir=ll2v(8,JAIPUR.lon+60).normalize();
 
 const earthMat=new THREE.ShaderMaterial({
-  uniforms:{dayMap:{value:tex('earth-blue-marble.jpg',true)},nightMap:{value:tex('earth-night.jpg',true)},waterMap:{value:tex('earth-water.png')},sunDir:{value:sunDir}},
+  uniforms:{dayMap:{value:tex('earth-blue-marble.jpg',true)},nightMap:{value:tex('earth-night.jpg',true)},waterMap:{value:tex('earth-water.jpg')},sunDir:{value:sunDir}},
   vertexShader:`varying vec2 vUv;varying vec3 vN;varying vec3 vP;
     void main(){vUv=uv;vN=normalize(mat3(modelMatrix)*normal);vec4 w=modelMatrix*vec4(position,1.);vP=w.xyz;gl_Position=projectionMatrix*viewMatrix*w;}`,
   fragmentShader:`uniform sampler2D dayMap,nightMap,waterMap;uniform vec3 sunDir;varying vec2 vUv;varying vec3 vN;varying vec3 vP;
@@ -67,10 +82,10 @@ const earthMat=new THREE.ShaderMaterial({
 const earth=new THREE.Mesh(new THREE.SphereGeometry(1,160,160),earthMat); es.add(earth);
 
 const clouds=new THREE.Mesh(new THREE.SphereGeometry(1.008,128,128),new THREE.ShaderMaterial({
-  uniforms:{map:{value:tex('clouds.png')},sunDir:{value:sunDir}},transparent:true,depthWrite:false,
+  uniforms:{map:{value:tex('clouds.jpg')},sunDir:{value:sunDir}},transparent:true,depthWrite:false,
   vertexShader:`varying vec2 vUv;varying vec3 vN;void main(){vUv=uv;vN=normalize(mat3(modelMatrix)*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
   fragmentShader:`uniform sampler2D map;uniform vec3 sunDir;varying vec2 vUv;varying vec3 vN;
-    void main(){float a=texture2D(map,vUv).a;float l=smoothstep(-.08,.35,dot(normalize(vN),sunDir));
+    void main(){float a=texture2D(map,vUv).r;float l=smoothstep(-.08,.35,dot(normalize(vN),sunDir));
     gl_FragColor=vec4(vec3(.06+.94*l),a*.75*(.15+.85*l));
     #include <colorspace_fragment>
     }`}));

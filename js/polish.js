@@ -132,3 +132,12 @@ ScrollTrigger.refresh();
 
 /* ---------------------------------------------------------------- home: scroll hint fades once the flight starts */
 { const hints = $$('.scroll-hint, .scroll-hint-inline'); if (hints.length) ScrollTrigger.create({ trigger: document.body, start: 'top -40', onEnter: () => hints.forEach(h => h.classList.add('gone')), onLeaveBack: () => hints.forEach(h => h.classList.remove('gone')) }); }
+
+/* ---------------------------------------------------------------- footage loads near the viewport, plays while visible */
+{ const vids = $$('video[data-src]');
+  if (vids.length && !RM) {
+    const io = new IntersectionObserver(es => es.forEach(({ target: v, isIntersecting }) => {
+      if (isIntersecting) { if (!v.getAttribute('src')) v.src = v.dataset.src; v.play().catch(() => {}); } else if (!v.paused) v.pause();
+    }), { rootMargin: '400px 0px' });
+    vids.forEach(v => io.observe(v));
+  } }

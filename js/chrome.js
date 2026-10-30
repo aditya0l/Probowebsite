@@ -35,7 +35,7 @@
 </div>`,
     footer: `
 <section class="pre-foot">
-  <video src="assets/v/banner.mp4" poster="assets/v/banner.jpg" muted playsinline loop autoplay preload="metadata" aria-hidden="true"></video><div class="pf-shade" aria-hidden="true"></div>
+  <video data-src="assets/v/banner.mp4" poster="assets/v/banner.jpg" muted playsinline loop preload="none" aria-hidden="true"></video><div class="pf-shade" aria-hidden="true"></div>
   <div class="wrap pre-foot-in">
     <h2 class="display">Come lift something.</h2>
     <div class="row"><a class="btn btn-primary" href="showroom.html#book">Book a visit</a><a class="btn btn-ghost" href="plan.html">Plan your gym</a></div>
