@@ -159,4 +159,4 @@ btn && btn.addEventListener('click', () => {
   if (on) CUE.powerOn();
 });
 
-P.sfx = { chime: () => play('chime'), get on() { return on; } };
+P.sfx = { chime: () => play('chime'), whoosh: rev => play('whoosh', rev), get on() { return on; } };

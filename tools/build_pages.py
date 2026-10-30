@@ -62,6 +62,14 @@ def ph(caption, icon='image', cls='', kind='Photo'):
     return f'<div class="phm {cls}"><div class="phm-cap"><i class="ph ph-{icon}"></i><span><b>{kind}:</b> {caption}</span></div></div>'
 
 
+def vid(name, pos='50% 50%'):
+    return f'<video src="assets/v/{name}.mp4" poster="assets/v/{name}.jpg" muted playsinline loop autoplay preload="metadata" aria-hidden="true" style="object-position:{pos}"></video>'
+
+
+def reel(name, label, cls='port', pos='50% 50%'):
+    return f'<figure class="phm reel {cls}">{vid(name, pos)}<figcaption class="phm-cap"><i class="ph ph-play-circle"></i><span>{label}</span></figcaption></figure>'
+
+
 def crumbs(*items):
     parts = ['<a href="index.html">Home</a>']
     for href, label in items:
@@ -111,15 +119,18 @@ PAGES['equipment'] = dict(title='Gym equipment', desc='Cardio, strength and free
 
 # ------------------------------------------------------------------ category (strength)
 PAGES['strength'] = dict(title='Strength equipment', desc='Plate-loaded, selectorised and racks for commercial and home gyms.', body=
-    f'''<section class="page-hero media"><div class="bgm">{ph('strength zone in the Jaipur showroom, slow pan', 'video-camera', kind='Video')}</div><div class="wrap">{crumbs(('equipment.html', 'Equipment'), (None, 'Strength'))}<h1 class="display">Strength.</h1><p class="sub">Plate-loaded, selectorised and racks. Built for commercial floors that run all day, and home gyms that need to last.</p></div></section>'''
+    f'''<section class="page-hero media"><div class="bgm">{vid('reel-plate', '50% 58%')}</div><div class="wrap">{crumbs(('equipment.html', 'Equipment'), (None, 'Strength'))}<span class="eyebrow">Plate-loaded row, Jaipur showroom</span><h1 class="display"><em>Strength.</em></h1><p class="sub">Plate-loaded, selectorised and racks. Built for commercial floors that run all day, and home gyms that need to last.</p></div></section>'''
     + '''<section class="s" style="padding-bottom:0"><div class="wrap"><div class="rail"><button aria-selected="true">All strength</button><button aria-selected="false">Plate-loaded</button><button aria-selected="false">Selectorised</button><button aria-selected="false">Racks and rigs</button><button aria-selected="false">Benches</button></div></div></section>'''
     + CATALOGUE.format(preset=' data-preset="Strength"')
+    + '<section class="s glow"><div class="wrap"><div class="s-head split-head"><div><span class="eyebrow">In the studio</span><h2 class="display">Built to <em>last.</em></h2></div><p>Filmed in our studio: the full machine on the turntable, then the parts you touch every set. Machine name and specs to confirm.</p></div>'
+    + '<div class="studio-reel">' + reel('turntable', 'The full machine, 360° on the turntable', 'wide feature') + reel('detail-handle', 'Rotating grips on a sliding carriage', 'sq') + reel('detail-pad', 'Chest pad with quick-release adjustment', 'sq') + reel('detail-frame', 'Frame, footplates and plate horns', 'sq') + '</div></div></section>'
+
     + '<section class="s tone"><div class="wrap"><div class="s-head"><h2 class="display">Choosing strength equipment.</h2><p>Three questions our team asks every buyer.</p></div>'
     + faq([('Plate-loaded or selectorised?', 'Plate-loaded machines feel closer to free weights and suit serious lifters. Selectorised stations with a pin and weight stack are quicker to adjust and easier for beginners. Most commercial floors use both.'),
            ('How much floor space does a strength zone need?', 'Allow the machine footprint plus at least 60 cm clear on every side. Use Will it fit on any product page, or the planner for a whole zone.'),
            ('Can I try machines before buying?', 'Yes. Every machine on the site is on the showroom floor in Jaipur. Book a visit and the team will set up the ones you want to try.')])
     + '</div></section>'
-    + '<section class="s"><div class="wrap split2">' + ph('strength aisle, as you walk in', 'camera', 'wide') + '<div class="s-head" style="margin:0"><h2 class="display">See this zone in person.</h2><p>Walk the strength aisle in 3D, then book a time to train on the machines.</p><div class="row"><a class="btn btn-primary" href="showroom.html#walk">Walk the showroom</a><a class="btn btn-ghost" href="showroom.html#book">Book a visit</a></div></div></div></section>')
+    + '<section class="s"><div class="wrap split2">' + reel('pan', 'Both floors of the showroom', 'wide') + '<div class="s-head" style="margin:0"><h2 class="display">See this zone <em>in person.</em></h2><p>Walk the strength aisle in 3D, then book a time to train on the machines.</p><div class="row"><a class="btn btn-primary" href="showroom.html#walk">Walk the showroom</a><a class="btn btn-ghost" href="showroom.html#book">Book a visit</a></div></div></div></section>')
 
 # ------------------------------------------------------------------ product (the press)
 PAGES['iso-lateral-press'] = dict(title='Iso-lateral plate-loaded press', desc='The Probodyline iso-lateral plate-loaded press. See it as filmed, turn it in 3D, check it fits your room.', body=
@@ -182,10 +193,10 @@ PAGES['plan'] = dict(title='Plan your gym', desc='Lay out your gym in 3D, see th
 
 # ------------------------------------------------------------------ showroom
 PAGES['showroom'] = dict(title='The showroom in Jaipur', desc="Visit India's biggest gym equipment showroom: 45,000 sq ft in Sitapura, Jaipur. Book a time to try the machines.", body=
-    f'''<section class="page-hero media"><div class="bgm"><video src="assets/drone.mp4" poster="assets/drone-poster.jpg" muted playsinline loop autoplay></video></div><div class="wrap">{crumbs((None, 'Showroom'))}<h1 class="display">The showroom.</h1><p class="sub">45,000 sq ft in Sitapura, Jaipur. More than 3,500 machines on the floor, and every one of them is there to try.</p><div class="ctas"><a class="btn btn-primary" href="#book">Book a visit</a><a class="btn btn-ghost" href="#walk">Walk the floor first</a></div><div class="kpis"><div><b>45,000</b><span>Sq ft</span></div><div><b>3,500+</b><span>Machines on display</span></div><div><b>25</b><span>Years in Jaipur</span></div></div></div></section>'''
+    f'''<section class="page-hero media"><div class="bgm">{vid('pan')}</div><div class="wrap">{crumbs((None, 'Showroom'))}<span class="eyebrow">Sitapura, Jaipur</span><h1 class="display">The <em>showroom.</em></h1><p class="sub">45,000 sq ft in Sitapura, Jaipur. More than 3,500 machines on the floor, and every one of them is there to try.</p><div class="ctas"><a class="btn btn-primary" href="#book">Book a visit</a><a class="btn btn-ghost" href="#walk">Walk the floor first</a></div><div class="kpis"><div><b>45,000</b><span>Sq ft</span></div><div><b>3,500+</b><span>Machines on display</span></div><div><b>25</b><span>Years in Jaipur</span></div></div></div></section>'''
     + P('walk').replace('href="#machine"', 'href="iso-lateral-press.html"') + P('book')
-    + '<section class="s tone"><div class="wrap split2"><div class="s-head" style="margin:0"><h2 class="display">Getting here.</h2><p>F-1293, Phase-3, RIICO Industrial Area, Sitapura, Jaipur, Rajasthan 302022.</p><div class="steps" style="grid-template-columns:1fr 1fr;margin-top:12px"><div><h3>From the airport</h3><p>Directions and drive time to confirm.</p></div><div><h3>Parking</h3><p>Parking details to confirm.</p></div></div><div class="row" style="margin-top:12px"><a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&query=F-1293+RIICO+Industrial+Area+Sitapura+Jaipur" target="_blank" rel="noopener"><i class="ph ph-navigation-arrow"></i>Open in Maps</a></div></div>' + ph('map of Sitapura with the showroom pinned', 'map-pin', 'sq', kind='Map') + '</div></section>'
-    + '<section class="s"><div class="wrap"><div class="s-head"><h2 class="display">Inside the showroom.</h2></div><div class="tiles">' + ''.join(f'<div>{ph(c, "camera", "port")}</div>' for c in ['the cardio floor', 'plate-loaded row', 'free weight hall', 'the design desk']) + '</div></div></section>')
+    + '<section class="s tone"><div class="wrap split2"><div class="s-head" style="margin:0"><span class="eyebrow">Getting here</span><h2 class="display">Look for the <em>red sign.</em></h2><p>F-1293, Phase-3, RIICO Industrial Area, Sitapura, Jaipur, Rajasthan 302022.</p><div class="steps" style="grid-template-columns:1fr 1fr;margin-top:12px"><div><h3>From the airport</h3><p>Directions and drive time to confirm.</p></div><div><h3>Parking</h3><p>Parking details to confirm.</p></div></div><div class="row" style="margin-top:12px"><a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&query=F-1293+RIICO+Industrial+Area+Sitapura+Jaipur" target="_blank" rel="noopener"><i class="ph ph-navigation-arrow"></i>Open in Maps</a></div></div>' + '<div class="find-us">' + reel('facade', 'The Probodyline building from the road', 'wide') + reel('roof', 'From above: the name is on the roof', 'wide') + '</div>' + '</div></section>'
+    + '<section class="s"><div class="wrap"><div class="s-head split-head"><div><span class="eyebrow">The zones</span><h2 class="display">Inside the <em>showroom.</em></h2></div><p>Real footage from the floor. Every machine you see here is set up to try.</p></div><div class="tiles reels">' + reel('hall', 'Main hall, under the sign', 'port', '50% 40%') + reel('reel-plate', 'Plate-loaded row') + reel('reel-aisle', 'Selectorised stations') + reel('reel-cardio', 'Cardio floor') + '</div></div></section>')
 
 # ------------------------------------------------------------------ projects + case study
 PAGES['projects'] = dict(title='Projects', desc='Gyms built with Probodyline across India.', body=
