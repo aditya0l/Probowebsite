@@ -13,8 +13,13 @@
         <canvas id="planView" aria-label="3D layout of your planned gym floor"></canvas>
         <div class="plan-stats"><div><b id="total">0</b>machines</div><div><b id="area">0</b>m² floor</div></div>
         <p class="plan-warn" id="planWarn" hidden></p>
-        <div class="plan-bar"><div class="legend" id="legend"></div><div class="row"><button class="btn btn-ghost" id="planAR"><i class="ph ph-cube-focus"></i>AR</button><button class="btn btn-ghost" id="proformaBtn"><i class="ph ph-file-text"></i>Quote request</button><a class="btn btn-primary" id="wa" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i>Get a quote</a></div></div>
+        <div class="plan-bar"><div class="legend" id="legend"></div><button class="btn btn-ghost" id="planAR"><i class="ph ph-cube-focus"></i>See it in AR</button></div>
       </div>
+      <aside class="plan-quote" aria-label="Your quotation, updated as you plan">
+        <div class="pq-head"><span class="lab"><i class="ph ph-arrows-clockwise"></i>Updates as you plan</span></div>
+        <div id="liveQuote" aria-live="polite"></div>
+        <div class="pq-actions"><button class="btn btn-ghost" id="quotePrint"><i class="ph ph-printer"></i>Save PDF</button><a class="btn btn-primary" id="wa" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i>Send to sales</a></div>
+      </aside>
     </div>
   </div>
 </section>

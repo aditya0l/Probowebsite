@@ -891,3 +891,35 @@ p{text-wrap:pretty}
 @media (prefers-reduced-motion:no-preference){.scroll-hint-inline i{animation:hintBob 1.8s var(--ease) infinite}}
 .scroll-hint-inline.gone{opacity:0}
 @media (max-width:1023px){.scroll-hint{display:none}.scroll-hint-inline{display:flex}}
+
+/* ---------------------------------------------------------------- planner: controls on top, 3D floor and live quote side by side */
+.planner{grid-template-columns:minmax(0,1fr) minmax(360px,440px);gap:20px;margin-top:40px;align-items:stretch}
+.planner .ctrl{grid-column:1/-1;display:grid;grid-template-columns:1.1fr 1.6fr 1.3fr .9fr;gap:24px;align-items:end;padding:20px 24px;background:var(--bg);border:1px solid var(--line);border-radius:var(--radius)}
+.planner .ctrl .sqft{font-size:26px}
+.planner .plan-view{min-height:640px}
+.plan-bar{justify-content:space-between}
+.plan-quote{display:flex;flex-direction:column;gap:12px;min-width:0}
+.pq-head .lab{display:inline-flex;align-items:center;gap:8px;color:var(--accent)}
+#liveQuote{flex:1;min-height:0;overflow:auto;border-radius:var(--radius);max-height:640px}
+#liveQuote .doc{padding:26px;font-size:13px;border-radius:var(--radius);min-height:100%}
+#liveQuote .doc-top{gap:12px;padding-bottom:14px}
+#liveQuote .doc-top .wm{font-size:22px}
+#liveQuote .doc-top .t b{font-size:18px;font-stretch:100%}
+.doc-addr{color:#666;font-size:11.5px;margin-top:4px;line-height:1.4}
+.doc-no{display:block;font-family:var(--mono);font-size:12px}
+.doc-date{display:block;color:#666;font-size:11.5px}
+#liveQuote .doc-meta{margin:16px 0;gap:14px}
+#liveQuote .doc-meta b{font-size:13.5px;line-height:1.35;display:block}
+#liveQuote .doc-meta input{font-size:13.5px}
+#liveQuote .doc td{padding:8px 4px;vertical-align:top}
+#liveQuote .doc td small{display:block;color:#777;font-size:11.5px}
+#liveQuote .doc th{padding:6px 4px}
+#liveQuote .doc tfoot tr.tot td{font-size:15px}
+#liveQuote .doc .fine{margin-top:14px;font-size:11.5px}
+.pq-actions{display:grid;grid-template-columns:auto 1fr;gap:10px}
+.pq-actions .btn{justify-content:center}
+@media (max-width:1180px){.planner .ctrl{grid-template-columns:1fr 1fr}}
+@media (max-width:960px){.planner{grid-template-columns:1fr}.planner .ctrl{grid-template-columns:1fr}.planner .plan-view{min-height:520px}#liveQuote{max-height:none}}
+@media print{body.print-quote>*:not(main){display:none!important}body.print-quote main>*:not(#plan){display:none!important}body.print-quote #plan{padding:0;background:#fff;border:0}body.print-quote #plan .wrap>*:not(.planner),body.print-quote .planner>*:not(.plan-quote),body.print-quote .pq-head,body.print-quote .pq-actions{display:none!important}body.print-quote .planner{display:block;margin:0}body.print-quote #liveQuote{max-height:none;overflow:visible}body.print-quote .doc{background:#fff}}
+#liveQuote .doc{color:#141414}#liveQuote .doc-meta input::placeholder{color:#8a8a8a}
+#liveQuote td.r,#liveQuote .doc-no{white-space:nowrap}@media (max-width:520px){#liveQuote .doc{padding:18px}#liveQuote .doc-top{flex-direction:column}#liveQuote .doc-top .t{text-align:left}}

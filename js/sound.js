@@ -138,7 +138,7 @@ addEventListener('pbl:plate', e => play('plate', e.detail.w));
 addEventListener('pbl:strip', e => play('strip', e.detail.n));
 document.addEventListener('click', e => {
   if (e.target.closest('#plateBtns, #cchips, #sound, #clearPlates')) return;
-  if (e.target.closest('#proformaBtn')) return play('paper');
+  if (e.target.closest('#quotePrint')) return play('paper');
   if (e.target.closest('button, .btn, .chip')) play('click');
 }, true);
 $('#zoneT') && new MutationObserver(() => play('zone')).observe($('#zoneT'), { childList: true, characterData: true, subtree: true });

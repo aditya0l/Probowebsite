@@ -508,14 +508,9 @@ if ($('#planView')) {
     $('#total').textContent = total; $('#area').textContent = Math.round(area).toLocaleString('en-IN');
     $('#legend').innerHTML = ORDER.filter(k => (placed[k] || []).length).map(k => `<span>${PRODUCTS[k].short} <b>${placed[k].length}</b></span>`).join('');
     const warn = $('#planWarn'); warn.hidden = !cut; warn.textContent = `Trimmed by ${cut} machine${cut === 1 ? '' : 's'} to keep safe aisles between every row.`;
-    updWa(); document.dispatchEvent(new Event('plan'));
+    document.dispatchEvent(new Event('plan'));
   }
   function lines() { return ORDER.filter(k => (placed[k] || []).length).map(k => ({ k, q: placed[k].length, rate: PRODUCTS[k].price ?? null })); }
-  function updWa() {
-    const msg = `Hi Probodyline, I'm planning a ${PLAN.kind} gym of ${PLAN.sqft} sq ft in ${region} (${PLAN.focus} focus). Layout: ` + lines().map(l => `${l.q} x ${PRODUCTS[l.k].short}`).join(', ') + '. Please send a quote.';
-    $('#wa').href = waLink(msg);
-  }
-  listeners.push(updWa);
   const view = addView({ canvas, r, scene, cam, ortho(w, h) { const a = w / h; cam.left = -viewSize * a / 2; cam.right = viewSize * a / 2; cam.top = viewSize / 2; cam.bottom = -viewSize / 2; }, frame() { ctl.update(); } });
   cam.position.set(30, 34, 38); ctl.target.set(0, 0, 0); ctl.update();
   ['kind', 'focus'].forEach(id => $$('#' + id + ' button').forEach(b => b.addEventListener('click', () => { $$('#' + id + ' button').forEach(x => x.setAttribute('aria-pressed', 'false')); b.setAttribute('aria-pressed', 'true'); PLAN[id] = b.dataset.v; layout(true); })));
@@ -531,27 +526,30 @@ if ($('#planView')) {
   layout(false);
   ScrollTrigger.create({ trigger: '#plan', start: 'top 60%', once: true, onEnter: () => layout(true) });
 
-  // proforma
-  const dlg = $('#proforma');
-  $('#proformaBtn').addEventListener('click', () => {
-    const L = lines(), priced = L.length && L.every(l => l.rate), sub = priced ? L.reduce((a, l) => a + l.q * l.rate, 0) : 0, gst = sub * GST, d = new Date();
-    const no = `PBL-${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}-${Math.floor(1000 + Math.random() * 9000)}`;
-    const fd = x => x.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+  // live quote beside the 3D floor: re-rendered whenever the layout or the state changes
+  const quoteEl = $('#liveQuote'), qDate = new Date();
+  const qNo = `PBL-${qDate.getFullYear()}${String(qDate.getMonth() + 1).padStart(2, '0')}${String(qDate.getDate()).padStart(2, '0')}-${Math.floor(1000 + Math.random() * 9000)}`;
+  let preparedFor = '';
+  function renderQuote() {
+    const L = lines(), priced = L.length && L.every(l => l.rate), sub = priced ? L.reduce((a, l) => a + l.q * l.rate, 0) : 0, gst = sub * GST;
     const rate = l => priced ? inr(l.rate) : 'On request', amt = l => priced ? inr(l.q * l.rate) : '';
-    dlg.innerHTML = `<div class="doc">
-      <div class="doc-top"><div><div class="wm">PROBODYLINE</div><div style="color:#666;font-size:12px;margin-top:4px">Creative Enterprises<br>F-1293, Phase-3, RIICO Industrial Area, Sitapura, Jaipur 302022</div></div>
-      <div class="t"><b>${priced ? 'Proforma invoice' : 'Quotation request'}</b><span style="font-family:var(--mono)">${no}</span><br><span style="color:#666;font-size:12px">${fd(d)}</span></div></div>
-      <div class="doc-meta"><div><small>Prepared for</small><input value="" placeholder="Your gym or company name" aria-label="Prepared for"></div><div><small>Project</small><b style="font-size:15px">${PLAN.kind[0].toUpperCase() + PLAN.kind.slice(1)} gym, ${PLAN.sqft.toLocaleString('en-IN')} sq ft, ${region}</b></div></div>
-      <table><thead><tr><th>#</th><th>Item</th><th class="r">Qty</th><th class="r">Rate</th><th class="r">Amount</th></tr></thead>
-      <tbody>${L.map((l, i) => `<tr><td>${i + 1}</td><td>${PRODUCTS[l.k].name}<br><small style="color:#777">${PRODUCTS[l.k].cat}</small></td><td class="r">${l.q}</td><td class="r">${rate(l)}</td><td class="r">${amt(l)}</td></tr>`).join('')}
-      <tr><td>${L.length + 1}</td><td>Delivery, installation and floor layout</td><td class="r">1</td><td class="r">${priced ? 'Included' : 'On request'}</td><td class="r"></td></tr></tbody>
-      ${priced ? `<tfoot><tr><td colspan="4" class="r">Subtotal</td><td class="r">${inr(sub)}</td></tr><tr><td colspan="4" class="r">GST at ${Math.round(GST * 100)}%</td><td class="r">${inr(gst)}</td></tr><tr class="tot"><td colspan="4" class="r">Total</td><td class="r">${inr(sub + gst)}</td></tr></tfoot>` : `<tfoot><tr class="tot"><td colspan="2">Total machines</td><td class="r">${L.reduce((a, l) => a + l.q, 0)}</td><td colspan="2"></td></tr></tfoot>`}</table>
+    quoteEl.innerHTML = `<div class="doc">
+      <div class="doc-top"><div><div class="wm">PROBODYLINE</div><div class="doc-addr">Creative Enterprises<br>F-1293, Phase-3, RIICO Industrial Area, Sitapura, Jaipur 302022</div></div>
+      <div class="t"><b>${priced ? 'Proforma invoice' : 'Quotation request'}</b><span class="doc-no">${qNo}</span><span class="doc-date">${qDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span></div></div>
+      <div class="doc-meta"><div><small>Prepared for</small><input id="qFor" value="${preparedFor.replace(/"/g, '&quot;')}" placeholder="Your gym or company name" aria-label="Prepared for"></div><div><small>Project</small><b>${PLAN.kind[0].toUpperCase() + PLAN.kind.slice(1)} gym, ${PLAN.sqft.toLocaleString('en-IN')} sq ft, ${region}</b></div></div>
+      <table><thead><tr><th>#</th><th>Item</th><th class="r">Qty</th><th class="r">Rate</th>${priced ? '<th class="r">Amount</th>' : ''}</tr></thead>
+      <tbody>${L.map((l, i) => `<tr><td>${i + 1}</td><td>${PRODUCTS[l.k].name}<small>${PRODUCTS[l.k].cat}</small></td><td class="r">${l.q}</td><td class="r">${rate(l)}</td>${priced ? `<td class="r">${amt(l)}</td>` : ''}</tr>`).join('')}
+      <tr><td>${L.length + 1}</td><td>Delivery, installation and floor layout</td><td class="r">1</td><td class="r">${priced ? 'Included' : 'On request'}</td>${priced ? '<td></td>' : ''}</tr></tbody>
+      ${priced ? `<tfoot><tr><td colspan="4" class="r">Subtotal</td><td class="r">${inr(sub)}</td></tr><tr><td colspan="4" class="r">GST at ${Math.round(GST * 100)}%</td><td class="r">${inr(gst)}</td></tr><tr class="tot"><td colspan="4" class="r">Total</td><td class="r">${inr(sub + gst)}</td></tr></tfoot>` : `<tfoot><tr class="tot"><td colspan="2">Total machines</td><td class="r">${L.reduce((a, l) => a + l.q, 0)}</td><td></td></tr></tfoot>`}</table>
       <p class="fine">${priced ? `Prices include delivery and installation. GST at ${Math.round(GST * 100)}% applies.` : 'Models, prices and delivery dates are confirmed by the sales desk.'} Sales desk for ${region}: ${desk().show}.</p>
-    </div>
-    <div class="doc-actions"><button class="btn btn-ghost" style="color:var(--ink)" data-x="close">Close</button><button class="btn btn-ghost" style="color:var(--ink)" data-x="print"><i class="ph ph-printer"></i>Print or save PDF</button><a class="btn btn-primary" target="_blank" rel="noopener" href="${waLink(`Hi Probodyline, please quote request ${no}: ` + L.map(l => `${l.q} x ${PRODUCTS[l.k].short}`).join(', ') + ` for a ${PLAN.kind} gym of ${PLAN.sqft} sq ft in ${region}.`)}"><i class="ph ph-whatsapp-logo"></i>Send to sales</a></div>`;
-    dlg.showModal();
-  });
-  dlg.addEventListener('click', e => { const x = e.target.closest('[data-x]'); if (e.target === dlg || (x && x.dataset.x === 'close')) dlg.close(); if (x && x.dataset.x === 'print') print(); });
+    </div>`;
+    $('#qFor').addEventListener('input', e => { preparedFor = e.target.value; });
+    // flash the rows that changed so the live update is visible
+    if (!RM) gsap.fromTo(quoteEl.querySelectorAll('tbody td.r:nth-child(3), tfoot td'), { color: '#b39700' }, { color: '#141414', duration: .9, ease: 'power2.out' });
+    $('#wa').href = waLink(`Hi Probodyline, please quote request ${qNo}${preparedFor ? ` for ${preparedFor}` : ''}: ` + L.map(l => `${l.q} x ${PRODUCTS[l.k].short}`).join(', ') + ` for a ${PLAN.kind} gym of ${PLAN.sqft} sq ft in ${region}.`);
+  }
+  document.addEventListener('plan', renderQuote); listeners.push(renderQuote); renderQuote();
+  $('#quotePrint').addEventListener('click', () => { document.body.classList.add('print-quote'); print(); document.body.classList.remove('print-quote'); });
 }
 
 /* ---------------------------------------------------------------- showroom visit booking */
