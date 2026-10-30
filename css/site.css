@@ -870,3 +870,24 @@ p{text-wrap:pretty}
 .s-head{max-width:880px}
 .s-head h2{font-size:clamp(36px,4.4vw,68px);line-height:1.04}
 .how-copy h2{font-size:clamp(36px,4.4vw,68px);line-height:1.04}
+
+/* ---------------------------------------------------------------- subpages v4 */
+.page-hero h1{font-size:clamp(44px,5.4vw,88px);line-height:1.02;max-width:16ch}
+.page-hero .sub{max-width:52ch}
+.page-hero.media{min-height:88dvh}
+.map{width:100%;aspect-ratio:16/10;border:1px solid var(--line);border-radius:var(--radius);filter:grayscale(.6) invert(.92) hue-rotate(180deg) contrast(.9)}
+.case .phm.shot,.quote .phm.shot,.timeline .phm.shot{margin:0}
+.case .phm.shot img,.quote .phm.shot img,.timeline .phm.shot img{transition:transform 1s var(--ease)}
+.case:hover .phm.shot img{transform:scale(1.04)}
+
+/* home hero: scroll hint, hidden once the visitor starts scrolling */
+.scroll-hint{position:absolute;left:50%;bottom:28px;z-index:5;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--ink);text-shadow:0 2px 16px rgba(0,0,0,.6);pointer-events:none;transition:opacity .5s,transform .5s}
+.scroll-hint i{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:1px solid var(--line-2);background:rgba(14,15,17,.5);backdrop-filter:blur(6px);font-size:18px;color:var(--accent)}
+.scroll-hint.gone{opacity:0;transform:translate(-50%,12px)}
+@media (prefers-reduced-motion:no-preference){.scroll-hint i{animation:hintBob 1.8s var(--ease) infinite}}
+@keyframes hintBob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+.scroll-hint-inline{display:none;align-items:center;gap:10px;margin-top:18px;font-size:14px;font-weight:500;color:var(--muted);transition:opacity .5s}
+.scroll-hint-inline i{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;border:1px solid var(--line-2);color:var(--accent)}
+@media (prefers-reduced-motion:no-preference){.scroll-hint-inline i{animation:hintBob 1.8s var(--ease) infinite}}
+.scroll-hint-inline.gone{opacity:0}
+@media (max-width:1023px){.scroll-hint{display:none}.scroll-hint-inline{display:flex}}

@@ -129,3 +129,6 @@ $('#bigmark') && gsap.to('#bigmark', { '--fill': '100%', ease: 'none', scrollTri
 if (!RM) document.addEventListener('pointerdown', e => { const b = e.target.closest('.chip, .rail button, .tabs button, .slots button, .cal button, .sw button'); if (b) gsap.fromTo(b, { scale: .96 }, { scale: 1, duration: .35, ease: 'power3.out' }); });
 
 ScrollTrigger.refresh();
+
+/* ---------------------------------------------------------------- home: scroll hint fades once the flight starts */
+{ const hints = $$('.scroll-hint, .scroll-hint-inline'); if (hints.length) ScrollTrigger.create({ trigger: document.body, start: 'top -40', onEnter: () => hints.forEach(h => h.classList.add('gone')), onLeaveBack: () => hints.forEach(h => h.classList.remove('gone')) }); }
