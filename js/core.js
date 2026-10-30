@@ -366,6 +366,11 @@ const SR={
 {const bt=canvasTex(64,256,(g,w,h)=>{g.fillStyle='#111112';g.fillRect(0,0,w,h);g.fillStyle='#202022';for(let y=0;y<h;y+=16)g.fillRect(0,y,w,5);});bt.wrapS=bt.wrapT=THREE.RepeatWrapping;bt.repeat.set(1,6);SR.belt=new THREE.MeshStandardMaterial({map:bt,roughness:.85});}
 
 // text textures redraw once the brand font is ready
+// the real Probodyline logo, drawn into 3D signs once it has loaded
+const logoImg=new Image(); logoImg.src='assets/logo-white.svg';
+const logoReady=logoImg.decode().catch(()=>{});
+function drawLogo(g,cx,cy,h){ if(!logoImg.naturalWidth) return; const w=h*1624/400; g.drawImage(logoImg,cx-w/2,cy-h/2,w,h); }
+function logoTex(w,h,draw){ const t=canvasTex(w,h,draw); logoReady.then(()=>{ const g=t.image.getContext('2d'); g.clearRect(0,0,w,h); draw(g,w,h); t.needsUpdate=true; }); return t; }
 function textTex(w,h,draw){const t=canvasTex(w,h,draw);document.fonts.ready.then(()=>{draw(t.image.getContext('2d'),w,h);t.needsUpdate=true;});return t;}
 
 // merge a modelled product into one geometry per material, then instance it
@@ -480,12 +485,12 @@ const fwMat=new THREE.MeshStandardMaterial({color:0x26272a,roughness:.8,side:THR
 [[-7.5,9],[7.5,9]].forEach(([x,w])=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(w,6.2),fwMat);m.position.set(x,3.1,10);hs.add(m);});
 const lintel=new THREE.Mesh(new THREE.PlaneGeometry(6,2.2),fwMat);lintel.position.set(0,5.1,10);hs.add(lintel);
 [[-3,2,.1,4],[3,2,.1,4],[0,4,6.1,.1]].forEach(([x,y,w,h])=>hs.add(new THREE.Mesh(new THREE.BoxGeometry(w,h,.12),SR.alu).translateX(x).translateY(y).translateZ(10)));
-const outSign=textTex(2048,256,(g,W,H)=>{g.clearRect(0,0,W,H);g.fillStyle='#fff';g.font='800 190px Archivo, sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('PROBODYLINE',W/2,H/2+10);});
+const outSign=logoTex(2048,256,(g,W,H)=>drawLogo(g,W/2,H/2,H*.92));
 const os=new THREE.Mesh(new THREE.PlaneGeometry(5.6,.7),new THREE.MeshBasicMaterial({map:outSign,transparent:true,color:new THREE.Color(2.4,2.4,2.4)}));os.position.set(0,5.25,10.03);hs.add(os);
 // end wall brand
 const endMat=new THREE.MeshStandardMaterial({color:0x1a1b1e,roughness:.8});
 const endWall=new THREE.Mesh(new THREE.PlaneGeometry(FW,6.2),endMat);endWall.position.set(0,3.1,FZ-FL/2+.01);hs.add(endWall);
-const endTex=textTex(2048,512,(g,W,H)=>{g.clearRect(0,0,W,H);g.fillStyle='#fff';g.font='800 300px Archivo, sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('PROBODYLINE',W/2,H/2-30);g.font='600 64px Archivo, sans-serif';g.fillStyle='#b9c6ff';g.fillText('IF IT’S UNIQUE, IT’S PROBODYLINE',W/2,H/2+170);});
+const endTex=logoTex(2048,512,(g,W,H)=>{drawLogo(g,W/2,H/2-40,330);g.font='600 64px Archivo, sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillStyle='#ffe31a';g.fillText('IF IT’S UNIQUE, IT’S PROBODYLINE',W/2,H/2+190);});
 const et=new THREE.Mesh(new THREE.PlaneGeometry(14,3.5),new THREE.MeshBasicMaterial({map:endTex,transparent:true,color:new THREE.Color(1.25,1.25,1.25)}));et.position.set(0,3.4,FZ-FL/2+.05);hs.add(et);
 // lighting rigs, aisle lines, pillars
 [-8,-4,0,4,8].forEach(x=>{const s=new THREE.Mesh(new THREE.BoxGeometry(.07,.03,FL-4),SR.led);s.position.set(x,6.16,FZ);hs.add(s);});
@@ -640,7 +645,7 @@ function altFrame(dt){ if(cur==='press') return; const g=ALT[cur]; if(!g) return
   if(cur==='treadmill'){const v=on?st.speed:0; SR.belt.map.offset.y-=v/3.6*dt/.27; runKm+=v/3600*dt; $('#roSpeed').textContent=v.toFixed(1); $('#roDist').textContent=runKm.toFixed(2);}
   if(cur==='bike'){const r=on?st.rpm:0; g.userData.flywheel.rotation.x-=r/60*Math.PI*2*dt*2.6; g.userData.crank.rotation.x-=r/60*Math.PI*2*dt; $('#roRpm').textContent=r; $('#roWatt').textContent=Math.round(r*r*.028);}
 }
-window.PBL={flight:()=>fp,walk:()=>walkP,hall:{scene:hs,cam:hcam},studio:{machine,levers,st,seat,back,foot,ms,mcam,controls,get cur(){return cur},get obj(){return cur==='press'?machine:ALT[cur]}},THREE,gsap,ScrollTrigger,OrbitControls,RoomEnvironment,M,SR,BAKED,PRODUCTS,MAKERS,RM,canvasTex,
+window.PBL={flight:()=>fp,walk:()=>walkP,hall:{scene:hs,cam:hcam},studio:{machine,levers,st,seat,back,foot,ms,mcam,controls,get cur(){return cur},get obj(){return cur==='press'?machine:ALT[cur]}},THREE,gsap,ScrollTrigger,OrbitControls,RoomEnvironment,M,SR,BAKED,PRODUCTS,MAKERS,RM,canvasTex,logoTex,drawLogo,
   showProduct(key){setProduct(key);document.getElementById('machine').scrollIntoView({behavior:RM?'auto':'smooth'});}};
 
 /* ================= loop ================= */

@@ -970,3 +970,16 @@ p{text-wrap:pretty}
 .ld-line{display:none}
 @media (max-width:640px){.ld-bar{zoom:.62}}
 @media (prefers-reduced-motion:reduce){.pl,.ld-bar{transition:none}}
+
+/* ---------------------------------------------------------------- the Probodyline logo (traced from the official mark), coloured by the text colour around it */
+.logo{display:inline-block;vertical-align:middle;height:var(--lh,30px);aspect-ratio:1624/400;background:currentColor;-webkit-mask:url(../assets/logo.svg) center/contain no-repeat;mask:url(../assets/logo.svg) center/contain no-repeat}
+.nav .wordmark{--lh:34px;display:inline-flex;align-items:center;line-height:1}
+.foot-brand .wordmark{--lh:48px;display:inline-block}
+.curtain .wordmark{--lh:64px}
+.ld-mark{line-height:0}
+.ld-mark .logo{--lh:clamp(44px,6vw,72px);color:var(--ink)}
+@media (prefers-reduced-motion:no-preference){.ld-mark .logo{animation:ldRise .6s cubic-bezier(.4,0,.2,1) both .1s}}
+.doc-top .wm{line-height:0}.doc-top .wm .logo{--lh:40px}
+#liveQuote .doc-top .wm .logo{--lh:32px}
+.plate .wm{line-height:0}.plate .wm .logo{--lh:22px}
+@media (max-width:760px){.nav .wordmark{--lh:28px}}

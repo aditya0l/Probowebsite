@@ -397,7 +397,7 @@ if ($('#ba')) {
   for (let x = -6; x <= 6; x += 3) { const l = new THREE.Mesh(new THREE.BoxGeometry(.08, .03, RL - 1), led); l.position.set(x, 4.17, 0); fit.add(l); }
   const stripe = new THREE.Mesh(new THREE.PlaneGeometry(RW, .08), new THREE.MeshBasicMaterial({ color: new THREE.Color(.5, .8, 3) })); stripe.position.set(0, 3.2, -RL / 2 + .03); fit.add(stripe);
   const mirror = new THREE.Mesh(new THREE.PlaneGeometry(RL - 2, 2.2), new THREE.MeshStandardMaterial({ color: 0x9aa2b0, metalness: 1, roughness: .05 })); mirror.rotation.y = Math.PI / 2; mirror.position.set(-RW / 2 + .03, 1.4, 0); fit.add(mirror);
-  const brand = canvasTex(2048, 256, (g, Wd, Hd) => { g.fillStyle = '#fff'; g.font = '800 180px Archivo, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('PROBODYLINE', Wd / 2, Hd / 2 + 8); });
+  const brand = P.logoTex(2048, 256, (g, Wd, Hd) => P.drawLogo(g, Wd / 2, Hd / 2, Hd * .92));
   const bp = new THREE.Mesh(new THREE.PlaneGeometry(6, .75), new THREE.MeshBasicMaterial({ map: brand, transparent: true, color: new THREE.Color(1.3, 1.3, 1.3) })); bp.position.set(2.2, 3.65, -RL / 2 + .04); fit.add(bp);
   const put = (k, x, z, ry = 0) => { const g = productMesh(k); g.position.set(x, 0, z); g.rotation.y = ry; fit.add(g); };
   for (let i = 0; i < 6; i++) put('treadmill', -5.6 + i * 1.15, -4.6, 0);
@@ -445,7 +445,7 @@ if ($('#planView')) {
   const vinylM = new THREE.MeshStandardMaterial({ map: vinyl, roughness: .45 });
   const pads = Array.from({ length: 8 }, () => { const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), vinylM); m.rotation.x = -Math.PI / 2; m.position.y = .004; m.receiveShadow = true; m.visible = false; scene.add(m); return m; });
   const wB = new THREE.Mesh(new THREE.BoxGeometry(1, 2.6, .15), wallM), wL = new THREE.Mesh(new THREE.BoxGeometry(.15, 2.6, 1), wallM); [wB, wL].forEach(w => { w.castShadow = w.receiveShadow = true; scene.add(w); });
-  const brand = canvasTex(2048, 256, (g, Wd, Hd) => { g.fillStyle = '#fff'; g.font = '800 170px Archivo, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('PROBODYLINE', Wd / 2, Hd / 2 + 8); });
+  const brand = P.logoTex(2048, 256, (g, Wd, Hd) => P.drawLogo(g, Wd / 2, Hd / 2, Hd * .92));
   const brandP = new THREE.Mesh(new THREE.PlaneGeometry(1, .125), new THREE.MeshBasicMaterial({ map: brand, transparent: true })); scene.add(brandP);
   const edge = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([V(-.5, 0, -.5), V(.5, 0, -.5), V(.5, 0, .5), V(-.5, 0, .5)]), new THREE.LineBasicMaterial({ color: 0xffe31a, transparent: true, opacity: .6 })); edge.position.y = .01; scene.add(edge);
   const zoneTex = t => canvasTex(512, 96, (g, Wd, Hd) => { g.fillStyle = 'rgba(255,227,26,.85)'; g.font = '700 54px Archivo, sans-serif'; g.textBaseline = 'middle'; g.fillText(t, 8, Hd / 2); });
@@ -534,7 +534,7 @@ if ($('#planView')) {
     const L = lines(), priced = L.length && L.every(l => l.rate), sub = priced ? L.reduce((a, l) => a + l.q * l.rate, 0) : 0, gst = sub * GST;
     const rate = l => priced ? inr(l.rate) : 'On request', amt = l => priced ? inr(l.q * l.rate) : '';
     quoteEl.innerHTML = `<div class="doc">
-      <div class="doc-top"><div><div class="wm">PROBODYLINE</div><div class="doc-addr">Creative Enterprises<br>F-1293, Phase-3, RIICO Industrial Area, Sitapura, Jaipur 302022</div></div>
+      <div class="doc-top"><div><div class="wm"><span class="logo" role="img" aria-label="Pro Bodyline Fitness"></span></div><div class="doc-addr">Creative Enterprises<br>F-1293, Phase-3, RIICO Industrial Area, Sitapura, Jaipur 302022</div></div>
       <div class="t"><b>${priced ? 'Proforma invoice' : 'Quotation request'}</b><span class="doc-no">${qNo}</span><span class="doc-date">${qDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span></div></div>
       <div class="doc-meta"><div><small>Prepared for</small><input id="qFor" value="${preparedFor.replace(/"/g, '&quot;')}" placeholder="Your gym or company name" aria-label="Prepared for"></div><div><small>Project</small><b>${PLAN.kind[0].toUpperCase() + PLAN.kind.slice(1)} gym, ${PLAN.sqft.toLocaleString('en-IN')} sq ft, ${region}</b></div></div>
       <table><thead><tr><th>#</th><th>Item</th><th class="r">Qty</th><th class="r">Rate</th>${priced ? '<th class="r">Amount</th>' : ''}</tr></thead>
