@@ -317,7 +317,7 @@ if ($('#map')) {
       }` });
   const plane = new THREE.Mesh(new THREE.PlaneGeometry(W, H), mapMat); plane.rotation.x = -Math.PI / 2; scene.add(plane);
   const grid = new THREE.GridHelper(Math.max(W, H) * 1.4, 36, 0x1a2240, 0x10141f); grid.position.y = -.01; scene.add(grid);
-  const glowTex = canvasTex(128, 128, (g) => { const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64); gr.addColorStop(0, 'rgba(142,165,255,.9)'); gr.addColorStop(1, 'rgba(142,165,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); });
+  const glowTex = canvasTex(128, 128, (g) => { const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64); gr.addColorStop(0, 'rgba(255,227,26,.9)'); gr.addColorStop(1, 'rgba(255,227,26,0)'); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); });
   const pillarGeo = new THREE.CylinderGeometry(.045, .045, 1, 16).translate(0, .5, 0);
   const pillarMat = new THREE.MeshBasicMaterial({ color: 0x5b7cff }), hotMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
   const hitGeo = new THREE.CylinderGeometry(.18, .18, 1, 8).translate(0, .5, 0), hitMat = new THREE.MeshBasicMaterial({ visible: false });
@@ -428,13 +428,13 @@ if ($('#planView')) {
   scene.add(new THREE.HemisphereLight(0xfff2e2, 0x1a1c20, .5));
   const cam = new THREE.OrthographicCamera(-10, 10, 10, -10, .1, 400); let viewSize = 20;
   const ctl = new OrbitControls(cam, canvas); ctl.enableDamping = true; ctl.enablePan = false; ctl.enableZoom = false; ctl.minPolarAngle = .5; ctl.maxPolarAngle = 1.15;
-  const rub = canvasTex(512, 512, (g, Wd) => { g.fillStyle = '#2a2b2f'; g.fillRect(0, 0, Wd, Wd); for (let i = 0; i < 9000; i++) { g.fillStyle = Math.random() < .07 ? 'rgba(2,151,222,.45)' : Math.random() < .5 ? 'rgba(90,92,98,.55)' : 'rgba(20,21,24,.55)'; g.fillRect(Math.random() * Wd, Math.random() * Wd, 2, 2); } g.strokeStyle = '#18191c'; g.lineWidth = 3; g.strokeRect(0, 0, Wd, Wd); });
+  const rub = canvasTex(512, 512, (g, Wd) => { g.fillStyle = '#2a2b2f'; g.fillRect(0, 0, Wd, Wd); for (let i = 0; i < 9000; i++) { g.fillStyle = Math.random() < .07 ? 'rgba(255,227,26,.35)' : Math.random() < .5 ? 'rgba(90,92,98,.55)' : 'rgba(20,21,24,.55)'; g.fillRect(Math.random() * Wd, Math.random() * Wd, 2, 2); } g.strokeStyle = '#18191c'; g.lineWidth = 3; g.strokeRect(0, 0, Wd, Wd); });
   rub.wrapS = rub.wrapT = THREE.RepeatWrapping;
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshStandardMaterial({ map: rub, roughness: .85 })); floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
   const wallM = new THREE.MeshStandardMaterial({ color: 0x24262b, roughness: .85 });
   // a real gym floor: mirrors on the side wall, a lit cove along the top and light vinyl under the cardio row
   const mirror = new THREE.Mesh(new THREE.PlaneGeometry(1, 1.9), new THREE.MeshStandardMaterial({ color: 0xc9d2da, metalness: 1, roughness: .06, envMapIntensity: 1.4 })); mirror.rotation.y = Math.PI / 2; scene.add(mirror);
-  const ledM = new THREE.MeshBasicMaterial({ color: 0x2fb4ff, toneMapped: false });
+  const ledM = new THREE.MeshBasicMaterial({ color: 0xffe31a, toneMapped: false });
   const ledB = new THREE.Mesh(new THREE.BoxGeometry(1, .06, .06), ledM), ledL = new THREE.Mesh(new THREE.BoxGeometry(.06, .06, 1), ledM); scene.add(ledB, ledL);
   const vinyl = canvasTex(512, 512, (g, Wd) => { g.fillStyle = '#56595f'; g.fillRect(0, 0, Wd, Wd); for (let y = 0; y < Wd; y += 64) { g.fillStyle = `rgba(${y % 128 ? '255,255,255,.04' : '0,0,0,.06'})`; g.fillRect(0, y, Wd, 64); g.fillStyle = 'rgba(0,0,0,.35)'; g.fillRect(0, y, Wd, 2); g.fillRect(((y / 64) % 3) * 170, y, 2, 64); } });
   vinyl.wrapS = vinyl.wrapT = THREE.RepeatWrapping;
@@ -448,7 +448,7 @@ if ($('#planView')) {
   const brand = canvasTex(2048, 256, (g, Wd, Hd) => { g.fillStyle = '#fff'; g.font = '800 170px Archivo, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('PROBODYLINE', Wd / 2, Hd / 2 + 8); });
   const brandP = new THREE.Mesh(new THREE.PlaneGeometry(1, .125), new THREE.MeshBasicMaterial({ map: brand, transparent: true })); scene.add(brandP);
   const edge = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([V(-.5, 0, -.5), V(.5, 0, -.5), V(.5, 0, .5), V(-.5, 0, .5)]), new THREE.LineBasicMaterial({ color: 0xffe31a, transparent: true, opacity: .6 })); edge.position.y = .01; scene.add(edge);
-  const zoneTex = t => canvasTex(512, 96, (g, Wd, Hd) => { g.fillStyle = 'rgba(142,165,255,.85)'; g.font = '700 54px Archivo, sans-serif'; g.textBaseline = 'middle'; g.fillText(t, 8, Hd / 2); });
+  const zoneTex = t => canvasTex(512, 96, (g, Wd, Hd) => { g.fillStyle = 'rgba(255,227,26,.85)'; g.font = '700 54px Archivo, sans-serif'; g.textBaseline = 'middle'; g.fillText(t, 8, Hd / 2); });
   const zoneLbl = ['FREE WEIGHTS', 'STRENGTH', 'CARDIO'].map(t => { const m = new THREE.Mesh(new THREE.PlaneGeometry(2.4, .45), new THREE.MeshBasicMaterial({ map: zoneTex(t), transparent: true, depthWrite: false })); m.rotation.x = -Math.PI / 2; scene.add(m); return m; });
   const CAP = 140, INST = {};
   Object.keys(BAKED).forEach(k => { const grp = new THREE.Group(); scene.add(grp); INST[k] = { grp, ims: BAKED[k].map(({ geo, mat }) => { const im = new THREE.InstancedMesh(geo, mat, CAP); im.count = 0; im.castShadow = im.receiveShadow = !mat.isMeshBasicMaterial; im.frustumCulled = false; grp.add(im); return im; }) }; });
