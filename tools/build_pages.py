@@ -21,13 +21,13 @@ HEAD = """<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title} | Probodyline</title>
 <meta name="description" content="{desc}">
-<meta name="theme-color" content="#0b0c0d">
+<meta name="theme-color" content="#02070a">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/icon-180.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Instrument+Serif:ital@0;1&family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 <link rel="stylesheet" href="css/site.css">
 <script type="importmap">

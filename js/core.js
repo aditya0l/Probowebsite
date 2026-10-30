@@ -90,7 +90,7 @@ es.add(new THREE.Mesh(new THREE.SphereGeometry(1.15,96,96),new THREE.ShaderMater
 
 const jv=ll2v(JAIPUR.lat,JAIPUR.lon,1.0);
 const pin=new THREE.Group(); pin.position.copy(jv); pin.lookAt(jv.clone().multiplyScalar(2)); es.add(pin);
-const accent=new THREE.Color(0x8ea5ff);
+const accent=new THREE.Color(0x4cbcf2);
 const pinDot=new THREE.Mesh(new THREE.CircleGeometry(.005,32),new THREE.MeshBasicMaterial({color:0xffffff}));pinDot.position.z=.0015;pin.add(pinDot);
 const pinRing=new THREE.Mesh(new THREE.RingGeometry(.009,.011,64),new THREE.MeshBasicMaterial({color:accent,transparent:true,side:THREE.DoubleSide}));pinRing.position.z=.0015;pin.add(pinRing);
 
@@ -172,7 +172,7 @@ const M={
   rubber:new THREE.MeshStandardMaterial({color:0x0e0e0f,roughness:.92}),
   knob:new THREE.MeshStandardMaterial({color:0xd8311f,roughness:.35,metalness:.1}),
 };
-const blueMat=()=>new THREE.MeshPhysicalMaterial({color:0x1d4ad6,metalness:.45,roughness:.26,clearcoat:1,clearcoatRoughness:.12,emissive:0x2f5cf2,emissiveIntensity:0});
+const blueMat=()=>new THREE.MeshPhysicalMaterial({color:0x1d4ad6,metalness:.45,roughness:.26,clearcoat:1,clearcoatRoughness:.12,emissive:0x0297de,emissiveIntensity:0});
 const V=(x,y,z)=>new THREE.Vector3(x,y,z);
 function bent(pts,r=.07){const path=new THREE.CurvePath();let prev=pts[0].clone();
   for(let i=1;i<pts.length-1;i++){const a=pts[i-1],b=pts[i],c=pts[i+1];const d1=b.clone().sub(a).normalize(),d2=c.clone().sub(b).normalize();const rr=Math.min(r,a.distanceTo(b)/2,b.distanceTo(c)/2);const p1=b.clone().addScaledVector(d1,-rr),p2=b.clone().addScaledVector(d2,rr);path.add(new THREE.LineCurve3(prev,p1));path.add(new THREE.QuadraticBezierCurve3(p1,b,p2));prev=p2;}
@@ -289,7 +289,7 @@ parts.filter(p=>!p.userData.nolabel).forEach(p=>{
 const MAX=.62;
 const st={ang:{L:0,R:0},explode:0,seat:4,mode:'inspect',reps:{L:0,R:0}};
 const peak={L:0,R:0};
-function rep(side){st.reps[side]++;$('#rep'+side).textContent=st.reps[side];gsap.fromTo('#rep'+side,{color:'#8ea5ff'},{color:'#ecebe7',duration:.8});}
+function rep(side){st.reps[side]++;$('#rep'+side).textContent=st.reps[side];gsap.fromTo('#rep'+side,{color:'#4cbcf2'},{color:'#ecebe7',duration:.8});}
 
 // modes
 const HINTS={inspect:'Drag to turn the machine. Set the seat to your height.',train:'Grab either handle and push it up. The arms move independently.',load:'Add plates. Both horns load evenly, and the total updates live.',explode:'Every part, pulled apart. Hover a name to find it.',customise:'Pick the colours and put your gym logo on it. Every option renders live.'};
@@ -478,7 +478,7 @@ const et=new THREE.Mesh(new THREE.PlaneGeometry(14,3.5),new THREE.MeshBasicMater
 for(let z=-4;z>-92;z-=12)[-11.3,11.3].forEach(x=>{const p=new THREE.Mesh(new THREE.BoxGeometry(.7,6.2,.7),SR.concreteCol);p.position.set(x,3.1,z);p.castShadow=p.receiveShadow=true;hs.add(p);});
 // hanging zone signs
 const signDark=new THREE.MeshStandardMaterial({color:0x0d0e10,roughness:.6});
-function sign(text,z){const t=textTex(1024,256,(g,W,H)=>{g.fillStyle='#0d0e10';g.fillRect(0,0,W,H);g.fillStyle='#fff';let fs=150;do{g.font=`800 ${fs}px Archivo, sans-serif`;fs-=6;}while(g.measureText(text).width>W-110&&fs>40);g.textAlign='center';g.textBaseline='middle';g.fillText(text,W/2,H/2+4);g.fillStyle='#2f5cf2';g.fillRect(0,H-16,W,16);});
+function sign(text,z){const t=textTex(1024,256,(g,W,H)=>{g.fillStyle='#0d0e10';g.fillRect(0,0,W,H);g.fillStyle='#fff';let fs=150;do{g.font=`800 ${fs}px Archivo, sans-serif`;fs-=6;}while(g.measureText(text).width>W-110&&fs>40);g.textAlign='center';g.textBaseline='middle';g.fillText(text,W/2,H/2+4);g.fillStyle='#0297de';g.fillRect(0,H-16,W,16);});
   const face=new THREE.MeshBasicMaterial({map:t,color:new THREE.Color(1.5,1.5,1.5)});
   const m=new THREE.Mesh(new THREE.BoxGeometry(4.2,1.05,.08),[signDark,signDark,signDark,signDark,face,signDark]);m.position.set(0,4.55,z);hs.add(m);
   [-1.8,1.8].forEach(x=>{const c=new THREE.Mesh(new THREE.CylinderGeometry(.006,.006,1.1,6),SR.alu);c.position.set(x,5.65,z);hs.add(c);});}

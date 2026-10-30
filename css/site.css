@@ -697,3 +697,92 @@ html.menu-open{overflow:hidden}
 @media (max-width:1000px){.pdp-thumbs{left:12px;bottom:12px}.pdp-thumbs button{width:52px;height:48px}}
 .studio>*,.fit>*,.mus>*,.planner>*,.roi>*,.book>*,.own>*,.split2>*{min-width:0}
 .cmpbar:not(.show){visibility:hidden}
+
+/* =====================================================================
+   Theme v3: Midnight Black, Electric Blue, Cantaloupe Orange
+   Display: Instrument Serif with an italic accent word. Text: Geist. Labels and numbers: Geist Mono.
+   Blue is the one interactive colour; orange only warms the glow and small highlights.
+   ===================================================================== */
+:root{
+  --bg:#02070a; --surface:#06121a; --surface-2:#0b1b25; --line:rgba(206,228,242,.09); --line-2:rgba(206,228,242,.17);
+  --ink:#eef3f6; --muted:#8c9ba6; --accent:#0297de; --accent-ink:#4cbcf2; --warm:#fc734d;
+  --disp:"Instrument Serif",Georgia,serif; --radius:10px;
+  --glow:radial-gradient(60% 55% at 50% 108%,rgba(252,115,77,.34),rgba(252,115,77,0) 70%),radial-gradient(80% 70% at 50% 100%,rgba(2,151,222,.32),rgba(2,151,222,0) 72%);
+}
+::selection{background:var(--accent);color:#fff}
+.display,h1.display,h2.display,.s-head h2,.page-hero h1,.pre-foot h2,.pc h3,.ix h3,.idea h3,.cat h3,.city-card h3,.cal-head b,.tile h3,.sol h3,.case h3,.timeline .yr,.kpis b,.price b,.stickybuy b,.cmp-grid h3,.sheet-head h2,.menu ul a,.mq-set span,.doc-top .t b{
+  font-family:var(--disp);font-weight:400;font-stretch:100%;letter-spacing:-.018em}
+.display{line-height:.98}
+.display em,h1 em,h2 em{font-style:italic;letter-spacing:-.025em;padding-right:.04em}
+.wordmark,#loader .mark,.bigmark,.plate .wm,.doc-top .wm{font-family:"Archivo",system-ui,sans-serif;font-stretch:68%;font-weight:800}
+h1,h2{text-wrap:balance}
+p{text-wrap:pretty}
+
+/* labels: mono with a warm dot, like a product UI */
+.eyebrow,.lab{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.02em;text-transform:none;color:var(--muted);display:inline-flex;align-items:center;gap:8px}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--warm);box-shadow:0 0 12px rgba(252,115,77,.7)}
+.s-head .eyebrow,.hero .eyebrow,.m-head .eyebrow{margin-bottom:6px}
+
+/* buttons: pills */
+.btn{border-radius:999px;font-weight:500}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 8px 30px -8px rgba(2,151,222,.65),inset 0 1px 0 rgba(255,255,255,.22)}
+.btn-primary:hover{background:#13a6ec}
+.btn-ghost{background:rgba(2,7,10,.4);border-color:var(--line-2)}
+.btn-ghost:hover{border-color:var(--ink);background:rgba(206,228,242,.05)}
+.menu-btn,.chip{border-radius:999px}
+.nav.solid{background:rgba(2,7,10,.78)}
+.menu{background:rgba(2,7,10,.95)}
+.pin{background:#010406}
+.actionbar{background:rgba(6,18,26,.94)}
+.nav ul a::after,.progress-bar{background:linear-gradient(90deg,var(--accent),var(--warm))}
+
+/* surfaces */
+.s.tone{background:var(--surface)}
+.s.glow{position:relative;isolation:isolate;overflow:hidden}
+.s.glow::before,.pre-foot::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--glow);pointer-events:none}
+.pre-foot{position:relative;isolation:isolate;background:none}
+.phm{background:radial-gradient(120% 100% at 20% 0%,rgba(2,151,222,.16),transparent 55%),radial-gradient(70% 60% at 85% 110%,rgba(252,115,77,.12),transparent 70%),repeating-linear-gradient(135deg,rgba(255,255,255,.03) 0 1px,transparent 1px 14px),linear-gradient(160deg,#0b1720,#050c11)}
+.phm .phm-cap{font-family:var(--mono);font-size:11.5px}
+.tile{background:radial-gradient(70% 70% at 50% 60%,#11222d,#06121a 75%);border-radius:16px}
+.sol a,.quote,.case .phm,.why,.tiles .tile{border-radius:16px}
+.ix.picked,.idea[aria-pressed=true]{background:#062236}
+.page-hero{isolation:isolate}
+.page-hero:not(.media)::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(50% 60% at 85% 0%,rgba(2,151,222,.22),transparent 70%),radial-gradient(40% 50% at 100% 30%,rgba(252,115,77,.12),transparent 70%)}
+.page-hero.media>.bgm::after{background:linear-gradient(90deg,rgba(2,7,10,.86) 0%,rgba(2,7,10,.35) 55%,rgba(2,7,10,.1) 100%),linear-gradient(180deg,rgba(2,7,10,.5),rgba(2,7,10,0) 30%,rgba(2,7,10,.9))}
+
+/* numbers */
+.kpis b{font-size:clamp(40px,4vw,64px);line-height:1}
+.kpis span{font-family:var(--mono);font-size:12px}
+.mq-set span{font-size:clamp(52px,7.4vw,120px)}
+.mq-set span.o{font-style:italic;color:var(--muted)}
+.mq-set span::after{background:var(--warm);border-radius:50%;width:.12em;height:.12em}
+
+/* home: section heads with the heading left and the lede right */
+.s-head.split-head{max-width:none;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);align-items:end;gap:24px 64px}
+.s-head.split-head>div{display:grid;gap:14px}
+.s-head.split-head>p{padding-bottom:10px}
+@media (max-width:900px){.s-head.split-head{grid-template-columns:1fr}}
+.split2.top{align-items:start}
+.s-head.sticky{position:sticky;top:120px}
+@media (max-width:900px){.s-head.sticky{position:static}}
+
+/* solutions: one lead card, two stacked */
+.sol.asym{grid-template-columns:1.35fr 1fr;grid-template-rows:auto auto}
+.sol.asym>a:first-child{grid-row:span 2}
+.sol.asym>a:first-child .phm{min-height:520px;flex:1}
+.sol.asym>a:not(:first-child) .phm{min-height:200px}
+@media (max-width:900px){.sol.asym{grid-template-columns:1fr}.sol.asym>a:first-child{grid-row:auto}.sol.asym>a:first-child .phm{min-height:320px}}
+
+/* why: numbered editorial list */
+.why-list{list-style:none;border-top:1px solid var(--line)}
+.why-list li{display:grid;grid-template-columns:64px 1fr;gap:20px;padding:34px 0;border-bottom:1px solid var(--line);transition:padding .4s var(--ease)}
+.why-list li:hover{padding-left:10px}
+.why-list span{font-family:var(--mono);font-size:13px;color:var(--warm);padding-top:10px}
+.why-list h3{font-family:var(--disp);font-weight:400;font-size:clamp(30px,3vw,44px);line-height:1}
+.why-list p{color:var(--muted);margin-top:10px;max-width:46ch}
+
+/* testimonials: serif quotes */
+.quote blockquote{font-family:var(--disp);font-size:26px;line-height:1.15;letter-spacing:-.01em}
+.quote cite{font-family:var(--mono);font-size:12px}
+.hero h1{font-size:clamp(52px,7vw,112px)}
+.zone .eyebrow{margin-bottom:10px}
