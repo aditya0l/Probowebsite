@@ -90,7 +90,7 @@ es.add(new THREE.Mesh(new THREE.SphereGeometry(1.15,96,96),new THREE.ShaderMater
 
 const jv=ll2v(JAIPUR.lat,JAIPUR.lon,1.0);
 const pin=new THREE.Group(); pin.position.copy(jv); pin.lookAt(jv.clone().multiplyScalar(2)); es.add(pin);
-const accent=new THREE.Color(0x4cbcf2);
+const accent=new THREE.Color(0xffe31a);
 const pinDot=new THREE.Mesh(new THREE.CircleGeometry(.005,32),new THREE.MeshBasicMaterial({color:0xffffff}));pinDot.position.z=.0015;pin.add(pinDot);
 const pinRing=new THREE.Mesh(new THREE.RingGeometry(.009,.011,64),new THREE.MeshBasicMaterial({color:accent,transparent:true,side:THREE.DoubleSide}));pinRing.position.z=.0015;pin.add(pinRing);
 
@@ -289,7 +289,7 @@ parts.filter(p=>!p.userData.nolabel).forEach(p=>{
 const MAX=.62;
 const st={ang:{L:0,R:0},explode:0,seat:4,mode:'inspect',reps:{L:0,R:0}};
 const peak={L:0,R:0};
-function rep(side){st.reps[side]++;$('#rep'+side).textContent=st.reps[side];gsap.fromTo('#rep'+side,{color:'#4cbcf2'},{color:'#ecebe7',duration:.8});}
+function rep(side){st.reps[side]++;$('#rep'+side).textContent=st.reps[side];gsap.fromTo('#rep'+side,{color:'#ffe31a'},{color:'#ecebe7',duration:.8});}
 
 // modes
 const HINTS={inspect:'Drag to turn the machine. Set the seat to your height.',train:'Grab either handle and push it up. The arms move independently.',load:'Add plates. Both horns load evenly, and the total updates live.',explode:'Every part, pulled apart. Hover a name to find it.',customise:'Pick the colours and put your gym logo on it. Every option renders live.'};

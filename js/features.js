@@ -146,11 +146,11 @@ if ($('#fitView')) {
   [wallB, wallL].forEach(w => { w.receiveShadow = true; scene.add(w); });
   const skirt = new THREE.MeshStandardMaterial({ color: 0xd9d9d6, roughness: .5 });
   const skB = new THREE.Mesh(new THREE.BoxGeometry(1, .08, .02), skirt), skL = new THREE.Mesh(new THREE.BoxGeometry(.02, .08, 1), skirt); scene.add(skB, skL);
-  const edgeMat = new THREE.LineBasicMaterial({ color: 0x4cbcf2, transparent: true, opacity: .55 });
+  const edgeMat = new THREE.LineBasicMaterial({ color: 0xffe31a, transparent: true, opacity: .55 });
   const edge = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([V(-.5, 0, -.5), V(.5, 0, -.5), V(.5, 0, .5), V(-.5, 0, .5)]), edgeMat); edge.position.y = .004; scene.add(edge);
-  const clearMat = new THREE.MeshBasicMaterial({ color: 0x0297de, transparent: true, opacity: .16, depthWrite: false });
+  const clearMat = new THREE.MeshBasicMaterial({ color: 0xffe31a, transparent: true, opacity: .16, depthWrite: false });
   const clearZone = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), clearMat); clearZone.rotation.x = -Math.PI / 2; clearZone.position.y = .006; scene.add(clearZone);
-  const clearEdge = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([V(-.5, 0, -.5), V(.5, 0, -.5), V(.5, 0, .5), V(-.5, 0, .5)]), new THREE.LineDashedMaterial({ color: 0x4cbcf2, dashSize: .08, gapSize: .06 }));
+  const clearEdge = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([V(-.5, 0, -.5), V(.5, 0, -.5), V(.5, 0, .5), V(-.5, 0, .5)]), new THREE.LineDashedMaterial({ color: 0xffe31a, dashSize: .08, gapSize: .06 }));
   clearEdge.computeLineDistances(); clearEdge.position.y = .008; scene.add(clearEdge);
   let piece = null;
   const lbls = ['w', 'l'].map(() => { const d = document.createElement('div'); d.className = 'dimlbl'; stage.append(d); return d; });
@@ -179,7 +179,7 @@ if ($('#fitView')) {
       if (m < CLEAR - .005) { state = 'tight'; b.textContent = 'It fits, but it is tight'; sp.textContent = `Leave ${fmt(CLEAR)} clear on every side to train safely. Move it or rotate it.`; ic.className = 'ph ph-warning-circle'; }
       else { state = 'ok'; b.textContent = 'Fits, with room to train'; sp.textContent = `${fmt(pw)} by ${fmt(pd)} footprint, plus ${fmt(CLEAR)} clear on every side.`; ic.className = 'ph ph-check-circle'; }
     }
-    st.dataset.s = state; clearMat.color.set(state === 'bad' ? 0xff6b5a : state === 'tight' ? 0xe8b86a : 0x0297de); clearEdge.material.color.set(state === 'ok' ? 0x4cbcf2 : state === 'tight' ? 0xe8b86a : 0xff8f80);
+    st.dataset.s = state; clearMat.color.set(state === 'bad' ? 0xff6b5a : state === 'tight' ? 0xe8b86a : 0xffe31a); clearEdge.material.color.set(state === 'ok' ? 0xffe31a : state === 'tight' ? 0xe8b86a : 0xff8f80);
     if (refocus) { ctl.target.set(0, .5, 0); const d = Math.max(w, l) * 1.05 + 1.4; cam.position.set(d * .62, d * .74, d * .86); }
   }
   setFit = key => {
@@ -233,7 +233,7 @@ if ($('#body')) {
   const cam = new THREE.PerspectiveCamera(30, 1, .05, 30); cam.position.set(0, 1.15, 4.4);
   const ctl = new OrbitControls(cam, canvas); ctl.target.set(0, .92, 0); ctl.enableDamping = true; ctl.enablePan = false; ctl.enableZoom = false; ctl.minPolarAngle = 1.2; ctl.maxPolarAngle = 1.75; ctl.autoRotate = !RM; ctl.autoRotateSpeed = 1.1;
   const ground = new THREE.Mesh(new THREE.CircleGeometry(1.2, 64), new THREE.ShadowMaterial({ opacity: .5 })); ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
-  const ring = new THREE.Mesh(new THREE.RingGeometry(.62, .64, 96), new THREE.MeshBasicMaterial({ color: 0x4cbcf2, transparent: true, opacity: .35 })); ring.rotation.x = -Math.PI / 2; ring.position.y = .002; scene.add(ring);
+  const ring = new THREE.Mesh(new THREE.RingGeometry(.62, .64, 96), new THREE.MeshBasicMaterial({ color: 0xffe31a, transparent: true, opacity: .35 })); ring.rotation.x = -Math.PI / 2; ring.position.y = .002; scene.add(ring);
   const base = new THREE.MeshPhysicalMaterial({ color: 0x2c2e34, roughness: .5, metalness: .1, clearcoat: .4, clearcoatRoughness: .4 });
   const body = new THREE.Group(); scene.add(body); const regions = {};
   function add(geo, pos, { sc, rz = 0, rx = 0, m } = {}) {
@@ -265,7 +265,7 @@ if ($('#body')) {
   function paint() {
     for (const [k, R] of Object.entries(regions)) {
       const on = k === sel || (sel === 'cardio' && (k === 'legs' || k === 'glutes'));
-      R.mat.color.set(on ? 0x0297de : k === hov ? 0x4a4e58 : 0x2c2e34); R.mat.emissive.set(on ? 0x1b3ab8 : 0x000000); R.mat.emissiveIntensity = on ? .55 : 0;
+      R.mat.color.set(on ? 0xffe31a : k === hov ? 0x4a4e58 : 0x2c2e34); R.mat.emissive.set(on ? 0x1b3ab8 : 0x000000); R.mat.emissiveIntensity = on ? .55 : 0;
     }
     regions.cardio.mat.opacity = sel === 'cardio' ? 1 : 0;
   }
@@ -332,7 +332,7 @@ if ($('#map')) {
     g.scale.y = .001; g.userData = { h, cap, hit, glow };
     if (i !== 0) {
       const b = g.position, m = jp.clone().lerp(b, .5); m.y = .6 + jp.distanceTo(b) * .18;
-      const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(new THREE.QuadraticBezierCurve3(jp.clone().setY(.02), m, b.clone().setY(.02)).getPoints(48)), new THREE.LineDashedMaterial({ color: 0x4cbcf2, dashSize: .12, gapSize: .1, transparent: true, opacity: .5 }));
+      const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(new THREE.QuadraticBezierCurve3(jp.clone().setY(.02), m, b.clone().setY(.02)).getPoints(48)), new THREE.LineDashedMaterial({ color: 0xffe31a, dashSize: .12, gapSize: .1, transparent: true, opacity: .5 }));
       line.computeLineDistances(); scene.add(line); g.userData.line = line;
     }
     return g;
@@ -447,7 +447,7 @@ if ($('#planView')) {
   const wB = new THREE.Mesh(new THREE.BoxGeometry(1, 2.6, .15), wallM), wL = new THREE.Mesh(new THREE.BoxGeometry(.15, 2.6, 1), wallM); [wB, wL].forEach(w => { w.castShadow = w.receiveShadow = true; scene.add(w); });
   const brand = canvasTex(2048, 256, (g, Wd, Hd) => { g.fillStyle = '#fff'; g.font = '800 170px Archivo, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('PROBODYLINE', Wd / 2, Hd / 2 + 8); });
   const brandP = new THREE.Mesh(new THREE.PlaneGeometry(1, .125), new THREE.MeshBasicMaterial({ map: brand, transparent: true })); scene.add(brandP);
-  const edge = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([V(-.5, 0, -.5), V(.5, 0, -.5), V(.5, 0, .5), V(-.5, 0, .5)]), new THREE.LineBasicMaterial({ color: 0x4cbcf2, transparent: true, opacity: .6 })); edge.position.y = .01; scene.add(edge);
+  const edge = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([V(-.5, 0, -.5), V(.5, 0, -.5), V(.5, 0, .5), V(-.5, 0, .5)]), new THREE.LineBasicMaterial({ color: 0xffe31a, transparent: true, opacity: .6 })); edge.position.y = .01; scene.add(edge);
   const zoneTex = t => canvasTex(512, 96, (g, Wd, Hd) => { g.fillStyle = 'rgba(142,165,255,.85)'; g.font = '700 54px Archivo, sans-serif'; g.textBaseline = 'middle'; g.fillText(t, 8, Hd / 2); });
   const zoneLbl = ['FREE WEIGHTS', 'STRENGTH', 'CARDIO'].map(t => { const m = new THREE.Mesh(new THREE.PlaneGeometry(2.4, .45), new THREE.MeshBasicMaterial({ map: zoneTex(t), transparent: true, depthWrite: false })); m.rotation.x = -Math.PI / 2; scene.add(m); return m; });
   const CAP = 140, INST = {};

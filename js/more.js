@@ -168,12 +168,12 @@ if ($('#roiChart')) {
     const lo = Math.min(...cum, 0), hi = Math.max(...cum, 0), X = m => 56 + m / 36 * 724, Yv = v => 20 + (hi - v) / ((hi - lo) || 1) * 250;
     const line = cum.map((v, m) => `${m ? 'L' : 'M'}${X(m).toFixed(1)},${Yv(v).toFixed(1)}`).join('');
     const z = Yv(0);
-    let svg = `<defs><linearGradient id="rg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#0297de" stop-opacity=".35"/><stop offset="1" stop-color="#0297de" stop-opacity="0"/></linearGradient><clipPath id="above"><rect x="0" y="0" width="800" height="${z}"/></clipPath><clipPath id="below"><rect x="0" y="${z}" width="800" height="300"/></clipPath></defs>`;
+    let svg = `<defs><linearGradient id="rg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ffe31a" stop-opacity=".35"/><stop offset="1" stop-color="#ffe31a" stop-opacity="0"/></linearGradient><clipPath id="above"><rect x="0" y="0" width="800" height="${z}"/></clipPath><clipPath id="below"><rect x="0" y="${z}" width="800" height="300"/></clipPath></defs>`;
     svg += `<path d="${line}L${X(36)},${z}L${X(0)},${z}Z" fill="url(#rg)" clip-path="url(#above)"/><path d="${line}L${X(36)},${z}L${X(0)},${z}Z" fill="rgba(255,143,128,.12)" clip-path="url(#below)"/>`;
     svg += `<line x1="${X(0)}" x2="${X(36)}" y1="${z}" y2="${z}" stroke="rgba(236,235,231,.35)" stroke-dasharray="4 4"/>`;
     [0, 6, 12, 18, 24, 30, 36].forEach(m => svg += `<text x="${X(m)}" y="292" text-anchor="middle">${m}</text>`);
     svg += `<text x="48" y="${Yv(hi) + 4}" text-anchor="end">${money(hi)}</text><text x="48" y="${z + 4}" text-anchor="end">0</text><text x="48" y="${Yv(lo) + 4}" text-anchor="end">${money(lo)}</text>`;
-    svg += `<path d="${line}" fill="none" stroke="#4cbcf2" stroke-width="2.5" stroke-linejoin="round" class="roi-line"/>`;
+    svg += `<path d="${line}" fill="none" stroke="#ffe31a" stroke-width="2.5" stroke-linejoin="round" class="roi-line"/>`;
     if (pay <= 36) svg += `<line x1="${X(pay)}" x2="${X(pay)}" y1="20" y2="270" stroke="#ecebe7" stroke-dasharray="2 4"/><circle cx="${X(pay)}" cy="${z}" r="6" fill="#ecebe7"/><text x="${X(pay) + 10}" y="36" style="fill:#ecebe7">Paid back, month ${pay}</text>`;
     $('#roiChart').innerHTML = svg;
   }
