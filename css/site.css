@@ -811,3 +811,9 @@ p{text-wrap:pretty}
 .pre-foot{position:relative;overflow:hidden;isolation:isolate}
 .pre-foot>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
 .pre-foot>.pf-shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(2,7,10,.9) 0%,rgba(2,7,10,.55) 50%,rgba(2,7,10,.35) 100%),linear-gradient(180deg,rgba(2,7,10,.6),rgba(2,7,10,.2) 40%,rgba(2,7,10,.85))}
+
+/* real photos in the solution cards */
+.phm.shot{margin:0;background:#050c11}
+.phm.shot img{z-index:0;transition:transform 1.2s var(--ease),filter .6s}
+.phm.shot::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(2,7,10,0) 55%,rgba(2,7,10,.55))}
+.sol a:hover .phm.shot img{transform:scale(1.04)}

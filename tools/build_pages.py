@@ -58,6 +58,13 @@ FOOT = """</main>
 """
 
 
+SOL_ALT = {'commercial': 'Plate-loaded strength floor under hexagon lights, fitted out with Probodyline machines', 'home': 'Ellipticals and a Probodyline treadmill in a compact cardio room', 'hotels': 'A bright, clean selectorised strength room fitted by Probodyline', 'studios': 'Rows of spin bikes in a studio with a blue lit ceiling'}
+
+
+def shot(name):
+    return f'<figure class="phm shot"><img src="assets/img/sol/{name}.jpg" alt="{SOL_ALT[name]}" loading="lazy" decoding="async"></figure>'
+
+
 def ph(caption, icon='image', cls='', kind='Photo'):
     return f'<div class="phm {cls}"><div class="phm-cap"><i class="ph ph-{icon}"></i><span><b>{kind}:</b> {caption}</span></div></div>'
 
@@ -166,13 +173,13 @@ P.ScrollTrigger.create({ trigger: '.pdp', start: 'bottom 80px', onEnter: () => s
 ''')
 
 # ------------------------------------------------------------------ solutions
-SOLS = [('commercial-gyms.html', 'Commercial gyms', 'Floors that run all day. Planned in 3D, priced per zone, installed by our team.', 'a busy commercial gym floor'),
-        ('solutions.html#home', 'Home gyms', 'One room, the right three machines, and a footprint that fits.', 'a finished home gym'),
-        ('solutions.html#hotels', 'Hotels and offices', 'Good-looking equipment that guests use and staff never have to fix.', 'a hotel fitness room'),
-        ('solutions.html#studios', 'Studios and boxes', 'Spin rooms, functional rigs and strength corners for group training.', 'a spin studio in session')]
+SOLS = [('commercial-gyms.html', 'Commercial gyms', 'Floors that run all day. Planned in 3D, priced per zone, installed by our team.', 'commercial'),
+        ('solutions.html#home', 'Home gyms', 'One room, the right three machines, and a footprint that fits.', 'home'),
+        ('solutions.html#hotels', 'Hotels and offices', 'Good-looking equipment that guests use and staff never have to fix.', 'hotels'),
+        ('solutions.html#studios', 'Studios and boxes', 'Spin rooms, functional rigs and strength corners for group training.', 'studios')]
 PAGES['solutions'] = dict(title='Gym solutions', desc='Commercial gyms, home gyms, hotels and studios. Planned, supplied and installed by Probodyline.', body=
     hero('One supplier, from plan to opening day.', 'Commercial gyms, home gyms, hotels and studios. We plan the floor, supply every machine and install it.', crumbs((None, 'Solutions')))
-    + '<section class="s" style="padding-top:0"><div class="wrap"><div class="sol" style="grid-template-columns:1fr 1fr">' + ''.join(f'<a href="{h}" id="{h.split("#")[-1] if "#" in h else "commercial"}">{ph(c, "camera")}<div class="sb"><h3>{t}</h3><p>{d}</p></div></a>' for h, t, d, c in SOLS) + '</div></div></section>'
+    + '<section class="s" style="padding-top:0"><div class="wrap"><div class="sol" style="grid-template-columns:1fr 1fr">' + ''.join(f'<a href="{h}" id="{h.split("#")[-1] if "#" in h else "commercial"}">{shot(c)}<div class="sb"><h3>{t}</h3><p>{d}</p></div></a>' for h, t, d, c in SOLS) + '</div></div></section>'
     + '<section class="s tone"><div class="wrap"><div class="s-head"><h2 class="display">How it works.</h2></div><div class="steps"><div><h3>Consult</h3><p>Tell us the space, the members and the budget. Four questions, or a call with your desk.</p></div><div><h3>Plan in 3D</h3><p>We lay out every machine with safe aisles and send you the floor plan.</p></div><div><h3>Deliver and install</h3><p>Our team delivers, assembles and tests every machine on site.</p></div><div><h3>Service</h3><p>Warranty, servicing and spares from the same people who installed it.</p></div></div></div></section>'
     + '<section class="s"><div class="wrap"><div class="s-head"><h2 class="display">Why gyms choose Probodyline.</h2></div><div class="why"><div><i class="ph ph-buildings"></i><h3>A showroom you can visit</h3><p>45,000 sq ft in Jaipur. Train on the machines before you buy them.</p></div><div><i class="ph ph-map-trifold"></i><h3>Desks across India</h3><p>Three regional sales desks, so you talk to someone who knows your city.</p></div><div><i class="ph ph-wrench"></i><h3>Installed by our team</h3><p>Delivery, assembly and testing on site.</p></div><div><i class="ph ph-shield-check"></i><h3>Looked after</h3><p>Warranty, service and spares from one place.</p></div></div></div></section>')
 
