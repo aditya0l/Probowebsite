@@ -787,28 +787,6 @@ p{text-wrap:pretty}
 .hero h1{font-size:clamp(52px,7vw,112px)}
 .zone .eyebrow{margin-bottom:10px}
 
-/* arrival: roof to hall floor in real footage */
-#arrive{position:relative;height:520vh}
-#arrive .pin{background:var(--bg)}
-.av{position:absolute;inset:0;margin:0;overflow:hidden;will-change:transform,clip-path}
-.av video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.av[data-s="1"] video{object-position:50% 38%}
-.av[data-s="1"]{visibility:hidden}.av[data-s="2"]{visibility:hidden}
-.av-shade{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,rgba(2,7,10,.78) 0%,rgba(2,7,10,.3) 45%,rgba(2,7,10,0) 70%),linear-gradient(180deg,rgba(2,7,10,.55) 0%,rgba(2,7,10,0) 22%,rgba(2,7,10,0) 55%,rgba(2,7,10,.9) 100%)}
-.av-shade::after{content:"";position:absolute;inset:auto 0 0;height:45%;background:var(--glow);opacity:.55;mix-blend-mode:screen}
-.av-copy{position:absolute;left:var(--gutter);bottom:clamp(48px,11vh,120px);z-index:3;max-width:640px;opacity:0;text-shadow:0 2px 30px rgba(0,0,0,.55)}
-.av-copy h2{font-size:clamp(52px,7.2vw,120px);margin-top:12px}
-.av-copy p{margin-top:16px;font-size:18px;color:#d3dce2;max-width:460px}
-.av-copy .ctas{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
-.av-rail{position:absolute;right:var(--gutter);top:50%;transform:translateY(-50%);z-index:3;list-style:none;display:grid;gap:22px;font-family:var(--mono);font-size:12px;color:rgba(238,243,246,.4);padding-left:18px}
-.av-rail::before,.av-rail::after{content:"";position:absolute;left:0;top:0;width:1px;height:100%;background:rgba(238,243,246,.18)}
-.av-rail::after{background:linear-gradient(var(--accent),var(--warm));transform-origin:0 0;transform:scaleY(var(--rail,0))}
-.av-rail li{transition:color .4s}
-.av-rail li.on{color:var(--ink)}
-.av-rail b{display:block;font-weight:500;color:var(--warm);opacity:.5;transition:opacity .4s}
-.av-rail li.on b{opacity:1}
-@media (max-width:760px){.av-rail{display:none}.av-copy{right:var(--gutter)}.av-shade{background:linear-gradient(180deg,rgba(2,7,10,.5) 0%,rgba(2,7,10,0) 25%,rgba(2,7,10,.2) 50%,rgba(2,7,10,.94) 100%)}}
-
 /* real footage tiles */
 .phm.reel{margin:0;background:#050c11}
 .phm.reel::before{z-index:0;background:linear-gradient(180deg,rgba(2,7,10,0) 55%,rgba(2,7,10,.8))}
@@ -828,3 +806,8 @@ p{text-wrap:pretty}
 .phm.reel::before{z-index:1;background:linear-gradient(180deg,rgba(2,7,10,0) 50%,rgba(2,7,10,.85))}
 .phm.reel .phm-cap{z-index:2}
 .av-rail{text-shadow:0 1px 12px rgba(0,0,0,.8)}
+
+/* pre-footer: the showroom backdrop behind the closing CTA */
+.pre-foot{position:relative;overflow:hidden;isolation:isolate}
+.pre-foot>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.pre-foot>.pf-shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(2,7,10,.9) 0%,rgba(2,7,10,.55) 50%,rgba(2,7,10,.35) 100%),linear-gradient(180deg,rgba(2,7,10,.6),rgba(2,7,10,.2) 40%,rgba(2,7,10,.85))}
