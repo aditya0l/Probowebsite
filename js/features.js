@@ -422,15 +422,28 @@ if ($('#planView')) {
   const PER = { home: 140, studio: 110, commercial: 105, hotel: 120 };
   const FOOT = { treadmill: [1.15, 2.55], bike: [.95, 1.55], elliptical: [1.0, 2.35], press: [1.85, 2.3], station: [1.55, 2.1], rack: [2.0, 3.3], dumbbells: [3.0, 1.45], bench: [1.0, 1.8] };
   const ZONES = [['dumbbells', 'bench'], ['rack', 'station', 'press'], ['bike', 'elliptical', 'treadmill']];
-  const canvas = $('#planView'), r = renderer(canvas);
-  const scene = new THREE.Scene(); scene.background = new THREE.Color(0x0e0f11); scene.environment = env(r); scene.environmentIntensity = .6;
-  const key = lights(scene, 14, 2.2);
+  const canvas = $('#planView'), r = renderer(canvas); r.toneMappingExposure = 1.15;
+  const scene = new THREE.Scene(); scene.background = new THREE.Color(0x0e0f11); scene.environment = env(r); scene.environmentIntensity = .9;
+  const key = lights(scene, 14, 2.2); key.color.set(0xffe9d2);
+  scene.add(new THREE.HemisphereLight(0xfff2e2, 0x1a1c20, .5));
   const cam = new THREE.OrthographicCamera(-10, 10, 10, -10, .1, 400); let viewSize = 20;
   const ctl = new OrbitControls(cam, canvas); ctl.enableDamping = true; ctl.enablePan = false; ctl.enableZoom = false; ctl.minPolarAngle = .5; ctl.maxPolarAngle = 1.15;
-  const rub = canvasTex(512, 512, (g, Wd) => { g.fillStyle = '#1b1c1f'; g.fillRect(0, 0, Wd, Wd); for (let i = 0; i < 7000; i++) { g.fillStyle = Math.random() < .06 ? 'rgba(80,110,230,.55)' : 'rgba(64,64,70,.55)'; g.fillRect(Math.random() * Wd, Math.random() * Wd, 2, 2); } g.strokeStyle = '#111214'; g.lineWidth = 4; g.strokeRect(0, 0, Wd, Wd); });
+  const rub = canvasTex(512, 512, (g, Wd) => { g.fillStyle = '#2a2b2f'; g.fillRect(0, 0, Wd, Wd); for (let i = 0; i < 9000; i++) { g.fillStyle = Math.random() < .07 ? 'rgba(2,151,222,.45)' : Math.random() < .5 ? 'rgba(90,92,98,.55)' : 'rgba(20,21,24,.55)'; g.fillRect(Math.random() * Wd, Math.random() * Wd, 2, 2); } g.strokeStyle = '#18191c'; g.lineWidth = 3; g.strokeRect(0, 0, Wd, Wd); });
   rub.wrapS = rub.wrapT = THREE.RepeatWrapping;
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshStandardMaterial({ map: rub, roughness: .85 })); floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
-  const wallM = new THREE.MeshStandardMaterial({ color: 0x2a2c31, roughness: .9 });
+  const wallM = new THREE.MeshStandardMaterial({ color: 0x24262b, roughness: .85 });
+  // a real gym floor: mirrors on the side wall, a lit cove along the top and light vinyl under the cardio row
+  const mirror = new THREE.Mesh(new THREE.PlaneGeometry(1, 1.9), new THREE.MeshStandardMaterial({ color: 0xc9d2da, metalness: 1, roughness: .06, envMapIntensity: 1.4 })); mirror.rotation.y = Math.PI / 2; scene.add(mirror);
+  const ledM = new THREE.MeshBasicMaterial({ color: 0x2fb4ff, toneMapped: false });
+  const ledB = new THREE.Mesh(new THREE.BoxGeometry(1, .06, .06), ledM), ledL = new THREE.Mesh(new THREE.BoxGeometry(.06, .06, 1), ledM); scene.add(ledB, ledL);
+  const vinyl = canvasTex(512, 512, (g, Wd) => { g.fillStyle = '#56595f'; g.fillRect(0, 0, Wd, Wd); for (let y = 0; y < Wd; y += 64) { g.fillStyle = `rgba(${y % 128 ? '255,255,255,.04' : '0,0,0,.06'})`; g.fillRect(0, y, Wd, 64); g.fillStyle = 'rgba(0,0,0,.35)'; g.fillRect(0, y, Wd, 2); g.fillRect(((y / 64) % 3) * 170, y, 2, 64); } });
+  vinyl.wrapS = vinyl.wrapT = THREE.RepeatWrapping;
+  const turfT = canvasTex(256, 1024, (g, Wd, Hd) => { g.fillStyle = '#2f6b34'; g.fillRect(0, 0, Wd, Hd); for (let i = 0; i < 6000; i++) { g.fillStyle = Math.random() < .5 ? 'rgba(70,140,70,.5)' : 'rgba(20,60,25,.5)'; g.fillRect(Math.random() * Wd, Math.random() * Hd, 1, 3); } g.fillStyle = 'rgba(255,255,255,.85)'; g.fillRect(0, 0, Wd, 6); g.fillRect(0, Hd - 6, Wd, 6); for (let y = 0; y < Hd; y += 128) g.fillRect(0, y, Wd, 3); });
+  const turf = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshStandardMaterial({ map: turfT, roughness: 1 })); turf.rotation.x = -Math.PI / 2; turf.rotation.z = Math.PI / 2; turf.position.y = .003; turf.receiveShadow = true; scene.add(turf);
+  const slatT = canvasTex(1024, 256, (g, Wd, Hd) => { for (let x = 0; x < Wd; x += 16) { g.fillStyle = `hsl(28,${38 + Math.random() * 10}%,${30 + Math.random() * 8}%)`; g.fillRect(x, 0, 12, Hd); g.fillStyle = '#121212'; g.fillRect(x + 12, 0, 4, Hd); } });
+  const slats = new THREE.Mesh(new THREE.PlaneGeometry(1, 2.2), new THREE.MeshStandardMaterial({ map: slatT, roughness: .7 })); scene.add(slats);
+  const vinylM = new THREE.MeshStandardMaterial({ map: vinyl, roughness: .45 });
+  const pads = Array.from({ length: 8 }, () => { const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), vinylM); m.rotation.x = -Math.PI / 2; m.position.y = .004; m.receiveShadow = true; m.visible = false; scene.add(m); return m; });
   const wB = new THREE.Mesh(new THREE.BoxGeometry(1, 2.6, .15), wallM), wL = new THREE.Mesh(new THREE.BoxGeometry(.15, 2.6, 1), wallM); [wB, wL].forEach(w => { w.castShadow = w.receiveShadow = true; scene.add(w); });
   const brand = canvasTex(2048, 256, (g, Wd, Hd) => { g.fillStyle = '#fff'; g.font = '800 170px Archivo, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('PROBODYLINE', Wd / 2, Hd / 2 + 8); });
   const brandP = new THREE.Mesh(new THREE.PlaneGeometry(1, .125), new THREE.MeshBasicMaterial({ map: brand, transparent: true })); scene.add(brandP);
@@ -476,6 +489,15 @@ if ($('#planView')) {
       if (anim && !RM && list.length) gsap.fromTo(grp.scale, { y: .02 }, { y: 1, duration: .7, delay: ORDER.indexOf(k) * .06, ease: 'back.out(1.6)' });
     });
     floor.scale.set(W, D, 1); rub.repeat.set(W / 1, D / 1);
+    // one vinyl pad under each run of treadmills and cross-trainers
+    const runs = {}; ['treadmill', 'elliptical'].forEach(k => (placed[k] || []).forEach(([x, zz]) => { const [fw, fd] = FOOT[k], r = runs[(zz - fd / 2).toFixed(2)] ??= { x0: 1e9, x1: -1e9, z0: zz - fd / 2, z1: -1e9 }; r.x0 = Math.min(r.x0, x - fw / 2); r.x1 = Math.max(r.x1, x + fw / 2); r.z1 = Math.max(r.z1, zz + fd / 2); }));
+    pads.forEach((m, i) => { const r = Object.values(runs)[i]; m.visible = !!r; if (!r) return; m.scale.set(r.x1 - r.x0 + .6, r.z1 - r.z0 + .6, 1); m.position.x = (r.x0 + r.x1) / 2; m.position.z = (r.z0 + r.z1) / 2; });
+    vinyl.repeat.set(1, 1);
+    // turf lane along the front, wood slats behind the logo
+    turf.scale.set(1.4, W * .62, 1); turf.position.set(-W * .12, .003, D / 2 - 1.1);
+    const sw = Math.min(W * .55, 10); slats.scale.x = sw; slats.position.set(0, 1.25, -D / 2 + .005); brandP.position.z = -D / 2 + .02;
+    mirror.scale.x = D * .8; mirror.position.set(-W / 2 + .01, 1.25, 0);
+    ledB.scale.x = W + .3; ledB.position.set(0, 2.62, -D / 2 - .02); ledL.scale.z = D; ledL.position.set(-W / 2 - .02, 2.62, 0);
     wB.scale.x = W + .3; wB.position.set(0, 1.3, -D / 2 - .075); wL.scale.z = D; wL.position.set(-W / 2 - .075, 1.3, 0);
     brandP.scale.set(Math.min(W * .5, 9), Math.min(W * .5, 9), 1); brandP.position.set(0, 1.9, -D / 2 + .01);
     edge.scale.set(W, 1, D);
