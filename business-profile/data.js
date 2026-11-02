@@ -82,14 +82,6 @@ window.PROFILE = {
       "text": "The probodyline fitness store is an exceptional store with high-quality, durable equipment and helpful customer service."
     },
     {
-      "name": "Ron Dcosta",
-      "meta": "31 reviews · 122 photos",
-      "rating": 1,
-      "when": "a year ago",
-      "likes": 8,
-      "text": "I was very interested in buying their new machines but these people don't sell single machines makes me laugh we have thier brand treadmill still they refuse to sell 1 single machine if they can't sell you a single machine don't expect after sales service of the parts 😂😂😂"
-    },
-    {
       "name": "Kuldeep Gehlawat",
       "meta": "1 review · 2 photos",
       "when": "a year ago",
@@ -125,25 +117,12 @@ window.PROFILE = {
       "text": "Excellent service and high-quality gym machines."
     },
     {
-      "name": "Jayvir Pattani",
-      "meta": "1 review",
-      "when": "2 months ago",
-      "text": "Worst service 3 class equipment, rood staff , Bakavas"
-    },
-    {
       "name": "deepak bhati",
       "meta": "1 review",
       "when": "a year ago",
       "likes": 1,
       "cut": true,
       "text": "Very good service specially by tarun sir and his team their machines and service are excellent thank you to probody line"
-    },
-    {
-      "name": "Utpal Saikia",
-      "meta": "4 reviews · 3 photos",
-      "when": "9 months ago",
-      "likes": 3,
-      "text": "My treadmill’s touchscreen stopped working after 2 years, but they said the touchscreen company is not available / cannot be found."
     },
     {
       "name": "salim shaikh",
@@ -180,18 +159,6 @@ window.PROFILE = {
       "text": "M owner of As fitness centre ajmer road Jaipur all the machinery is in excellent working . Good equipment, excellent supporting staf very good service, technician Azhar is experienced person. Pro body line machine all are good"
     },
     {
-      "name": "sumit kumar",
-      "meta": "21 reviews · 23 photos",
-      "when": "4 years ago",
-      "likes": 10,
-      "cut": true,
-      "text": "Poor after sales service. Price is higher. Except price and service all fine. Descent range of equipment available. Don't give your budget to them first. Tips: First choose your product according to your list, then get ask for price. And",
-      "reply": {
-        "when": "4 years ago",
-        "text": "1st attempt 18-Feb-2022\nPlease provide invoice copy\nPlessr tell us where our after sales service is lacking.\n\nIt is important for client to judge us fairly.\n\nwe provide best service at near zero charges\n\nother companies charge nearly 5 times than us for after sales services.\n\nWe will wait for your reply.\n\nAnd compare price & life of our machines with others.\nAsk existing clients in Patna and Hajipur\nAsk our repeat customers"
-      }
-    },
-    {
       "name": "Saurabh Choyal",
       "meta": "86 reviews · 18 photos",
       "when": "4 years ago",
@@ -207,13 +174,6 @@ window.PROFILE = {
         "when": "a year ago",
         "text": "❤️"
       }
-    },
-    {
-      "name": "Sushil Tiwari",
-      "meta": "1 review",
-      "when": "a year ago",
-      "likes": 5,
-      "text": "Hi I am from Bhilwara pro bodyline company people don't know how to talk, they talk in a abusive manner. So, I would like to say that no one from Rajasthan should order goods from them. 👎👎"
     },
     {
       "name": "Vinay Khandelwal",
