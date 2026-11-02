@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pro Bodyline Fitness | Sitapura, Jaipur</title>
+<meta name="description" content="Pro Bodyline Fitness, India's biggest gym equipment showroom. Address, hours, phone, photos and reviews.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<link rel="stylesheet" href="profile.css">
+</head>
+<body>
+
+<div class="app">
+  <!-- the profile panel -->
+  <main class="panel" id="panel" aria-label="Business profile">
+    <div class="hero" id="hero"></div>
+
+    <header class="head">
+      <h1 id="name"></h1>
+      <div class="rating" id="rating"></div>
+      <p class="cat"><span id="category"></span></p>
+    </header>
+
+    <nav class="tabs" role="tablist" aria-label="Profile sections">
+      <button role="tab" aria-selected="true" data-tab="overview">Overview</button>
+      <button role="tab" aria-selected="false" data-tab="reviews">Reviews</button>
+      <button role="tab" aria-selected="false" data-tab="photos">Photos</button>
+      <button role="tab" aria-selected="false" data-tab="about">About</button>
+    </nav>
+
+    <div class="actions" id="actions"></div>
+
+    <section class="tab" data-panel="overview">
+      <p class="desc" id="desc"></p>
+      <ul class="info" id="info"></ul>
+      <div class="block" id="ovPhotos"></div>
+      <div class="block" id="ovReviews"></div>
+    </section>
+
+    <section class="tab" data-panel="reviews" hidden><div id="reviewsFull"></div></section>
+    <section class="tab" data-panel="photos" hidden><div id="photosFull"></div></section>
+    <section class="tab" data-panel="about" hidden><div id="aboutFull"></div></section>
+
+    <footer class="foot"><img src="logo.svg" alt="" class="foot-logo" width="1624" height="400"><span id="legal"></span></footer>
+  </main>
+
+  <!-- the map -->
+  <div class="map" id="map"></div>
+</div>
+
+<div class="viewer" id="viewer" hidden><button class="v-close" aria-label="Close photo"><i class="ph ph-x"></i></button><button class="v-prev" aria-label="Previous photo"><i class="ph ph-caret-left"></i></button><img alt=""><button class="v-next" aria-label="Next photo"><i class="ph ph-caret-right"></i></button><p class="v-cap"></p></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="data.js"></script>
+<script src="profile.js"></script>
+</body>
+</html>
