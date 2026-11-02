@@ -42,7 +42,7 @@
     const mins = now.getHours() * 60 + now.getMinutes(), toM = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
     status = mins >= toM(todayH[0]) && mins < toM(todayH[1]) ? `<b class="open">Open</b> · Closes ${t12(todayH[1])}` : `<b class="closed">Closed</b> · Opens ${t12(todayH[0])}`;
   }
-  const hoursTable = `<table class="hours">${DAYS.map(d => { const h = D.hours[d]; return `<tr class="${d === today ? 'today' : ''}"><th>${d}</th><td>${h === 'Closed' ? 'Closed' : Array.isArray(h) ? `${t12(h[0])} to ${t12(h[1])}` : 'To be added'}</td></tr>`; }).join('')}</table>`;
+  const hoursTable = `<table class="hours">${DAYS.map(d => { const h = D.hours[d]; return `<tr class="${d === today ? 'today' : ''}"><th>${d}</th><td>${h === 'Closed' ? 'Closed' : Array.isArray(h) ? `${t12(h[0])} to ${t12(h[1])}` : 'To be added'}</td></tr>${D.hoursNotes?.[d] ? `<tr class="note"><th></th><td>${esc(D.hoursNotes[d])}</td></tr>` : ''}`; }).join('')}</table>`;
   const row = (ic, html, extra = '') => `<li><i class="ph ph-${ic}"></i><div>${html}</div>${extra}</li>`;
   $('#info').innerHTML = [
     row('map-pin', esc(D.address), `<button class="copy" data-copy="${esc(D.address)}" aria-label="Copy address"><i class="ph ph-copy"></i></button>`),
@@ -65,8 +65,9 @@
   const topics = () => D.topics.length ? `<div class="chips">${D.topics.map(t => `<span>${esc(t.label)} <b>${t.count}</b></span>`).join('')}</div>` : '';
   const review = r => `<article class="rev">
       <div class="r-who"><span class="av">${esc(r.name.trim()[0] || '?')}</span><div><b>${esc(r.name)}</b>${r.meta ? `<small>${esc(r.meta)}</small>` : ''}</div></div>
-      <div class="r-meta">${stars(r.rating, 'sm')}<span>${esc(r.when)}</span></div>
+      <div class="r-meta">${r.rating ? stars(r.rating, 'sm') : ''}<span>${esc(r.when)}</span></div>
       <p>${esc(r.text)}${r.cut ? ' …' : ''}</p>
+      ${r.likes ? `<span class="likes"><i class="ph-fill ph-heart"></i>${r.likes}</span>` : ''}
       ${r.reply ? `<div class="reply"><b>Response from the owner</b><small>${esc(r.reply.when)}</small><p>${esc(r.reply.text)}</p></div>` : ''}
     </article>`;
   const sortBox = `<label class="sort"><span>Sort</span><select id="sort"><option value="rel">Most relevant</option><option value="new">Newest</option><option value="high">Highest</option><option value="low">Lowest</option></select></label>`;
@@ -74,8 +75,9 @@
   $('#ovReviews').innerHTML = `<div class="b-head"><h2>Reviews</h2>${D.reviews.length ? '<a href="#" data-go="reviews">See all</a>' : ''}</div>${summary()}${topics()}${reviewList(D.reviews.slice(0, 3))}`;
   const drawFull = (order = 'rel') => {
     const list = [...D.reviews];
-    if (order === 'high') list.sort((a, b) => b.rating - a.rating); if (order === 'low') list.sort((a, b) => a.rating - b.rating);
-    if (order === 'new') list.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    const age = w => { const m = w.match(/(a|an|\d+)\s+(day|week|month|year)/); if (!m) return 0; const n = /\d/.test(m[1]) ? +m[1] : 1; return n * { day: 1, week: 7, month: 30, year: 365 }[m[2]]; };
+    if (order === 'high') list.sort((a, b) => (b.rating ?? -1) - (a.rating ?? -1)); if (order === 'low') list.sort((a, b) => (a.rating ?? 9) - (b.rating ?? 9));
+    if (order === 'new') list.sort((a, b) => age(a.when) - age(b.when));
     $('#reviewsFull').innerHTML = `${summary()}${topics()}${D.reviews.length ? sortBox : ''}<div id="revList">${reviewList(list)}</div>
 `;
     const s = $('#sort'); if (s) { s.value = order; s.addEventListener('change', () => drawFull(s.value)); }
