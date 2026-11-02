@@ -32,7 +32,7 @@ def probe(src):
     d = json.loads(out); s = d['streams'][0]
     rot = abs(int(next((x.get('rotation', 0) for x in s.get('side_data_list', [])), 0)))
     w, h = (s['height'], s['width']) if rot in (90, 270) else (s['width'], s['height'])
-    return w, h, s.get('color_transfer', ''), float(d['format']['duration'])
+    return w, h, s.get('color_transfer', ''), float(d['format'].get('duration') or 0)
 
 
 def video(src, name, start=0.0, dur=None, width=1920, poster_at=0.3):

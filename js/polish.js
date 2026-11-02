@@ -151,3 +151,6 @@ ScrollTrigger.refresh();
     }), { rootMargin: '400px 0px' });
     vids.forEach(v => io.observe(v));
   } }
+
+/* ---------------------------------------------------------------- about: the roofline settles onto the founder's portrait */
+{ const f = $('.founder'); if (f) RM ? f.classList.add('in') : ScrollTrigger.create({ trigger: f, start: 'top 70%', once: true, onEnter: () => f.classList.add('in') }); }
