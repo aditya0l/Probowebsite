@@ -24,7 +24,7 @@
     <div class="h-side"><button data-photo="1"><img src="${P[1].src}" alt="${esc(P[1].alt)}"></button><button data-photo="2"><img src="${P[2].src}" alt="${esc(P[2].alt)}"><span class="h-count"><i class="ph ph-images"></i>${P.length} photos</span></button></div>`;
 
   // ---------------------------------------------------------------- round action buttons
-  const ACT = [['navigation-arrow', 'Directions', dirUrl, true], ['phone', 'Call', `tel:${tel}`], ['globe', 'Website', D.website, true], ['whatsapp-logo', 'WhatsApp', `https://wa.me/${D.whatsapp}`, true], ['share-network', 'Share', '#share']];
+  const ACT = [['navigation-arrow', 'Directions', dirUrl, true], ['phone', 'Call', `tel:${tel}`], ['globe', 'Website', D.website, true], D.whatsapp && ['whatsapp-logo', 'WhatsApp', `https://wa.me/${D.whatsapp}`, true], ['share-network', 'Share', '#share']].filter(Boolean);
   $('#actions').innerHTML = ACT.map(([ic, l, h, ext], i) => `<a class="act ${i ? '' : 'primary'}" href="${h}"${ext ? ' target="_blank" rel="noopener"' : ''}><span><i class="ph ph-${ic}"></i></span>${l}</a>`).join('');
   $('#actions').addEventListener('click', async e => {
     const a = e.target.closest('a[href="#share"]'); if (!a) return; e.preventDefault();
@@ -33,7 +33,7 @@
   });
 
   // ---------------------------------------------------------------- overview
-  $('#desc').textContent = D.description;
+  if (D.description) $('#desc').textContent = D.description; else $('#desc').remove();
   const now = new Date(), today = DAYS[(now.getDay() + 6) % 7], todayH = D.hours[today];
   const known = DAYS.some(d => D.hours[d]);
   let status = 'Hours to be added';
@@ -50,7 +50,7 @@
     row('globe', `<a href="${D.website}" target="_blank" rel="noopener">${D.website.replace(/^https?:\/\/(www\.)?/, '')}</a>`),
     row('phone', `<a href="tel:${tel}">${esc(D.phone)}</a>`, `<button class="copy" data-copy="${esc(D.phone)}" aria-label="Copy phone number"><i class="ph ph-copy"></i></button>`),
     D.plusCode ? row('grid-four', esc(D.plusCode)) : '',
-    row('users-three', D.socials.map(s => `<a class="soc" href="${s.url}" target="_blank" rel="noopener"><i class="ph ph-${s.icon}"></i>${s.label}</a>`).join('')),
+    row('users-three', D.socials.filter(s => s.url).map(s => `<a class="soc" href="${s.url}" target="_blank" rel="noopener"><i class="ph ph-${s.icon}"></i>${s.label}</a>`).join('')),
   ].join('');
 
   // photo strip on the overview
@@ -59,14 +59,14 @@
 
   // ---------------------------------------------------------------- reviews
   const summary = () => D.rating ? `<div class="sum">
-      <div class="bars">${[5, 4, 3, 2, 1].map((n, i) => `<div><span>${n}</span><i style="--w:${D.ratingBars ? D.ratingBars[i] : 0}%"></i></div>`).join('')}</div>
+      <div class="bars">${[5, 4, 3, 2, 1].map((n, i) => `<div><span>${n}</span><i style="--w:${D.ratingBars ? D.ratingBars[i] / Math.max(...D.ratingBars) * 100 : 0}%"></i></div>`).join('')}</div>
       <div class="big"><b>${D.rating.toFixed(1)}</b>${stars(D.rating)}<span>${D.reviewCount.toLocaleString('en-IN')} reviews</span></div></div>`
     : `<p class="empty"><i class="ph ph-star"></i>The rating and reviews will appear here once they are added.</p>`;
   const topics = () => D.topics.length ? `<div class="chips">${D.topics.map(t => `<span>${esc(t.label)} <b>${t.count}</b></span>`).join('')}</div>` : '';
   const review = r => `<article class="rev">
       <div class="r-who"><span class="av">${esc(r.name.trim()[0] || '?')}</span><div><b>${esc(r.name)}</b>${r.meta ? `<small>${esc(r.meta)}</small>` : ''}</div></div>
       <div class="r-meta">${stars(r.rating, 'sm')}<span>${esc(r.when)}</span></div>
-      <p>${esc(r.text)}</p>
+      <p>${esc(r.text)}${r.cut ? ' …' : ''}</p>
       ${r.reply ? `<div class="reply"><b>Response from the owner</b><small>${esc(r.reply.when)}</small><p>${esc(r.reply.text)}</p></div>` : ''}
     </article>`;
   const sortBox = `<label class="sort"><span>Sort</span><select id="sort"><option value="rel">Most relevant</option><option value="new">Newest</option><option value="high">Highest</option><option value="low">Lowest</option></select></label>`;
@@ -77,7 +77,7 @@
     if (order === 'high') list.sort((a, b) => b.rating - a.rating); if (order === 'low') list.sort((a, b) => a.rating - b.rating);
     if (order === 'new') list.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     $('#reviewsFull').innerHTML = `${summary()}${topics()}${D.reviews.length ? sortBox : ''}<div id="revList">${reviewList(list)}</div>
-      <div class="write"><a class="btn" href="https://wa.me/${D.whatsapp}?text=${encodeURIComponent(`Hi ${D.name}, I would like to share feedback.`)}" target="_blank" rel="noopener"><i class="ph ph-pencil-simple-line"></i>Share your feedback</a></div>`;
+`;
     const s = $('#sort'); if (s) { s.value = order; s.addEventListener('change', () => drawFull(s.value)); }
   };
   drawFull();
@@ -91,7 +91,9 @@
   $('#photosFull').addEventListener('click', e => { const b = e.target.closest('[data-tag]'); if (b) drawPhotos(b.dataset.tag); });
 
   // ---------------------------------------------------------------- about tab
-  $('#aboutFull').innerHTML = `<p class="desc">${esc(D.description)}</p>` + D.about.map(g => `<div class="ab"><h3>${esc(g.group)}</h3><ul>${g.items.map(i => `<li><i class="ph ph-check"></i>${esc(i)}</li>`).join('')}</ul></div>`).join('');
+  const fromBiz = D.fromBusiness ? `<div class="ab from"><h3>From ${esc(D.name.split('-')[0].trim())}</h3><p>“${esc(D.fromBusiness).replace(/\n/g, '<br>')}”</p></div>` : '';
+  if (fromBiz) $('#ovReviews').insertAdjacentHTML('afterend', `<div class="block">${fromBiz}</div>`);
+  $('#aboutFull').innerHTML = (D.description ? `<p class="desc">${esc(D.description)}</p>` : '') + fromBiz + D.about.map(g => `<div class="ab"><h3>${esc(g.group)}</h3><ul>${g.items.map(i => `<li><i class="ph ph-check"></i>${esc(i)}</li>`).join('')}</ul></div>`).join('');
 
   // ---------------------------------------------------------------- tabs
   const show = name => {

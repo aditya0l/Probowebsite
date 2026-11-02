@@ -1,28 +1,30 @@
 // Everything the business profile page shows comes from this file.
 // Fields set to null are not shown on the page yet; fill them in from the client's live business profile.
 window.PROFILE = {
-  name: 'Pro Bodyline Fitness',
+  // as on the live profile, 2 November 2026
+  name: 'Probodyline Fitness- India’s Biggest Gym Equipment Showroom',
   legalName: 'Creative Enterprises',
-  category: 'Gym equipment supplier',
+  category: 'Fitness equipment wholesaler in Rajasthan',
   tagline: "India's biggest gym equipment showroom",
-  description: "A 45,000 sq ft gym equipment showroom in Sitapura, Jaipur, with more than 3,500 machines on display. Cardio, plate-loaded, selectorised and free weights for commercial gyms, home gyms, hotels and studios, with planning, delivery, installation and service across India.",
+  description: null,
+  // the business's own description, shown under From Probodyline Fitness
+  fromBusiness: "India's only gym equipment brand with:\n- 40000+ sq ft showroom\n- 2500+ equipment on display\n- 18000+ gym installations across Asia",
 
-  // rating and review count exactly as shown on the live profile, e.g. rating: 4.5, reviewCount: 306
-  rating: null,
-  reviewCount: null,
-  // share of reviews per star, 5 down to 1, in percent, e.g. [78, 12, 4, 2, 4]
-  ratingBars: null,
+  rating: 4.4,
+  reviewCount: 316,
+  // share of reviews per star, 5 down to 1, in percent (read from the profile's bars; they average 4.4)
+  ratingBars: [80, 7, 1, 1, 11],
 
-  address: 'F-1293, Phase-3, RIICO Industrial Area, Sitapura, Jaipur, Rajasthan 302022',
+  address: 'Sitapura Industrial Area, Sitapura, Jaipur, Ramchandpura, Rajasthan 302022',
   plusCode: null, // e.g. 'Q4X8+2C Jaipur, Rajasthan'
   lat: 26.7846, lng: 75.8360, // map pin; adjust to the exact pin on the live profile
-  phone: '+91 78917 12345',
+  phone: '098284 07044',
   website: 'https://www.probodyline.com',
-  whatsapp: '917891712345',
+  whatsapp: null,
   socials: [
-    { label: 'Instagram', icon: 'instagram-logo', url: 'https://www.instagram.com/probodyline' },
     { label: 'YouTube', icon: 'youtube-logo', url: 'https://www.youtube.com/@probodyline' },
     { label: 'Facebook', icon: 'facebook-logo', url: 'https://www.facebook.com/probodylinefitness/' },
+    { label: 'X (Twitter)', icon: 'x-logo', url: null }, // link to confirm
   ],
 
   // opening hours, Monday first. Use null for a day that is not confirmed, 'Closed' for closed days,
@@ -47,16 +49,21 @@ window.PROFILE = {
     { src: 'img/banner.jpg', alt: "India's biggest gym equipment showroom banner", tag: 'Inside' },
   ],
 
-  // the client's own business details, as listed on the profile
-  about: [
-    { group: 'Highlights', items: ['45,000 sq ft showroom', '3,500+ machines on display', 'Try before you buy'] },
-    { group: 'Service options', items: ['In-store shopping', 'Delivery', 'On-site installation'] },
-  ],
+  // attribute groups as listed on the profile's About section, e.g. { group: 'Service options', items: ['Delivery'] }
+  about: [],
 
-  // review topics shown as chips, e.g. [{ label: 'quality', count: 42 }]
-  topics: [],
+  // review topics shown as chips (the profile shows 6 more behind +6)
+  topics: [{ label: 'probodyline equipment', count: 15 }, { label: 'spares parts availability', count: 12 }, { label: 'cardio training', count: 3 }, { label: 'gym setup', count: 3 }],
 
   // reviews exactly as on the live profile, with the reviewer's permission where needed:
   // { name: 'Reviewer name', meta: '12 reviews', rating: 5, when: '2 months ago', text: '...', reply: { when: '2 months ago', text: '...' } }
-  reviews: [],
+  // cut: true marks a review whose full text was not captured yet (the profile shortens it behind More)
+  reviews: [
+    { name: 'Shirish Kumar', meta: '2 reviews', rating: 5, when: '7 months ago', cut: true,
+      text: 'I would like to express my sincere appreciation to Pro Body Line for their excellent service and support. The quality of their gym equipment is outstanding, durable, and perfectly suited for professional fitness environments.' },
+    { name: 'hardik hirani', meta: '4 reviews', rating: 5, when: '2 months ago', cut: true,
+      text: 'The probodyline fitness store is an exceptional store with high-quality, durable equipment and helpful customer service.' },
+    { name: 'Ron Dcosta', meta: '31 reviews · 122 photos', rating: 1, when: 'a year ago',
+      text: "I was very interested in buying their new machines but these people don't sell single machines makes me laugh we have thier brand treadmill still they refuse to sell 1 single machine if they can't sell you a single machine don't expect after sales service of the parts 😂😂😂" },
+  ],
 };
