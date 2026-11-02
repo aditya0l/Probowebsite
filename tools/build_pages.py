@@ -18,7 +18,7 @@ HEAD = """<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{title} | Probodyline</title>
 <meta name="description" content="{desc}">
 <meta name="theme-color" content="#0e0f11">
@@ -28,32 +28,33 @@ HEAD = """<!doctype html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
 <link rel="stylesheet" href="css/site.css">
-<script type="importmap">
-{{ "imports": {{
-  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-}} }}
-</script>
-<script src="site.config.js"></script>
+{engine_head}<script src="site.config.js"></script>
 </head>
 <body data-page="{key}">
 <a class="skip" href="#main">Skip to content</a>
 <script src="js/chrome.js"></script>
 <main id="main">
 """
+# pages with a 3D section load the engine; the rest load js/lite.js and skip three.js entirely
+HEAVY = re.compile(r'id="(?:flight|walk|machine|catGrid|fitView|body|map|ba|planView)"|class="[^"]*real-view')
+ENGINE_HEAD = """<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js">
+"""
+ENGINE = ''.join(f'<script type="module" src="js/{m}.js"></script>\n' for m in ('core', 'features', 'sound', 'more', 'assist', 'spin', 'polish'))
+LITE = '<script type="module" src="js/lite.js"></script>\n'
 FOOT = """</main>
 <script src="js/chrome.js" data-part="footer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-{extra}<script type="module" src="js/core.js"></script>
-<script type="module" src="js/features.js"></script>
-<script type="module" src="js/sound.js"></script>
-<script type="module" src="js/more.js"></script>
-<script type="module" src="js/spin.js"></script>
-<script type="module" src="js/polish.js"></script>
-{inline}</body>
+{extra}{scripts}{inline}</body>
 </html>
 """
 
@@ -270,23 +271,46 @@ PAGES['contact'] = dict(title='Contact', desc='Talk to the Probodyline sales des
       <button class="btn btn-primary" type="submit" style="justify-self:start"><i class="ph ph-whatsapp-logo"></i>Send on WhatsApp</button><small class="muted">Goes to the sales desk for the state picked at the top of the page.</small></form>'''
     + '<div style="display:grid;gap:20px">' + '<iframe class="map" title="Map of the Probodyline showroom in Sitapura, Jaipur" src="https://www.google.com/maps?q=F-1293+RIICO+Industrial+Area+Sitapura+Jaipur&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>' + '<div><p class="lab">Showroom</p><p>F-1293, Phase-3, RIICO Industrial Area, Sitapura, Jaipur, Rajasthan 302022</p><p class="note">Opening hours to confirm.</p></div></div></div></section>',
     inline='''<script type="module">
+import { waLink } from './js/region.js';
 document.getElementById('enq').addEventListener('submit', e => { e.preventDefault(); const v = id => document.getElementById(id).value.trim();
-  window.open(window.PBL.waLink(`Hi Probodyline, I'm ${v('eName') || 'enquiring'} from ${v('eCity') || 'India'}. ${v('eNeed')}. ${v('eMsg')}`), '_blank', 'noopener'); });
+  window.open(waLink(`Hi Probodyline, I'm ${v('eName') || 'enquiring'} from ${v('eCity') || 'India'}. ${v('eNeed')}. ${v('eMsg')}`), '_blank', 'noopener'); });
 </script>
 ''')
 
 
+def media(html):
+    # clips made by tools/media.py: list their modern formats so the page can pick one (js/polish.js)
+    def v(m):
+        name = m.group(1); has = [c for c in ('av1', 'hevc') if (ROOT / 'assets' / 'v' / f'{name}.{c}.mp4').exists()]
+        return m.group(0) + (f' data-v="{" ".join(has)}"' if has else '')
+    html = re.sub(r'(<video data-src="assets/v/[\w-]+\.mp4") data-v="[^"]*"', r'\1', html)
+    html = re.sub(r'<video data-src="assets/v/([\w-]+)\.mp4"', v, html)
+
+    # photos made by tools/media.py: serve AVIF or WebP at the width the screen needs
+    def pic(m):
+        tag, path = m.group(0), m.group(1)
+        sizes = sorted(int(p.stem.rsplit('-', 1)[1]) for p in (ROOT / 'assets' / 'img').glob(f'{path}-*.avif') if p.stem.rsplit('-', 1)[1].isdigit())
+        if not sizes: return tag
+        hero = 'loading="lazy"' not in tag
+        sz = '100vw' if hero else '(max-width:760px) 100vw, 50vw'
+        src = lambda ext: ', '.join(f'assets/img/{path}-{w}.{ext} {w}w' for w in sizes)
+        return f'<picture><source type="image/avif" srcset="{src("avif")}" sizes="{sz}"><source type="image/webp" srcset="{src("webp")}" sizes="{sz}">{tag}</picture>'
+    html = re.sub(r'<picture>.*?</picture>', lambda m: re.sub(r'^<picture>(?:<source[^>]*>)*|</picture>$', '', m.group(0)), html)
+    return re.sub(r'<img src="assets/img/([\w/-]+)\.jpg"[^>]*>', pic, html)
+
+
 def stamp(html):
     # cache-busting: every local script and stylesheet gets the build version
-    return re.sub(r'((?:src|href)="(?:js|css)/[^"?]+\.(?:js|css))"', lambda m: f'{m.group(1)}?v={VERSION}"', html)
+    return media(re.sub(r'((?:src|href)="(?:js|css)/[^"?]+\.(?:js|css))"', lambda m: f'{m.group(1)}?v={VERSION}"', html))
 
 
 def build():
     for key, pg in PAGES.items():
-        html = HEAD.format(title=pg['title'], desc=pg['desc'], key={'iso-lateral-press': 'equipment', 'strength': 'equipment', 'commercial-gyms': 'solutions', 'case-study': 'projects'}.get(key, key))
-        html += pg['body'] + '\n' + FOOT.format(extra=pg.get('extra', ''), inline=pg.get('inline', ''))
+        heavy = bool(HEAVY.search(pg['body']))
+        html = HEAD.format(engine_head=ENGINE_HEAD if heavy else '', title=pg['title'], desc=pg['desc'], key={'iso-lateral-press': 'equipment', 'strength': 'equipment', 'commercial-gyms': 'solutions', 'case-study': 'projects'}.get(key, key))
+        html += pg['body'] + '\n' + FOOT.format(extra=pg.get('extra', ''), scripts=ENGINE if heavy else LITE, inline=pg.get('inline', ''))
         (ROOT / f'{key}.html').write_text(stamp(html))
-        print('built', f'{key}.html')
+        print('built', f'{key}.html', '(3D)' if heavy else '(light)')
 
 
 if __name__ == '__main__':

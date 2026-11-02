@@ -10,11 +10,14 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { STUDIO, WALK } from './markup.js';
+import { PRODUCTS } from './data.js';
 // the engine binds to the studio and showroom-walk markup; pages that do not show them get a hidden copy
 for (const [id, html] of [['rig', STUDIO], ['hall', WALK]]) if (!document.getElementById(id)) { const d = document.createElement('div'); d.hidden = true; d.setAttribute('aria-hidden', 'true'); d.innerHTML = html; document.body.append(d); }
 
 gsap.registerPlugin(ScrollTrigger);
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// phones and tablets: 3D at 1.5x looks the same on a small screen and is far lighter on battery and heat
+const DPR = matchMedia('(pointer:coarse)').matches ? 1.5 : 2;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v)), lerp=(a,b,t)=>a+(b-a)*t, seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
 const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 const $=s=>document.querySelector(s);
@@ -27,7 +30,9 @@ const t0=performance.now(), kgEl=$('#loadkg'), ldBar=$('#ldBar');
 const plates=ldBar?[...ldBar.querySelectorAll('.pl')].sort((a,b)=>a.dataset.o-b.dataset.o):[];
 const finish=()=>{ loaded=true; };
 manager.onProgress=(u,i,n)=>{ target=Math.max(target,i/n*100); };
-if($('#loader')) (function tick(){
+// the loader plays once per visit; coming back to the home page skips it
+if(document.documentElement.classList.contains('seen')) $('#loader')?.classList.add('done');
+else if($('#loader')) (function tick(){
   // creep forward while waiting so the bar never stalls, then run to 100 once everything is in
   const now=performance.now(), goal=loaded?100:Math.min(92,Math.max(target,(now-t0)/45));
   shown+=(goal-shown)*(loaded?.14:.06);
@@ -52,7 +57,7 @@ const ll2v=(lat,lon,r=1)=>{const p=(90-lat)*Math.PI/180,t=(lon+180)*Math.PI/180;
 
 const ec=$('#earth');
 const er=new THREE.WebGLRenderer({canvas:ec,antialias:true});
-er.setPixelRatio(Math.min(devicePixelRatio,2)); er.setClearColor(0x050607);
+er.setPixelRatio(Math.min(devicePixelRatio,DPR)); er.setClearColor(0x050607);
 const es=new THREE.Scene();
 const ecam=new THREE.PerspectiveCamera(35,1,.001,200);
 const TL=new THREE.TextureLoader(manager);
@@ -165,7 +170,7 @@ earthFrame=function(t){
 /* ================= MACHINE ================= */
 const rc=$('#rig'), stage=$('#stage');
 const mr=new THREE.WebGLRenderer({canvas:rc,antialias:true,alpha:true});
-mr.setPixelRatio(Math.min(devicePixelRatio,2)); mr.toneMapping=THREE.ACESFilmicToneMapping; mr.toneMappingExposure=1.05;
+mr.setPixelRatio(Math.min(devicePixelRatio,DPR)); mr.toneMapping=THREE.ACESFilmicToneMapping; mr.toneMappingExposure=1.05;
 mr.shadowMap.enabled=true; mr.shadowMap.type=THREE.PCFSoftShadowMap;
 const ms=new THREE.Scene();
 ms.environment=new THREE.PMREMGenerator(mr).fromScene(new RoomEnvironment(),.04).texture;
@@ -588,17 +593,6 @@ function machineFrame(){
 
 /* ================= STUDIO: every machine ================= */
 const MAKERS={treadmill:mkTreadmill,bike:mkBike,elliptical:mkElliptical,station:mkStation,rack:mkRack,dumbbells:mkDumbbells,bench:mkBench};
-const PRICE=(window.SITE&&SITE.prices)||{};
-const PRODUCTS={
-  press:{price:PRICE.press??null,name:'Iso-lateral plate-loaded press',short:'Iso-lateral press',cat:'Plate-loaded strength',g:'Strength',muscles:['chest','shoulders','arms'],blurb:'Spin it, load it, take it apart. Each arm moves on its own, exactly like the one on the showroom floor.'},
-  treadmill:{price:PRICE.treadmill??null,name:'Commercial treadmills',short:'Treadmills',cat:'Cardio',g:'Cardio',muscles:['legs','glutes','cardio'],blurb:'Set the belt speed and watch it run. Built for floors that never close.'},
-  bike:{price:PRICE.bike??null,name:'Spin bikes',short:'Spin bikes',cat:'Cardio',g:'Cardio',muscles:['legs','glutes','cardio'],blurb:'Set the cadence. The flywheel and cranks follow, the way they do in a class.'},
-  elliptical:{price:PRICE.elliptical??null,name:'Cross-trainers',short:'Cross-trainers',cat:'Cardio',g:'Cardio',muscles:['legs','glutes','arms','cardio'],blurb:'Low impact, full body. A cardio floor favourite for every age.'},
-  station:{price:PRICE.station??null,name:'Selectorised stations',short:'Stations',cat:'Selectorised strength',g:'Strength',muscles:['back','chest','arms'],blurb:'Pin-loaded weight stack with guided arms. Easy for beginners, solid for regulars.'},
-  rack:{price:PRICE.rack??null,name:'Power racks',short:'Power racks',cat:'Racks and rigs',g:'Strength',muscles:['legs','glutes','back','chest','core'],blurb:'Squat, bench and pull in one footprint, with a bar, plates and a bench.'},
-  dumbbells:{price:PRICE.dumbbells??null,name:'Dumbbells and racks',short:'Dumbbells',cat:'Free weights',g:'Free weights',muscles:['arms','shoulders','chest','back'],blurb:'Hex dumbbells on two-tier racks, from light pairs to the heaviest ones on the floor.'},
-  bench:{price:PRICE.bench??null,name:'Benches',short:'Benches',cat:'Free weights',g:'Free weights',muscles:['chest','arms'],blurb:'The simplest thing in the gym, and the one everyone queues for.'},
-};
 const ALT={}; let cur='press';
 const TRAIN_OK={press:1,treadmill:1,bike:1}, LOAD_OK={press:1};
 st.speed=8; st.rpm=80; let runKm=0;
@@ -645,7 +639,7 @@ function altFrame(dt){ if(cur==='press') return; const g=ALT[cur]; if(!g) return
   if(cur==='treadmill'){const v=on?st.speed:0; SR.belt.map.offset.y-=v/3.6*dt/.27; runKm+=v/3600*dt; $('#roSpeed').textContent=v.toFixed(1); $('#roDist').textContent=runKm.toFixed(2);}
   if(cur==='bike'){const r=on?st.rpm:0; g.userData.flywheel.rotation.x-=r/60*Math.PI*2*dt*2.6; g.userData.crank.rotation.x-=r/60*Math.PI*2*dt; $('#roRpm').textContent=r; $('#roWatt').textContent=Math.round(r*r*.028);}
 }
-window.PBL={flight:()=>fp,walk:()=>walkP,hall:{scene:hs,cam:hcam},studio:{machine,levers,st,seat,back,foot,ms,mcam,controls,get cur(){return cur},get obj(){return cur==='press'?machine:ALT[cur]}},THREE,gsap,ScrollTrigger,OrbitControls,RoomEnvironment,M,SR,BAKED,PRODUCTS,MAKERS,RM,canvasTex,logoTex,drawLogo,
+window.PBL={DPR,flight:()=>fp,walk:()=>walkP,hall:{scene:hs,cam:hcam},studio:{machine,levers,st,seat,back,foot,ms,mcam,controls,get cur(){return cur},get obj(){return cur==='press'?machine:ALT[cur]}},THREE,gsap,ScrollTrigger,OrbitControls,RoomEnvironment,M,SR,BAKED,PRODUCTS,MAKERS,RM,canvasTex,logoTex,drawLogo,
   showProduct(key){setProduct(key);document.getElementById('machine').scrollIntoView({behavior:RM?'auto':'smooth'});}};
 
 /* ================= loop ================= */

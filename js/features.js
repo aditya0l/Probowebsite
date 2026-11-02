@@ -3,14 +3,14 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+import { ORDER, inr } from './data.js';
+import { DESKS, desk, waLink, setRegion, getRegion, onRegion, STATES } from './region.js';
 
 const P = window.PBL;
 const { gsap, ScrollTrigger, M, SR, BAKED, PRODUCTS, RM, canvasTex } = P;
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v)), lerp = (a, b, t) => a + (b - a) * t;
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
-const ORDER = ['press', 'treadmill', 'bike', 'elliptical', 'station', 'rack', 'dumbbells', 'bench'];
-const inr = n => '₹' + Math.round(n).toLocaleString('en-IN');
 const GST = (window.SITE && SITE.gstRate) ?? .18;
 
 /* ---------------------------------------------------------------- shared 3D helpers */
@@ -18,7 +18,7 @@ const envCache = new WeakMap();
 function env(r) { if (!envCache.has(r)) envCache.set(r, new THREE.PMREMGenerator(r).fromScene(new RoomEnvironment(), .04).texture); return envCache.get(r); }
 function renderer(canvas, { alpha = false, shadows = true, dpr = 1.75, preserve = false } = {}) {
   const r = new THREE.WebGLRenderer({ canvas, antialias: true, alpha, preserveDrawingBuffer: preserve });
-  r.setPixelRatio(Math.min(devicePixelRatio, dpr)); r.toneMapping = THREE.ACESFilmicToneMapping;
+  r.setPixelRatio(Math.min(devicePixelRatio, dpr, P.DPR)); r.toneMapping = THREE.ACESFilmicToneMapping;
   r.shadowMap.enabled = shadows; r.shadowMap.type = THREE.PCFSoftShadowMap; return r;
 }
 function lights(scene, span = 3, key = 2.4) {
@@ -69,23 +69,6 @@ async function openAR(obj, note) {
     if (mv.canActivateAR) { mv.activateAR(); note(''); } else note('AR is not available in this browser. Try Chrome on Android or Safari on iPhone.');
   } catch (err) { note('Could not start AR on this device.'); }
 }
-
-/* ---------------------------------------------------------------- regional routing (global) */
-const DESKS = { a: { num: '917891712345', show: '+91 78917 12345', area: 'Rest of India' }, n: { num: '919403893899', show: '+91 94038 93899', area: 'Delhi NCR, Gujarat, Punjab, Haryana and Tamil Nadu' }, s: { num: '919403893399', show: '+91 94038 93399', area: 'Maharashtra, Uttar Pradesh and Bangalore' } };
-const STATES = [['Rajasthan', 'a'], ['Delhi NCR', 'n'], ['Gujarat', 'n'], ['Punjab', 'n'], ['Haryana', 'n'], ['Tamil Nadu', 'n'], ['Maharashtra', 's'], ['Uttar Pradesh', 's'], ['Karnataka', 's'], ['Madhya Pradesh', 'a'], ['West Bengal', 'a'], ['Telangana', 'a'], ['Andhra Pradesh', 'a'], ['Kerala', 'a'], ['Bihar', 'a'], ['Odisha', 'a'], ['Assam', 'a'], ['Other', 'a']];
-let region = 'Rajasthan'; try { region = localStorage.getItem('pbl-region') || region; } catch (e) { }
-const desk = () => DESKS[(STATES.find(s => s[0] === region) || STATES[0])[1]];
-const waLink = text => `https://wa.me/${desk().num}?text=${encodeURIComponent(text)}`;
-const listeners = [];
-function setRegion(r) {
-  region = r; try { localStorage.setItem('pbl-region', r); } catch (e) { }
-  $$('select[data-region]').forEach(s => s.value = r);
-  $$('[data-desk]').forEach(el => el.textContent = `${desk().show} (${desk().area})`);
-  $$('[data-desk-link]').forEach(a => a.href = 'tel:+' + desk().num);
-  $$('#abWa').forEach(a => a.href = waLink('Hi Probodyline, I have a question.'));
-  listeners.forEach(f => f());
-}
-$$('select[data-region]').forEach(s => { STATES.forEach(([n]) => s.add(new Option(n, n))); s.addEventListener('change', () => setRegion(s.value)); });
 
 /* ---------------------------------------------------------------- product renders (one shared offscreen pass) */
 const THUMB = {};
@@ -536,19 +519,19 @@ if ($('#planView')) {
     quoteEl.innerHTML = `<div class="doc">
       <div class="doc-top"><div><div class="wm"><span class="logo" role="img" aria-label="Pro Bodyline Fitness"></span></div><div class="doc-addr">Creative Enterprises<br>F-1293, Phase-3, RIICO Industrial Area, Sitapura, Jaipur 302022</div></div>
       <div class="t"><b>${priced ? 'Proforma invoice' : 'Quotation request'}</b><span class="doc-no">${qNo}</span><span class="doc-date">${qDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span></div></div>
-      <div class="doc-meta"><div><small>Prepared for</small><input id="qFor" value="${preparedFor.replace(/"/g, '&quot;')}" placeholder="Your gym or company name" aria-label="Prepared for"></div><div><small>Project</small><b>${PLAN.kind[0].toUpperCase() + PLAN.kind.slice(1)} gym, ${PLAN.sqft.toLocaleString('en-IN')} sq ft, ${region}</b></div></div>
+      <div class="doc-meta"><div><small>Prepared for</small><input id="qFor" value="${preparedFor.replace(/"/g, '&quot;')}" placeholder="Your gym or company name" aria-label="Prepared for"></div><div><small>Project</small><b>${PLAN.kind[0].toUpperCase() + PLAN.kind.slice(1)} gym, ${PLAN.sqft.toLocaleString('en-IN')} sq ft, ${getRegion()}</b></div></div>
       <table><thead><tr><th>#</th><th>Item</th><th class="r">Qty</th><th class="r">Rate</th>${priced ? '<th class="r">Amount</th>' : ''}</tr></thead>
       <tbody>${L.map((l, i) => `<tr><td>${i + 1}</td><td>${PRODUCTS[l.k].name}<small>${PRODUCTS[l.k].cat}</small></td><td class="r">${l.q}</td><td class="r">${rate(l)}</td>${priced ? `<td class="r">${amt(l)}</td>` : ''}</tr>`).join('')}
       <tr><td>${L.length + 1}</td><td>Delivery, installation and floor layout</td><td class="r">1</td><td class="r">${priced ? 'Included' : 'On request'}</td>${priced ? '<td></td>' : ''}</tr></tbody>
       ${priced ? `<tfoot><tr><td colspan="4" class="r">Subtotal</td><td class="r">${inr(sub)}</td></tr><tr><td colspan="4" class="r">GST at ${Math.round(GST * 100)}%</td><td class="r">${inr(gst)}</td></tr><tr class="tot"><td colspan="4" class="r">Total</td><td class="r">${inr(sub + gst)}</td></tr></tfoot>` : `<tfoot><tr class="tot"><td colspan="2">Total machines</td><td class="r">${L.reduce((a, l) => a + l.q, 0)}</td><td></td></tr></tfoot>`}</table>
-      <p class="fine">${priced ? `Prices include delivery and installation. GST at ${Math.round(GST * 100)}% applies.` : 'Models, prices and delivery dates are confirmed by the sales desk.'} Sales desk for ${region}: ${desk().show}.</p>
+      <p class="fine">${priced ? `Prices include delivery and installation. GST at ${Math.round(GST * 100)}% applies.` : 'Models, prices and delivery dates are confirmed by the sales desk.'} Sales desk for ${getRegion()}: ${desk().show}.</p>
     </div>`;
     $('#qFor').addEventListener('input', e => { preparedFor = e.target.value; });
     // flash the rows that changed so the live update is visible
     if (!RM) gsap.fromTo(quoteEl.querySelectorAll('tbody td.r:nth-child(3), tfoot td'), { color: '#b39700' }, { color: '#141414', duration: .9, ease: 'power2.out' });
-    $('#wa').href = waLink(`Hi Probodyline, please quote request ${qNo}${preparedFor ? ` for ${preparedFor}` : ''}: ` + L.map(l => `${l.q} x ${PRODUCTS[l.k].short}`).join(', ') + ` for a ${PLAN.kind} gym of ${PLAN.sqft} sq ft in ${region}.`);
+    $('#wa').href = waLink(`Hi Probodyline, please quote request ${qNo}${preparedFor ? ` for ${preparedFor}` : ''}: ` + L.map(l => `${l.q} x ${PRODUCTS[l.k].short}`).join(', ') + ` for a ${PLAN.kind} gym of ${PLAN.sqft} sq ft in ${getRegion()}.`);
   }
-  document.addEventListener('plan', renderQuote); listeners.push(renderQuote); renderQuote();
+  document.addEventListener('plan', renderQuote); onRegion(renderQuote); renderQuote();
   $('#quotePrint').addEventListener('click', () => { document.body.classList.add('print-quote'); print(); document.body.classList.remove('print-quote'); });
 }
 
@@ -575,7 +558,7 @@ if ($('#cal')) {
   function sum() {
     $('#bSummary').innerHTML = `<b>${B.video ? 'Live video tour' : 'Showroom visit'}</b><br>${B.day === null ? 'Pick a day' : fmtDay(B.day)}${B.slot ? ', ' + B.slot : B.day !== null ? ', pick a time' : ''}<br>${[...B.interests].join(', ') || 'Anything you like'}<br><span class="muted">Confirmed by ${desk().show}</span>`;
   }
-  listeners.push(sum);
+  onRegion(sum);
   const err = (id, t) => { $('#' + id + 'Err').textContent = t; $('#' + id).setAttribute('aria-invalid', !!t); };
   $('#bookForm').addEventListener('submit', e => {
     e.preventDefault();
@@ -584,7 +567,7 @@ if ($('#cal')) {
     if (B.day === null || !B.slot) { $('#bSummary').innerHTML += '<br><span style="color:#ff9d90">Pick a day and a time first.</span>'; return; }
     if (name.length < 2 || !/^[6-9]\d{9}$/.test(phone)) return;
     const what = B.video ? 'a live video tour of the showroom' : 'a showroom visit';
-    const msg = `Hi Probodyline, I'm ${name} (${phone}). I'd like to book ${what} on ${fmtDay(B.day)} at ${B.slot}. Interested in: ${[...B.interests].join(', ') || 'everything'}. I'm in ${region}.`;
+    const msg = `Hi Probodyline, I'm ${name} (${phone}). I'd like to book ${what} on ${fmtDay(B.day)} at ${B.slot}. Interested in: ${[...B.interests].join(', ') || 'everything'}. I'm in ${getRegion()}.`;
     window.open(waLink(msg), '_blank', 'noopener');
     const start = new Date(days[B.day]); start.setHours(+B.slot.slice(0, 2), 0, 0, 0); const end = new Date(start.getTime() + 90 * 6e4);
     const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Probodyline//Visit//EN', 'BEGIN:VEVENT', `UID:${Date.now()}@probodyline`, `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').slice(0, 15)}Z`, `DTSTART:${start.toISOString().replace(/[-:]/g, '').slice(0, 15)}Z`, `DTEND:${end.toISOString().replace(/[-:]/g, '').slice(0, 15)}Z`, `SUMMARY:${B.video ? 'Probodyline video tour' : 'Probodyline showroom visit'}`, 'LOCATION:F-1293 Phase-3 RIICO Industrial Area Sitapura Jaipur 302022', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
@@ -598,10 +581,9 @@ if ($('#cal')) {
 }
 
 /* ---------------------------------------------------------------- shared with more.js */
-Object.assign(P, { THUMB, ORDER, inr, waLink, desk, setRegion, getRegion: () => region, STATES, productMesh, centred, renderer, env, lights, addView, frameCam, openAR, onRegion: f => listeners.push(f) });
+Object.assign(P, { THUMB, ORDER, inr, waLink, desk, setRegion, getRegion, STATES, productMesh, centred, renderer, env, lights, addView, frameCam, openAR, onRegion });
 
 /* ---------------------------------------------------------------- finish */
-setRegion(region);
 if (!RM) {
   ScrollTrigger.batch('.pc, .card, .roi-out', { start: 'top 92%', onEnter: els => gsap.from(els, { y: 36, opacity: 0, duration: .8, stagger: .06, ease: 'power3.out' }) });
 }

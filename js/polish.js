@@ -2,8 +2,10 @@
 // three durations (0.18s feedback, 0.45s UI, 0.9s reveals), one entrance pattern (masked rise).
 import Lenis from 'https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.mjs';
 
-const P = window.PBL;
-const { gsap, ScrollTrigger, RM, THREE } = P;
+const P = window.PBL || (window.PBL = {});
+const { gsap, ScrollTrigger } = window, { THREE } = P;
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+gsap.registerPlugin(ScrollTrigger);
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const EASE = 'expo.out', T = { quick: .18, ui: .45, reveal: .9 };
 const fine = matchMedia('(hover:hover) and (pointer:fine)').matches;
@@ -104,7 +106,7 @@ if (fine) {
 }
 
 /* ---------------------------------------------------------------- showroom air: dust in the light, soft beams under the LEDs */
-{
+if (P.hall) {
   const { scene } = P.hall, N = 1800, pos = new Float32Array(N * 3), seed = new Float32Array(N);
   for (let i = 0; i < N; i++) { pos[i * 3] = (Math.random() - .5) * 22; pos[i * 3 + 1] = Math.random() * 5.8; pos[i * 3 + 2] = 10 - Math.random() * 104; seed[i] = Math.random() * 100; }
   const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); geo.setAttribute('seed', new THREE.BufferAttribute(seed, 1));
@@ -134,10 +136,18 @@ ScrollTrigger.refresh();
 { const hints = $$('.scroll-hint, .scroll-hint-inline'); if (hints.length) ScrollTrigger.create({ trigger: document.body, start: 'top -40', onEnter: () => hints.forEach(h => h.classList.add('gone')), onLeaveBack: () => hints.forEach(h => h.classList.remove('gone')) }); }
 
 /* ---------------------------------------------------------------- footage loads near the viewport, plays while visible */
+// Clips made with tools/media.py carry data-v="av1 hevc": the device gets the smallest format it can decode,
+// falling back to the H.264 file. Data saver on: posters only.
 { const vids = $$('video[data-src]');
-  if (vids.length && !RM) {
+  const t = document.createElement('video'), save = navigator.connection?.saveData;
+  const ok = { av1: t.canPlayType('video/mp4; codecs="av01.0.08M.08"') === 'probably', hevc: !!t.canPlayType('video/mp4; codecs="hvc1.1.6.L120.90"') };
+  const best = v => { const has = (v.dataset.v || '').split(' '), base = v.dataset.src.replace(/\.mp4$/, '');
+    const c = ['av1', 'hevc'].find(k => ok[k] && has.includes(k)); return c ? `${base}.${c}.mp4` : v.dataset.src; };
+  const load = v => { v.src = best(v);
+    v.addEventListener('error', () => { if (v.src.endsWith(v.dataset.src)) return; v.src = v.dataset.src; v.play().catch(() => {}); }, { once: true }); };
+  if (vids.length && !RM && !save) {
     const io = new IntersectionObserver(es => es.forEach(({ target: v, isIntersecting }) => {
-      if (isIntersecting) { if (!v.getAttribute('src')) v.src = v.dataset.src; v.play().catch(() => {}); } else if (!v.paused) v.pause();
+      if (isIntersecting) { if (!v.getAttribute('src')) load(v); v.play().catch(() => {}); } else if (!v.paused) v.pause();
     }), { rootMargin: '400px 0px' });
     vids.forEach(v => io.observe(v));
   } }

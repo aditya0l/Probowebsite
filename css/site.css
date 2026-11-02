@@ -682,12 +682,12 @@ html.menu-open{overflow:hidden}
 .actionbar i{font-size:18px}
 @media (max-width:760px){.actionbar{display:grid}.cbtn{bottom:76px}.cmpbar{bottom:76px}body{padding-bottom:70px}}
 
-/* page transition curtain */
-.curtain{position:fixed;inset:0;z-index:95;background:var(--bg);display:grid;place-items:center;pointer-events:none;transform:translateY(0);transition:transform .8s cubic-bezier(.76,0,.24,1)}
-.curtain .wordmark{font-size:28px;letter-spacing:.04em;opacity:.9}
-.curtain.open{transform:translateY(-100%)}
-.curtain.closing{transform:translateY(0);transition-duration:.5s}
-@media (prefers-reduced-motion:reduce){.curtain{display:none}}
+html.seen #loader{display:none}
+/* page changes: a quick cross-fade, the nav stays put */
+@view-transition{navigation:auto}
+.nav{view-transition-name:nav}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.22s;animation-timing-function:cubic-bezier(.4,0,.2,1)}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
 .pc.big .pc-img{position:relative;min-height:420px}
 .pc.big .pc-img img{position:absolute;inset:0;padding:28px}
 .pc-img.real img{mix-blend-mode:multiply}
@@ -975,7 +975,7 @@ p{text-wrap:pretty}
 .logo{display:inline-block;vertical-align:middle;height:var(--lh,30px);aspect-ratio:1624/400;background:currentColor;-webkit-mask:url(../assets/logo.svg) center/contain no-repeat;mask:url(../assets/logo.svg) center/contain no-repeat}
 .nav .wordmark{--lh:34px;display:inline-flex;align-items:center;line-height:1}
 .foot-brand .wordmark{--lh:48px;display:inline-block}
-.curtain .wordmark{--lh:64px}
+
 .ld-mark{line-height:0}
 .ld-mark .logo{--lh:clamp(44px,6vw,72px);color:var(--ink)}
 @media (prefers-reduced-motion:no-preference){.ld-mark .logo{animation:ldRise .6s cubic-bezier(.4,0,.2,1) both .1s}}
@@ -983,3 +983,36 @@ p{text-wrap:pretty}
 #liveQuote .doc-top .wm .logo{--lh:32px}
 .plate .wm{line-height:0}.plate .wm .logo{--lh:22px}
 @media (max-width:760px){.nav .wordmark{--lh:28px}}
+
+/* responsive photos (tools/media.py): the <picture> wrapper takes no box, the img keeps its layout */
+picture{display:contents}
+
+/* phones and tablets (iOS and Android) */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+a,button,label,summary{-webkit-tap-highlight-color:transparent}
+@media (pointer:coarse){
+  /* iOS zooms into any field under 16px when it gets focus */
+  input,select,textarea,.region select,#liveQuote .doc-meta input{font-size:16px}
+  .btn,.chip,.tabs button,.rail button{touch-action:manipulation}
+}
+/* the notch and the home bar (viewport-fit=cover) */
+.nav{padding-top:env(safe-area-inset-top);height:calc(72px + env(safe-area-inset-top));padding-left:max(var(--gutter),env(safe-area-inset-left));padding-right:max(var(--gutter),env(safe-area-inset-right))}
+@media (max-width:760px){
+  .actionbar{bottom:calc(12px + env(safe-area-inset-bottom));left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right))}
+  .cbtn,.cmpbar{bottom:calc(76px + env(safe-area-inset-bottom))}
+  body{padding-bottom:calc(70px + env(safe-area-inset-bottom))}
+}
+/* the visit calendar fits a 320px phone: day columns may shrink below their label width */
+.cal{grid-template-columns:repeat(7,minmax(0,1fr))}
+.book>.card{min-width:0}
+@media (max-width:420px){.book>.card{padding:20px 16px}.cal{gap:4px}.cal button{font-size:14px}.cal button small{font-size:9px}}
+/* the press page buy bar on phones: full width, above the quick-action bar */
+@media (max-width:760px){
+  .stickybuy{left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:calc(76px + env(safe-area-inset-bottom));transform:translateY(calc(100% + 100px));gap:10px}
+  .stickybuy.show{transform:none}
+  .stickybuy b{font-size:17px;white-space:nowrap}
+  .stickybuy .muted{font-size:13px;white-space:nowrap}
+  .stickybuy .btn{margin-left:auto;padding:0 16px;white-space:nowrap}
+}
+@media (max-width:760px){body:has(.stickybuy.show) .cbtn{bottom:calc(144px + env(safe-area-inset-bottom))}}
+.cbtn{transition:bottom .4s cubic-bezier(.2,.7,.2,1)}

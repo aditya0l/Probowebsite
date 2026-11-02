@@ -35,7 +35,7 @@
 </div>`,
     footer: `
 <section class="pre-foot">
-  <video data-src="assets/v/banner.mp4" poster="assets/v/banner.jpg" muted playsinline loop preload="none" aria-hidden="true"></video><div class="pf-shade" aria-hidden="true"></div>
+  <video data-src="assets/v/banner.mp4" data-v="av1 hevc" poster="assets/v/banner.jpg" muted playsinline loop preload="none" aria-hidden="true"></video><div class="pf-shade" aria-hidden="true"></div>
   <div class="wrap pre-foot-in">
     <h2 class="display">Come lift something.</h2>
     <div class="row"><a class="btn btn-primary" href="showroom.html#book">Book a visit</a><a class="btn btn-ghost" href="plan.html">Plan your gym</a></div>
@@ -71,8 +71,7 @@
   <div class="clog" id="clog" aria-live="polite"></div>
   <div class="cchips" id="cchips"></div>
   <div class="cfoot">Your plan goes to the sales desk for your state on WhatsApp.</div>
-</div>
-<div class="curtain" id="curtain" aria-hidden="true"><span class="wordmark"><span class="logo" aria-hidden="true"></span></span></div>`,
+</div>`,
   };
   me.insertAdjacentHTML('beforebegin', html[part]);
   if (part !== 'footer') return;
@@ -83,16 +82,19 @@
   btn.addEventListener('click', () => setMenu(menu.hidden));
   addEventListener('keydown', e => { if (e.key === 'Escape' && !menu.hidden) setMenu(false); });
 
-  // page transitions: a curtain closes before leaving and opens on arrival
-  const curtain = document.getElementById('curtain');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  requestAnimationFrame(() => curtain.classList.add('open'));
-  document.addEventListener('click', e => {
-    const a = e.target.closest('a[href]'); if (!a || reduce || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') return;
-    const url = new URL(a.href, location.href);
-    if (url.origin !== location.origin || !/\.html$|\/$/.test(url.pathname) || (url.pathname === location.pathname && url.hash)) return;
-    e.preventDefault(); setMenu(false); curtain.classList.remove('open'); curtain.classList.add('closing');
-    setTimeout(() => location.href = a.href, 520);
-  });
-  addEventListener('pageshow', e => { if (e.persisted) { curtain.classList.remove('closing'); curtain.classList.add('open'); } });
+  // page changes: no curtain and no wait. The browser cross-fades between pages (css @view-transition) and,
+  // where supported, prerenders the page a link points to as soon as the visitor shows intent, so it opens instantly.
+  if (HTMLScriptElement.supports?.('speculationrules')) {
+    const s = document.createElement('script'); s.type = 'speculationrules';
+    s.textContent = JSON.stringify({ prerender: [{ where: { and: [{ href_matches: '/*' }, { not: { selector_matches: '[target=_blank], [download]' } }] }, eagerness: 'moderate' }] });
+    document.head.append(s);
+  } else {
+    // Safari and Firefox: fetch the next page into the cache on hover or the first touch, so the HTML is already there
+    const seen = new Set();
+    const warm = e => { const a = e.target.closest?.('a[href]'); if (!a || a.target === '_blank') return; const u = new URL(a.href, location.href);
+      if (u.origin !== location.origin || u.pathname === location.pathname || seen.has(u.pathname)) return;
+      seen.add(u.pathname); const l = document.createElement('link'); l.rel = 'prefetch'; l.href = u.pathname; document.head.append(l); };
+    document.addEventListener('pointerover', warm, { passive: true }); document.addEventListener('touchstart', warm, { passive: true });
+  }
+  document.addEventListener('click', e => { if (e.target.closest('#menu a[href]')) setMenu(false); });
 })();
