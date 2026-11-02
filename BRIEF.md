@@ -11,7 +11,7 @@ Concept demo: [index.html](index.html). Open it in Chrome and scroll slowly.
 | **Brand** | Pro Bodyline Fitness / Probodyline. A brand of **Creative Enterprises** |
 | **Positioning** | "India's Biggest Gym Equipment Brand" |
 | **Tagline** | "If It's Unique, It's Probodyline." About-page heading: "Empowering Fitness, Inspiring Greatness" |
-| **Age** | About 25 years, founded in Jaipur |
+| **Age** | 27 years, founded in Jaipur in 1999 by Shri Rajendra Motwani Ji |
 | **HQ / showroom** | F-1293, Phase-3, RIICO Industrial Area, Sitapura, Jaipur, Rajasthan 302022 (≈ 26.78° N, 75.82° E) |
 | **Showroom** | Claimed 45,000 sq ft, "India's largest gym equipment showroom", 3,500+ machines on display |
 | **Installs** | Claimed 18,000+ gyms across India |

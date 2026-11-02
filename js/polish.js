@@ -154,3 +154,14 @@ ScrollTrigger.refresh();
 
 /* ---------------------------------------------------------------- about: the roofline settles onto the founder's portrait */
 { const f = $('.founder'); if (f) RM ? f.classList.add('in') : ScrollTrigger.create({ trigger: f, start: 'top 70%', once: true, onEnter: () => f.classList.add('in') }); }
+
+/* ---------------------------------------------------------------- about: the standard lights up word by word as it crosses the middle of the screen */
+{ const t = $('.tl-text');
+  if (t) {
+    const words = []; const wrap = el => [...el.childNodes].forEach(n => {
+      if (n.nodeType === 3) { const f = document.createDocumentFragment(); n.textContent.split(/(\s+)/).forEach(s => { if (!s) return; if (/^\s+$/.test(s)) f.append(s); else { const w = document.createElement('span'); w.className = 'tw'; w.textContent = s; words.push(w); f.append(w); } }); n.replaceWith(f); }
+      else if (n.nodeType === 1) wrap(n); });
+    wrap(t);
+    if (RM) words.forEach(w => w.classList.add('on'));
+    else ScrollTrigger.create({ trigger: t, start: 'top 75%', end: 'bottom 45%', onUpdate: s => { const n = Math.round(s.progress * words.length); words.forEach((w, i) => w.classList.toggle('on', i < n)); } });
+  } }

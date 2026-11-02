@@ -44,7 +44,7 @@
 <footer id="visit" class="site-foot">
   <div class="wrap">
     <div class="foot-grid">
-      <div class="foot-brand"><a href="index.html" class="wordmark" aria-label="Probodyline home"><span class="logo" aria-hidden="true"></span></a><p>India's biggest gym equipment showroom. Twenty-five years of building gyms, from one address in Jaipur.</p>
+      <div class="foot-brand"><a href="index.html" class="wordmark" aria-label="Probodyline home"><span class="logo" aria-hidden="true"></span></a><p>India's biggest gym equipment showroom. Twenty-seven years of building gyms, from one address in Jaipur.</p>
         <p class="lab" style="margin-top:22px">Showroom</p><p>F-1293, Phase-3, RIICO Industrial Area<br>Sitapura, Jaipur, Rajasthan 302022</p>
         <div class="row" style="margin-top:16px"><a class="chip" href="https://www.google.com/maps/search/?api=1&query=F-1293+RIICO+Industrial+Area+Sitapura+Jaipur" target="_blank" rel="noopener"><i class="ph ph-navigation-arrow"></i>Directions</a><a class="chip" href="https://instagram.com/probodyline" target="_blank" rel="noopener"><i class="ph ph-instagram-logo"></i>Instagram</a><a class="chip" href="https://youtube.com/@probodyline" target="_blank" rel="noopener"><i class="ph ph-youtube-logo"></i>YouTube</a></div></div>
       ${MENU.map(([t, ls]) => `<div><h3>${t}</h3><ul>${ls.map(([h, l]) => `<li><a href="${h}">${l}</a></li>`).join('')}</ul></div>`).join('')}
